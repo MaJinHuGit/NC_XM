@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mtlckj.base.system.mapper.ModuleMapper">
+
+	<select id="findByid" resultType="com.mtlckj.base.system.domain.ModuleDO">
+		select
+		`sys_module_id` sysModuleId,
+		`sys_module_name` sysModuleName,
+		`sys_module_cname` sysModuleCname,
+		`sys_module_text` sysModuleText,
+		`sys_module_create_time` sysModuleCreateTime,
+		`sys_module_modify_time` sysModuleModifyTime,
+		`sys_module_state` sysModuleState,
+		`sys_module_order` sysModuleOrder
+		from sys_module where sys_module_id = #{id}
+	</select>
+	
+	<insert id="save" parameterType="com.mtlckj.base.system.domain.ModuleDO" useGeneratedKeys="true" keyProperty="sysModuleId">
+		insert into sys_module
+		(
+		`sys_module_name`,
+		`sys_module_cname`,
+		`sys_module_text`,
+		`sys_module_create_time`,
+		`sys_module_modify_time`,
+		`sys_module_state`,
+		`sys_module_order`
+		)
+		values
+		(
+		#{sysModuleName},
+		#{sysModuleCname},
+		#{sysModuleText},
+		#{sysModuleCreateTime},
+		#{sysModuleModifyTime},
+		#{sysModuleState},
+		#{sysModuleOrder}
+		)
+	</insert>
+	
+	<select id="list" resultType="com.mtlckj.base.system.domain.ModuleDO">
+		select 
+		`sys_module_id` sysModuleId,
+		`sys_module_name` sysModuleName,
+		`sys_module_cname` sysModuleCname,
+		`sys_module_text` sysModuleText,
+		`sys_module_create_time` sysModuleCreateTime,
+		`sys_module_modify_time` sysModuleModifyTime,
+		`sys_module_state` sysModuleState,
+		`sys_module_order` sysModuleOrder
+		from
+		sys_module
+		<where>
+			<if test="sysModuleId != null and sysModuleId != ''"> and sys_module_id = #{sysModuleId} </if>
+			<if test="sysModuleName != null and sysModuleName != ''"> and sys_module_name = #{sysModuleName} </if>
+			<if test="sysModuleCname != null and sysModuleCname != ''"> and sys_module_cname = #{sysModuleCname} </if>
+			<if test="sysModuleText != null and sysModuleText != ''"> and sys_module_text = #{sysModuleText} </if>
+			<if test="sysModuleCreateTime != null and sysModuleCreateTime != ''"> and sys_module_create_time = #{sysModuleCreateTime} </if>
+			<if test="sysModuleModifyTime != null and sysModuleModifyTime != ''"> and sys_module_modify_time = #{sysModuleModifyTime} </if>
+			<if test="sysModuleState != null and sysModuleState != ''"> and sys_module_state = #{sysModuleState} </if>
+			<if test="sysModuleOrder != null and sysModuleOrder != ''"> and sys_module_order = #{sysModuleOrder} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by sys_module_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+	<select id="count" resultType="int">
+		select count(*) from sys_module
+		<where>
+			<if test="sysModuleId != null and sysModuleId != ''"> and sys_module_id = #{sysModuleId} </if>
+			<if test="sysModuleName != null and sysModuleName != ''"> and sys_module_name = #{sysModuleName} </if>
+			<if test="sysModuleCname != null and sysModuleCname != ''"> and sys_module_cname = #{sysModuleCname} </if>
+			<if test="sysModuleText != null and sysModuleText != ''"> and sys_module_text = #{sysModuleText} </if>
+			<if test="sysModuleCreateTime != null and sysModuleCreateTime != ''"> and sys_module_create_time = #{sysModuleCreateTime} </if>
+			<if test="sysModuleModifyTime != null and sysModuleModifyTime != ''"> and sys_module_modify_time = #{sysModuleModifyTime} </if>
+			<if test="sysModuleState != null and sysModuleState != ''"> and sys_module_state = #{sysModuleState} </if>
+			<if test="sysModuleOrder != null and sysModuleOrder != ''"> and sys_module_order = #{sysModuleOrder} </if>
+		</where>
+	</select>
+	
+	<delete id="remove">
+		delete from sys_module where sys_module_id = #{value}
+	</delete>
+</mapper>

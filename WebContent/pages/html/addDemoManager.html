@@ -1,0 +1,138 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		  <link rel="stylesheet" href="css/layui.css">
+          <link rel="stylesheet" href="css/bootstrap.min.css">
+          <link rel="stylesheet" href="css/addStyle.css">
+		  <link rel="stylesheet" href="css/modules/layer/default/layer.css">
+		  <link rel="stylesheet" href="css/modules/laydate/default/laydate.css">
+          <link rel="stylesheet" href="font-size/iconfont.css">
+		<title></title>
+		
+<style>
+ul li a{color:black;}
+</style>
+	</head>
+
+	<body class="whiteBack">
+		<div class="scroll-1">
+        <div class="layui-row">
+	
+            <div class="layui-col-md12">
+                        
+               <div class="AlertBgBackColor500" align="center">
+				<table class="childPagesBox" style="" border="0" cellpadding="0" cellspacing="0">
+					<tr>
+						<td valign="middle">模块名称:</td>
+						<td><input type="text" name="name" id="name" value=""  class="textBlack selectStyle300" placeholder="名称" /></td>
+					</tr>
+					<tr><td colspan="2"><span class="red_text">*同目录下名称不可重复，最多由200个字符组成</span></td></tr>
+					
+					<tr>
+						<td valign="middle">显示顺序:</td>
+						<td>
+							<select name="modules" id="order" lay-verify="required" lay-search="" class="selectStyle150">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+							</select>
+						</td>
+					</tr>
+					<tr><td colspan="2"><span class="red_text">*选择导模块顺序，以确定模块显示的位置</span></td></tr>
+					<tr>
+						<td valign="middle">显示状态:</td>
+					<td>
+						<select name="modules" id="state" lay-verify="required" lay-search="" class="selectStyle150"> 
+							<option value="1">显示</option>
+							<option value="0">隐藏</option>
+						</select>
+					</td>
+					</tr>
+					<tr><td colspan="2"><span class="red_text">*选择模板是否显示</span></td></tr>
+					<tr>
+						<td colspan="2">
+							<div class="layui-col-md12"><script id="container" name="content" type="text/plain">这里写你的初始化内容</script></div>
+						</td>
+					</tr>
+					<tr><td colspan="2"><span class="red_text">填写模板显示的内容</span></td></tr>
+				</table>
+				
+				</div>
+			   
+			</div>
+        </div>
+</div>
+<script src="layui.js"></script>
+<script src="lay/modules/tree.js"></script>
+<script src="lay/modules/laydate.js"></script>
+<script src="js/jquery-3.1.1.js"></script>
+<script src="lay/modules/layer.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- 最新的echarts核心 JavaScript 文件 -->
+<script src="js/echarts.js"></script>
+<script src="js/madeEcharts.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="lay/modules/code.js"></script> 
+<script src="lay/modules/carousel.js"></script> 
+<script src="lay/modules/element.js"></script> 
+<script src="lay/modules/jquery.js"></script> 
+<script src="lay/modules/form.js"></script> 
+<script src="lay/modules/layedit.js"></script> 
+<script src="lay/modules/laypage.js"></script> 
+<script src="lay/modules/laytpl.js"></script> 
+<script src="lay/modules/mobile.js"></script> 
+<script src="lay/modules/rate.js"></script> 
+<script src="lay/modules/table.js"></script> 
+<script src="lay/modules/util.js"></script> 
+<script src="lay/modules/upload.js"></script> 
+<script src="lay/modules/scrollbar.min.js"></script>
+<script type="text/javascript" src="js/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="js/ueditor/ueditor.all.js"></script>
+<script>
+var ue=UE.getEditor('container',{
+	autoHeight:true,
+	initialFrameWidth:'100%'
+})
+
+function callTest(index){
+	var result;
+	var name=$("#name").val();
+	var order=$("#order").val();
+	var state=$("#state").val();
+	var text=ue.getContent();
+	
+	var data={
+			sysModuleName:name,
+			sysModuleOrder:order,
+			sysModuleState:state,
+			sysModuleText:text
+	};
+	$.ajax({
+		url:"/alarmAnalysis/module/save",
+		dataType:"json",
+		type:"post",
+		data:data,
+		error:function(){
+			alert("系统错误");
+		},
+		success:function(r){
+			if(r.code==0){
+				parent.callback(r,index);
+			}else{
+				alert(r.msg);
+			}
+		}
+	})
+}
+</script>
+</body>
+
+</html>

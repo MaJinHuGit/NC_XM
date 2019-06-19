@@ -1,0 +1,838 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtlckj.base.jqfx.mapper.BzjqMapper">
+
+	<select id="getList"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select
+		t2.jjdbh,to_char(t2.hrsj,'yyyy-mm-dd hh24:mi:ss') as hrsj,
+		to_char(t2.bjsj,'yyyy-mm-dd hh24:mi:ss') as bjsj,
+		t2.bjlb,t2.bjlx,t2.bjxl,t2.bjdh,t2.afdz,t2.jams,t2.gjz,t2.bjnr,t2.gxdw,t2.jjlyh
+		from
+		(
+		select rownum rn, t.* from
+		(
+		select * from Wffzjq where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in
+			('噪音扰民')
+		</if>
+		<if test="point !=null ">
+			and to_char(bjsj,'hh24')=#{point}
+		</if>
+
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by bjsj desc
+			</otherwise>
+		</choose>
+		)t
+		where rownum &lt; #{limit}
+		)t2
+		where rn &gt; = #{offset}
+	</select>
+
+
+	<select id="count" resultType="int">
+		select count(*) from Wffzjq
+		where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in ('噪音扰民')
+		</if>
+		<if test="point !=null ">
+			and to_char(bjsj,'hh24')=#{point}
+		</if>
+	</select>
+
+	<select id="getListAfdz"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select
+		t2.jjdbh,to_char(t2.hrsj,'yyyy-mm-dd hh24:mi:ss') as hrsj,
+		to_char(t2.bjsj,'yyyy-mm-dd hh24:mi:ss') as bjsj,
+		t2.bjlb,t2.bjlx,t2.bjxl,t2.bjdh,t2.afdz,t2.jams,t2.gjz,t2.bjnr,t2.gxdw,t2.jjlyh
+		from
+		(
+		select rownum rn, t.* from
+		(
+		select * from Wffzjq where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in
+			('噪音扰民')
+		</if>
+		<if test="name !=null ">
+			and afdz=#{name}
+		</if>
+
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by bjsj desc
+			</otherwise>
+		</choose>
+		)t
+		where rownum &lt; #{limit}
+		)t2
+		where rn &gt; = #{offset}
+	</select>
+
+
+	<select id="countAfdz" resultType="int">
+		select count(*) from Wffzjq
+		where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in
+			('噪音扰民')
+		</if>
+		<if test="name !=null ">
+			and afdz=#{name}
+		</if>
+	</select>
+	<select id="getListGjz"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select
+		t2.jjdbh,to_char(t2.hrsj,'yyyy-mm-dd hh24:mi:ss') as hrsj,
+		to_char(t2.bjsj,'yyyy-mm-dd hh24:mi:ss') as bjsj,
+		t2.bjlb,t2.bjlx,t2.bjxl,t2.bjdh,t2.afdz,t2.jams,t2.gjz,t2.bjnr,t2.gxdw,t2.jjlyh
+		from
+		(
+		select rownum rn, t.* from
+		(
+		select * from Wffzjq where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in
+			('噪音扰民')
+		</if>
+		<if test="name !=null ">
+			and gjz=#{name}
+		</if>
+
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by bjsj desc
+			</otherwise>
+		</choose>
+		)t
+		where rownum &lt; #{limit}
+		)t2
+		where rn &gt; #{offset}
+	</select>
+
+
+	<select id="countGjz" resultType="int">
+		select count(*) from Wffzjq
+		where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in
+			('噪音扰民')
+		</if>
+		<if test="name !=null ">
+			and gjz=#{name}
+		</if>
+	</select>
+
+	<select id="getListGxdw"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select
+		t2.jjdbh,to_char(t2.hrsj,'yyyy-mm-dd hh24:mi:ss') as hrsj,
+		to_char(t2.bjsj,'yyyy-mm-dd hh24:mi:ss') as bjsj,
+		t2.bjlb,t2.bjlx,t2.bjxl,t2.bjdh,t2.afdz,t2.jams,t2.gjz,t2.bjnr,t2.gxdw,t2.jjlyh
+		from
+		(
+		select rownum rn, t.* from
+		(
+		select * from Wffzjq where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in
+			('噪音扰民')
+		</if>
+		<if test="name !=null ">
+			and gxdw=#{name}
+		</if>
+
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by bjsj desc
+			</otherwise>
+		</choose>
+		)t
+		where rownum &lt; #{limit}
+		)t2
+		where rn &gt; #{offset}
+	</select>
+
+
+	<select id="countGxdw" resultType="int">
+		select count(*) from Wffzjq
+		where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in
+			('噪音扰民')
+		</if>
+		<if test="name !=null ">
+			and gxdw=#{name}
+		</if>
+	</select>
+
+	<select id="getListBjdh"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select
+		t2.jjdbh,to_char(t2.hrsj,'yyyy-mm-dd hh24:mi:ss') as hrsj,
+		to_char(t2.bjsj,'yyyy-mm-dd hh24:mi:ss') as bjsj,
+		t2.bjlb,t2.bjlx,t2.bjxl,t2.bjdh,t2.afdz,t2.jams,t2.gjz,t2.bjnr,t2.gxdw,t2.jjlyh
+		from
+		(
+		select rownum rn, t.* from
+		(
+		select * from Wffzjq where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in
+			('噪音扰民')
+		</if>
+		<if test="name !=null ">
+			and bjdh=#{name}
+		</if>
+
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by bjsj desc
+			</otherwise>
+		</choose>
+		)t
+		where rownum &lt; #{limit}
+		)t2
+		where rn &gt; #{offset}
+	</select>
+
+
+	<select id="countBjdh" resultType="int">
+		select count(*) from Wffzjq
+		where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in
+			('噪音扰民')
+		</if>
+		<if test="name !=null ">
+			and bjdh=#{name}
+		</if>
+	</select>
+	<select id="getListBjxl"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select
+		t2.jjdbh,to_char(t2.hrsj,'yyyy-mm-dd hh24:mi:ss') as hrsj,
+		to_char(t2.bjsj,'yyyy-mm-dd hh24:mi:ss') as bjsj,
+		t2.bjlb,t2.bjlx,t2.bjxl,t2.bjdh,t2.afdz,t2.jams,t2.gjz,t2.bjnr,t2.gxdw,t2.jjlyh
+		from
+		(
+		select rownum rn, t.* from
+		(
+		select * from Wffzjq where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in
+			('噪音扰民')
+		</if>
+		<if test="name !=null ">
+			and bjxl=#{name}
+		</if>
+
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by bjsj desc
+			</otherwise>
+		</choose>
+		)t
+		where rownum &lt; #{limit}
+		)t2
+		where rn &gt; #{offset}
+	</select>
+
+
+	<select id="countBjxl" resultType="int">
+		select count(*) from Wffzjq
+		where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="search !='' and search != null">
+			and afdz like concat(concat('%',#{search}),'%')
+			or bjnr
+			like concat(concat('%',#{search}),'%')
+		</if>
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in
+			('噪音扰民')
+		</if>
+		<if test="name !=null ">
+			and bjxl=#{name}
+		</if>
+	</select>
+	<select id="get" resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select
+		jjdbh,to_char(hrsj,'yyyy-mm-dd hh24:mi:ss') as hrsj,
+		to_char(bjsj,'yyyy-mm-dd hh24:mi:ss') as bjsj,
+		bjlb,bjlx,bjxl,bjdh,afdz,jams,gjz,bjnr,gxdw,jjlyh from
+		Wffzjq where
+		jjdbh = #{jjdbh}
+	</select>
+
+
+	<select id="countByWeek" resultType="int">
+		select count(*) from Wffzjq
+		where bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd hh24:mi:ss') and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in ('噪音扰民')
+		</if>
+	</select>
+	<select id="countByHours"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		SELECT A2.DATESS bjsj,
+		CASE WHEN A1.DATES IS NULL THEN 0 ELSE A1.CUNT
+		END gjz
+		FROM (select to_char(bjsj,'hh24')||':00:00' as DATES,count(*)
+		CUNT from
+		Wffzjq
+		where bjsj &gt;= to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;= to_date(#{end},'yyyy-mm-dd hh24:mi:ss')
+		<if test="lx == '交通事故' || lx == '噪音扰民' || lx == '火灾'">
+			and bjlx like concat(concat('%',#{lx}),'%')
+		</if>
+		<if
+			test=" lx == '投诉' || lx == '骚扰误报' || lx == '重复报警' || lx == '咨询'">
+			and bjlb like concat(concat('%',#{lx}),'%')
+		</if>
+		<if test="lx == '求助' ">
+			and bjlb like concat(concat('%',#{lx}),'%') and bjlx
+			not in ('噪音扰民')
+		</if>
+		group by to_char(bjsj,'hh24')||':00:00') A1 RIGHT JOIN
+		(select
+		to_char(A.sdate,'hh24')||':00:00' as DATESS from
+		(SELECT
+		to_date('2013-07-01 00', 'yyyy-mm-dd hh24') + (ROWNUM - 1) / 24 sdate
+		FROM dual
+		CONNECT BY ROWNUM &lt;= (to_date('2013-07-02 23', 'yyyy-mm-dd
+		hh24') -
+		to_date('2013-07-02 00', 'yyyy-mm-dd hh24')) * 24 + 1) A)A2
+		ON
+		A2.DATESS = A1.DATES ORDER BY A2.DATESS
+
+	</select>
+
+	<select id="getAfdz"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select b.cunt,b.afdz from (select rownum rn,a.* from (select count(*)
+		cunt, afdz from
+		WFFZJQ WHERE BJLB=#{lx}
+		<if test="type=='求助'">
+			and BJLX NOT IN ('噪音扰民')
+		</if>
+		and afdz is not null and bjsj is not null and bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by afdz order by cunt
+		desc) a ) b
+		<if test="offset != null and limit != null">
+			where b.rn&gt;#{offset} AND b.rn&lt;#{limit}
+			<!-- limit #{offset}, #{limit} -->
+		</if>
+
+	</select>
+
+	<select id="getAfdzCount" resultType="int">
+		select count(*) from (select count(*) cunt, afdz from
+		WFFZJQ WHERE
+		BJLB=#{lx}
+		<if test="type=='求助'">
+			and BJLX NOT IN ('噪音扰民')
+		</if>
+		and afdz is not null and bjsj is not null and bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by afdz)
+	</select>
+
+	<select id="getAfdzByLx"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select b.cunt,b.afdz from (select rownum rn,a.* from (select count(*)
+		cunt, afdz
+		from WFFZJQ WHERE BJLX=#{lx} and afdz is not null and bjsj
+		is not null and bjsj &gt;= to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;= to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by afdz
+		order by cunt desc) a ) b
+		<if test="offset != null and limit != null">
+			where b.rn&gt;#{offset} AND b.rn&lt;#{limit}
+			<!-- limit #{offset}, #{limit} -->
+		</if>
+	</select>
+
+	<select id="getAfdzByLxCount" resultType="int">
+		select count(*) from
+		(select count(*) cunt, afdz
+		from WFFZJQ WHERE BJLX=#{lx} and afdz is
+		not null and bjsj is not null and bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by afdz)
+	</select>
+
+	<select id="getGjz"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select b.cunt,b.gjz from (select rownum rn,a.* from (select count(*)
+		cunt,gjz from
+		WFFZJQ WHERE BJLB=#{lx}
+		<if test="type=='求助'">
+			and BJLX NOT IN ('噪音扰民')
+		</if>
+		and gjz is not null and bjsj is not null and bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by gjz order by cunt
+		desc) a ) b
+		<if test="offset != null and limit != null">
+			where b.rn&gt;#{offset} AND b.rn&lt;#{limit}
+			<!-- limit #{offset}, #{limit} -->
+		</if>
+	</select>
+
+	<select id="getGjzCount" resultType="int">
+		select count(*) from (select count(*) cunt,gjz from
+		WFFZJQ WHERE
+		BJLB=#{lx}
+		<if test="type=='求助'">
+			and BJLX NOT IN ('噪音扰民')
+		</if>
+		and gjz is not null and bjsj is not null and bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by gjz)
+
+	</select>
+	<select id="getGjzByLx"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select b.cunt,b.gjz from (select rownum rn,a.* from (select count(*)
+		cunt,gjz from
+		WFFZJQ WHERE BJLX=#{lx} and gjz is not null and bjsj is
+		not null and bjsj &gt;= to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and
+		bjsj &lt;= to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by gjz order
+		by cunt desc) a ) b
+		<if test="offset != null and limit != null">
+			where b.rn&gt;#{offset} AND b.rn&lt;#{limit}
+			<!-- limit #{offset}, #{limit} -->
+		</if>
+	</select>
+	<select id="getGjzByLxCount" resultType="int">
+		select count(*) from
+		(select count(*) cunt,gjz from
+		WFFZJQ WHERE BJLX=#{lx} and gjz is not
+		null and bjsj is not null and bjsj &gt;= to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;= to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss')
+		group by gjz)
+	</select>
+	<select id="getBjsj"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		SELECT A2.DATESS bjsj,
+		CASE WHEN A1.DATES IS NULL THEN 0 ELSE A1.CUNT
+		END cunt FROM (select count(*) cunt,to_char(bjsj,'hh24')||':00:00'
+		dates
+		from WFFZJQ WHERE BJLB=#{lx}
+		<if test="type=='求助'">
+			and BJLX NOT IN ('噪音扰民')
+		</if>
+		and bjsj is not null and bjsj &gt;= to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;= to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss')group by to_char(bjsj,'hh24')||':00:00')A1
+		RIGHT JOIN
+		(select to_char(A.sdate,'hh24')||':00:00' as DATESS from
+		(SELECT
+		to_date('2013-07-01 00', 'yyyy-mm-dd hh24') + (ROWNUM - 1) / 24 sdate
+		FROM dual CONNECT BY ROWNUM &lt;= (to_date('2013-07-02 23',
+		'yyyy-mm-dd
+		hh24') -to_date('2013-07-02 00', 'yyyy-mm-dd hh24')) * 24 +
+		1) A)A2 ON
+		A2.DATESS = A1.DATES ORDER BY A2.DATESS
+	</select>
+
+	<select id="getBjsjByLx"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		SELECT A2.DATESS bjsj,
+		CASE WHEN A1.DATES IS NULL THEN 0
+		ELSE A1.CUNT
+		END cunt FROM (select count(*)
+		cunt,to_char(bjsj,'hh24')||':00:00' dates
+		from WFFZJQ WHERE BJLX=#{lx}
+		and bjsj is not null and bjsj &gt;= to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;= to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss')
+		group by to_char(bjsj,'hh24')||':00:00')A1
+		RIGHT JOIN
+		(select
+		to_char(A.sdate,'hh24')||':00:00' as DATESS from
+		(SELECT
+		to_date('2013-07-01 00', 'yyyy-mm-dd hh24') + (ROWNUM - 1) / 24 sdate
+		FROM dual CONNECT BY ROWNUM &lt;= (to_date('2013-07-02 23',
+		'yyyy-mm-dd
+		hh24') -to_date('2013-07-02 00', 'yyyy-mm-dd hh24')) * 24 +
+		1) A)A2 ON
+		A2.DATESS = A1.DATES ORDER BY A2.DATESS
+	</select>
+
+	<select id="getBjxl"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select count(*) cunt,bjxl from
+		WFFZJQ WHERE BJLB=#{lx}
+		<if test="type=='求助'">
+			and BJLX NOT IN ('噪音扰民')
+		</if>
+		and bjxl is not null group by bjxl
+	</select>
+
+	<select id="getBjxlByLx"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select count(*) cunt,bjxl from
+		WFFZJQ WHERE BJLX=#{lx} and
+		bjxl is not null and bjsj is not null and bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by bjxl
+	</select>
+
+	<select id="getGxdw"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select count(*) cunt,gxdw from
+		WFFZJQ WHERE BJLB=#{lx}
+		<if test="type=='求助'">
+			and BJLX NOT IN ('噪音扰民')
+		</if>
+		and gxdw is not null and bjsj is not null and bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by gxdw
+	</select>
+
+	<select id="getGxdwByLx"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select count(*) cunt,gxdw from
+		WFFZJQ WHERE BJLX=#{lx} and
+		gxdw is not null and bjsj is not null and bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by gxdw
+	</select>
+
+	<select id="getBjdh"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select b.cunt,b.bjdh from (select rownum rn,a.* from(select count(*)
+		cunt,bjdh from
+		WFFZJQ WHERE BJLB=#{lx}
+		<if test="type=='求助'">
+			and BJLX NOT IN ('噪音扰民')
+		</if>
+		and bjdh is not null and bjsj is not null and bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by bjdh order by cunt
+		desc) a)b
+		<if test="offset != null and limit != null">
+			where b.rn&gt;#{offset} AND b.rn&lt;#{limit}
+			<!-- limit #{offset}, #{limit} -->
+		</if>
+	</select>
+
+	<select id="getBjdhCount" resultType="int">
+		select count (*) from (select count(*) cunt,bjdh from
+		WFFZJQ WHERE
+		BJLB=#{lx}
+		<if test="type=='求助'">
+			and BJLX NOT IN ('噪音扰民')
+		</if>
+		and bjdh is not null and bjsj is not null and bjsj &gt;=
+		to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;=
+		to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by bjdh)
+
+	</select>
+
+	<select id="getBjdhByLx"
+		resultType="com.mtlckj.base.jqfx.domain.Wffzjq">
+		select b.cunt,b.bjdh from (select rownum rn,a.* from(
+		select count(*)
+		cunt,bjdh from
+		WFFZJQ WHERE BJLX=#{lx} and bjdh is not null and bjsj is
+		not null and bjsj &gt;= to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and
+		bjsj &lt;= to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss') group by bjdh order
+		by cunt desc) a)b
+		<if test="offset != null and limit != null">
+			where b.rn&gt;#{offset} AND b.rn&lt;#{limit}
+			<!-- limit #{offset}, #{limit} -->
+		</if>
+	</select>
+
+	<select id="getBjdhByLxCount" resultType="int">
+		select count(*) from(
+		select count(*) cunt,bjdh from
+		WFFZJQ WHERE BJLX=#{lx} and bjdh is not
+		null and bjsj is not null and bjsj &gt;= to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		and bjsj &lt;= to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss')
+		group by bjdh )
+	</select>
+
+	<select id="getWffzCount" resultType="int">
+		SELECT SUM(AA.CUN) CUNT
+		FROM (
+		SELECT CT, CASE WHEN TT.JQLBDM IS NOT NULL
+		THEN COUNT(TT.JQLBDM) ELSE 0 END CUN FROM (
+		SELECT T.CT,J.JQLBDM from ( SELECT CT,DM FROM JWZH_DICT_VW
+		) T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+		J.BJSJ_RQSJ &gt;= to_date(#{start},'yyyy-mm-dd
+		hh24:mi:ss')
+		<!-- TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')>='2018-01-11 00:00:00'
+		AND TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')<='2019-02-03 23:59:59' -->
+		and J.BJSJ_RQSJ &lt;= to_date(#{end},'yyyy-mm-dd
+		hh24:mi:ss')
+		) TT
+		GROUP BY TT.JQLBDM,TT.CT) AA
+	</select>
+
+
+</mapper>

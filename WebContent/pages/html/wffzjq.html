@@ -1,0 +1,458 @@
+
+<html>
+
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>首页</title>
+<link rel="stylesheet" href="css/layui.css">
+<link rel="stylesheet" href="css/admin.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/addStyle.css">
+<link rel="stylesheet" href="font-size/iconfont.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/modules/laydate/default/laydate.css">
+<link rel="stylesheet" href="css/modules/layer/default/layer.css">
+<style type="text/css">
+	html{
+		background: #16171c;
+	}
+</style>
+</head>
+
+<body onload="IFrameResize()">
+	<div id="">
+		<div class="layui-row" style="margin: 16px;">
+			<div class="layui-col-md12">
+				<select class="selectStyle150" name="modules"
+					style="margin-right: 20px; float: left;" lay-verify="required"
+					lay-search="">
+					<option value="1">时间段</option>
+					<option value="2">快速选择</option>
+				</select>
+				<div class="zxsj" style="float: left;">
+					<label class="textWhite1">时间范围：</label>
+					<div class="layui-input-inline">
+						<input type="text" name="time" id="dateTime2" value=""
+							class="layui-input " placeholder="选择时间范围"
+							readonly="readonly" />
+					</div>
+				</div>
+				<div class="ksms" style="display: none; color: white; float: left;">
+					<label class="textWhite1">时间范围：</label> <input type="radio"
+						name="choose2" value="bn" />&nbsp;本年&nbsp;&nbsp; <input
+						type="radio" name="choose2" value="bj" />&nbsp;本季度&nbsp;&nbsp;
+					<input type="radio" name="choose2" value="by" />&nbsp;本月&nbsp;&nbsp;
+					<input type="radio" name="choose2" value="bz" />&nbsp;本周
+				</div>
+			</div>
+		</div>
+		<div class="docContentTitle">
+			<p>违法犯罪警情情况</p>
+			<div class="docTitleBtn">
+				<button class="layui-btn layui-btn-xs">
+					<i class="icon iconfont">&#xe752;</i>&nbsp;导出word文件
+				</button>
+			</div>
+		</div>
+		<div class="docContent">
+			<div id="ms">
+				本周共接报各类违法犯罪警情<span id="nowSum">243</span>件，非侵财类违法犯罪警情<span
+					id="fqcNowSum">243</span>件，环比上周<span id="fqcLastSum">243</span>件<span
+					id="hbFqc"></span>： 侵财类违法犯罪警情<span id="qcNowSum">243</span>件，环比上周<span
+					id="qcLastSum">243</span>件<span id="hbQc">243</span>。
+				“三盗两抢一诈骗“警情<span id="dqzNowSum">243</span>件，环比上周<span
+					id="dqzLastSum">243</span>件<span id="hbDqz">243</span>，同比<span
+					id="dqzLastYearSum"></span>件<span id="tbDqz">243</span>。
+			</div>
+			<p class="docContentBtn">
+				<a>收起&nbsp;<i class="icon iconfont">&#xe624;</i></a>
+			</p>
+		</div>
+		<div class="layui-row layui-col-space10 RightConTwo">
+			<!-- 全区违法犯罪警情趋势对比图 start -->
+			<div class="layui-col-md6 leftConTwo">
+				<span style="padding-top: 10px;" id="qqwffzqsdbt">全区违法犯罪警情趋势对比图</span>
+				<div class="pieConTwo">
+					<div id="wffzjq1" style="height: 300px; width: 100%;"></div>
+				</div>
+			</div>
+			<!-- 全区违法犯罪警情趋势对比图 end -->
+	
+			<!-- 本周违法犯罪警情对比图 start -->
+			<div class="layui-col-md6 rightConTwo">
+				<span style="padding-top: 10px;" id="bzwffzdbt">本周违法犯罪警情对比图</span>
+				<div class="pieConTwo">
+					<div id="wffzjq2" style="height: 300px; width: 100%;"></div>
+				</div>
+			</div>
+			<!-- 本周违法犯罪警情对比图 end -->
+		</div>
+		<!-- 四个统计表按钮START -->
+		<div style="height:30px;line-height:30px;margin-top:50px;">
+			<ul class="nav nav-pills">
+				<li id="tab_1" class="active"><a href="#" onclick="showhide1()" data-toggle="pill">未反馈违法犯罪具体警情统计表</a></li>
+				<li id="tab_2"><a href="#" onclick="showhide2()" data-toggle="pill">全区各所辖区警情分类统计表</a>
+				</li>
+				<li id="tab_3"><a href="#" onclick="showhide3()" data-toggle="pill">全区各辖区违法警情累计同比统计表</a>
+				</li>
+				<li id="tab_4"><a href="#" onclick="showhide4()" data-toggle="pill">"三盗两抢一诈骗"警情及其他警情情况</a>
+				</li>
+			</ul>
+		</div>
+		<!-- 四个统计表按钮END -->
+		<div id="showhide"
+			class="layui-row layui-col-space10 RightConTwo">
+	
+			<!-- 未反馈违法犯罪具体警情统计表 start -->
+			<div id="show_1" class="layui-col-md12 leftConTwo">
+				<span style="padding-top: 0px;">未反馈违法犯罪具体警情统计表</span>
+				<div class="tableConTwo">
+					<table>
+						<thead>
+							<tr>
+								<th>派出所</th>
+								<th>上周</th>
+								<th>本周</th>
+								<th>环比</th>
+								<th>去年同期</th>
+								<th>今年累计（件）</th>
+								<th>去年同期累计（件）</th>
+								<th>同比去年</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>龙泉所</td>
+								<td>23</td>
+								<td>11</td>
+								<td>1.7%</td>
+								<td>34</td>
+								<td>5869</td>
+								<td>2535</td>
+								<td>12%</td>
+							</tr>
+							<tr>
+								<td>北干道</td>
+								<td>23</td>
+								<td>11</td>
+								<td>1.7%</td>
+								<td>34</td>
+								<td>5869</td>
+								<td>2535</td>
+								<td>12%</td>
+							</tr>
+							<tr>
+								<td>十陵所</td>
+								<td>23</td>
+								<td>11</td>
+								<td>1.7%</td>
+								<td>34</td>
+								<td>5869</td>
+								<td>2535</td>
+								<td>12%</td>
+							</tr>
+							<tr>
+								<td>总计</td>
+								<td>69</td>
+								<td>33</td>
+								<td>1.7%</td>
+								<td>102</td>
+								<td>168856</td>
+								<td>7856</td>
+								<td>14%</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<!-- 未反馈违法犯罪具体警情统计表 end -->
+	
+			<!-- 全区各所辖区警情分类统计表 start -->
+			<div id="show_2" class="layui-col-md12 rightConTwo"
+				style="display: none;">
+				<span style="padding-top: 0px;">全区各所辖区警情分类统计表</span>
+				<div class="tableConTwo">
+					<table id="ff">
+						<thead>
+							<tr>
+								<th rowspan="2">派出所</th>
+								<th rowspan="2">上周合计</th>
+								<th rowspan="2">本周合计</th>
+								<th rowspan="2">去年同月周常量</th>
+								<th rowspan="2">抢劫</th>
+								<th rowspan="2">抢夺</th>
+								<th colspan="5" class="bottom_border">盗窃</th>
+								<th rowspan="2">扒窃</th>
+								<th rowspan="2">诈骗</th>
+								<th rowspan="2">非侵财</th>
+							</tr>
+	
+							<tr>
+								<th>入室盗窃</th>
+								<th>盗窃汽车</th>
+								<th>盗窃车内物品</th>
+								<th>摩托车盗窃</th>
+								<th>其他盗窃</th>
+	
+							</tr>
+						</thead>
+	
+						<tbody>
+							<tr>
+								<td>龙泉所</td>
+								<td title="商城"><label class="red_text">12↑</label></td>
+								<td><label class="blue_text">1↓</label></td>
+								<td>7</td>
+								<td>4</td>
+								<td>9</td>
+								<td><label class="blue_text">5↓</label></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td><label class="blue_text">1↓</label></td>
+								<td>2</td>
+								<td>5</td>
+								<td>1</td>
+	
+	
+							</tr>
+							<tr>
+								<td>北干道</td>
+								<td><label class="red_text">23↑</label></td>
+								<td><label class="blue_text">11↓</label></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td><label class="blue_text">1↓</label></td>
+								<td>2</td>
+								<td>1</td>
+								<td>7</td>
+								<td>4</td>
+								<td><label class="red_text">3↑</label></td>
+								<td><label class="blue_text">11↓</label></td>
+	
+								<td><label class="red_text">1↑</label></td>
+	
+							</tr>
+							<tr>
+								<td>十陵所</td>
+								<td><label class="red_text">2↑</label></td>
+								<td><label class="blue_text">11↓</label></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td><label class="red_text">3↑</label></td>
+								<td><label class="blue_text">11↓</label></td>
+								<td>1</td>
+								<td>7</td>
+								<td>4</td>
+								<td><label class="blue_text">1↓</label></td>
+								<td><label class="blue_text">6↓</label></td>
+								<td>2</td>
+	
+							</tr>
+	
+						</tbody>
+	
+					</table>
+	
+				</div>
+	
+			</div>
+			<!-- 全区各所辖区警情分类统计表 end -->
+	
+			<!-- 全区各辖区违法警情累计同比统计表 start -->
+			<div id="show_3" class="layui-col-md12 leftConTwo"
+				style="display: none;">
+	
+				<span style="padding-top: 0px;">全区各辖区违法警情累计同比统计表</span>
+	
+				<div class="tableConTwo">
+	
+					<table id="qqwffwtb">
+	
+						<thead>
+							<tr>
+								<th width="40%">单位</th>
+								<th width="20%">截止目前累计（件） 2017年12月21日至2018年6月23日</th>
+								<th width="20%">去年同期累计（件）2016年12月21日至2017年6月23日</th>
+								<th width="20%">同比</th>
+							</tr>
+						</thead>
+	
+						<tbody>
+							<tr>
+								<td>龙泉所</td>
+								<td>3232</td>
+								<td>3304</td>
+								<td>15.5%</td>
+							</tr>
+							<tr>
+								<td>北干道</td>
+								<td>675</td>
+								<td>664</td>
+								<td>5.6%</td>
+							</tr>
+							<tr>
+								<td>十陵所</td>
+								<td>4</td>
+								<td>4</td>
+								<td>持平</td>
+							</tr>
+	
+	
+						</tbody>
+	
+					</table>
+	
+				</div>
+	
+			</div>
+			<!-- 全区各辖区违法警情累计同比统计表 end -->
+	
+			<!-- ”三盗两抢一诈骗“警情及其他警情情况 start -->
+			<div id="show_4" class="layui-col-md12 rightConTwo"
+				style="display: none;">
+	
+				<span style="padding-top: 0px;">”三盗两抢一诈骗“警情及其他警情情况</span>
+	
+				<div class="tableConTwo">
+	
+					<table id="szlqyzp">
+	
+						<thead>
+							<tr>
+								<th width="20%">类型</th>
+								<th width="10%">本周（件）</th>
+								<th width="10%">上周（件）</th>
+								<th width="10%">环比</th>
+								<th width="20%">截止目前累计（件）2017年12月21日至2018年6月23日</th>
+								<th width="20%">去年同期累计（件）2017年12月21日至2018年6月23日</th>
+								<th width="10%">同比</th>
+							</tr>
+						</thead>
+	
+						<tbody>
+							<tr>
+								<td>抢劫</td>
+								<td>32</td>
+								<td>14</td>
+								<td>-2.2%</td>
+								<td>10</td>
+								<td>13</td>
+								<td>15.5%</td>
+							</tr>
+							<tr>
+								<td>抢夺</td>
+								<td>675</td>
+								<td>664</td>
+								<td>10</td>
+								<td>639</td>
+								<td>13</td>
+								<td>5.6%</td>
+							</tr>
+							<tr>
+								<td>入室抢劫</td>
+								<td>4</td>
+								<td>14</td>
+								<td>持平</td>
+								<td>4</td>
+								<td>13</td>
+								<td>持平</td>
+							</tr>
+	
+						</tbody>
+	
+					</table>
+	
+				</div>
+	
+			</div>
+			<!-- ”三盗两抢一诈骗“警情及其他警情情况 end -->
+		</div>
+	</div>
+	<script src="../style/static/js/jquery.min.js?v=2.1.4"></script>
+	<script src="layui.js"></script>
+	<script src="lay/modules/laydate.js"></script>
+	<script src="lay/modules/layer.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/echarts.js"></script>
+	<script src="js/echarts-wordcloud.js"></script>
+	<script src="js/showEcharts.js"></script>
+	<script src="lay/modules/code.js"></script>
+	<script src="lay/modules/carousel.js"></script>
+	<script src="lay/modules/element.js"></script>
+	<script src="lay/modules/form.js"></script>
+	<script src="lay/modules/layedit.js"></script>
+	<script src="lay/modules/laypage.js"></script>
+	<script src="lay/modules/laytpl.js"></script>
+	<script src="lay/modules/mobile.js"></script>
+	<script src="lay/modules/rate.js"></script>
+	<script src="lay/modules/table.js"></script>
+	<script src="lay/modules/util.js"></script>
+	<script src="lay/modules/upload.js"></script>
+	<script src="../style/js/jqfx/wffzjq.js"></script>
+	<script src="../style/js/sys.js"></script>
+
+	<script src="lay/modules/tree.js"></script>
+
+	<script>
+		function IFrameResize(){
+			var obj = parent.document.getElementById("mainContentFrame"); //取得父页面IFrame对象
+// 			obj.height = 0;
+// 			obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度
+		}
+	</script>
+	<script type="text/javascript">
+	var charts = [];
+	var chart3 = echarts.init(document.getElementById("wffzjq1"));
+	var chart4 = echarts.init(document.getElementById("wffzjq2"));
+	chart3.setOption(wffzjq1);
+	chart4.setOption(wffzjq2);
+	charts.push(chart3);
+	charts.push(chart4);
+			
+	$(window).resize(function() {
+		for(var i = 0; i < charts.length; i++) {
+			charts[i].resize();
+		}
+	});
+	
+	layui.use('laydate', function(){
+		var laydate = layui.laydate;
+		laydate.render({
+			elem: '#dateTime2',
+			theme: 'grid',
+			range: true,
+			done: function(value){//控件选择完毕后的回调---点击日期、清空、现在、确定均会触发。
+				if(value!=""){
+					var str = value.split("-");
+					var startDate = str[0]+"-"+str[1]+"-"+str[2]+"00:00:00";
+					var endDate = str[3]+"-"+str[4]+"-"+str[5]+" 23:59:59";
+// 					alert(startDate.trim()+"--"+endDate.trim())
+					//违法犯罪警情文字描述
+					initDs(startDate.trim(),endDate.trim());
+					
+				}
+			}
+		});
+	});
+	
+	$(".selectStyle150").change(function(){
+		$(this).next(".zxsj").children("div").children().val("");
+		if($(this).val()==1){
+			$(this).next(".zxsj").show();
+			$(this).next().next().hide();
+		}
+		if($(this).val()==2){
+			$(this).next().next().show();
+			$(this).next(".zxsj").hide();
+		}
+	})
+</script>
+</body>
+</html>

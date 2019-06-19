@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>sys</title>
+    <meta name="keywords" content="sys管理系统">
+    <meta name="description" content="sys管理系统">
+    <link href="./style/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./style/static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="./style/static/css/animate.css" rel="stylesheet">
+    <link href="./style/static/css/style.css" rel="stylesheet">
+    <link href="./style/static/css/login.css" rel="stylesheet">
+    <!-- 全局js -->
+	<script src="./style/static/js/jquery.min.js?v=2.1.4" ></script>
+	<script type="text/javascript">
+	//检查登录
+	function cklogin() {
+	    $.ajax({
+	        type: "POST",
+	        url: "cklogin",
+	        success: function (r) {
+	             if (r.code == 0) { 
+	                top.location.href = './html/index.html'; 
+	            } else {
+	                //layer.msg(r.msg);
+	                $("body").show(); 
+	            }
+	        },
+	    });
+	}
+	$(function(){
+	  cklogin();
+	});
+	</script>
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html"/>
+    <![endif]-->
+    <script>
+        /* if (window.top !== window.self) {
+            window.top.location = window.location;
+        } */
+    </script>
+	<style>
+	.loginContent{
+		width:500px;
+		height:340px;
+		position: absolute;
+		left:50%;
+		top:50%;
+		margin-left:-250px;
+		margin-top:-180px;
+	}
+	.innerContent{
+		width:400px;
+		height:300px;
+		margin-top1:76px;
+		padding:40px;
+		z-index:100000;
+	}
+	.form-control {
+	    height: 40px !important;
+	    line-height: 40px !important;
+    }
+    .btn {
+	    padding: 10px 12px !important;
+    }
+    .userText{
+    	font-size: 20px;
+    	color:#888686;
+    }
+    label {
+	    margin-bottom: 0px !important; 
+	}
+	.btn-login {
+	    border: 1px solid #ec5e0a;
+	    background-color: #ec5e0a;
+	    background:linear-gradient(#fd8037,#ec5e0a);
+	}
+	.btn-login:hover {
+	    border: 1px solid #20242f;
+	    background-color: #20242f;
+	}
+	*,*::before,*::after {
+	 	 box-sizing: border-box;
+	}
+	.logoTexts{
+		font-size: 30px;
+		color:white;
+		text-align: center;
+		letter-spacing:6px;
+	}
+	.form-control, .single-line {
+	    background-color: rgba(0,0,0,0.3);
+	    border: 1px solid #282a2f;
+	    border-radius: 3px;
+	}
+	.littleTitle{
+		font-size:18px;
+	}
+	</style>
+</head>
+
+<body class="signin" style="display: none;position: relative;">
+	<div align="center" class="loginContent">
+		<div class="logoTexts" align="center" >
+			警情智能分析系统
+			<p class="littleTitle">成都市公安局龙泉驿分局</p>
+		</div>
+		<div class="innerContent">
+			<form id="signupForm">
+	              <input type="text" name="username" class="form-control uname" placeholder="用户名"
+	                     value="admin"/>
+	              <input type="password" name="password" style="margin-top:20px;" placeholder="密码"
+	                     class="form-control pword m-b" value=""/>
+	              <button type="submit" id="login" class="btn btn-login btn-block" style="margin-top:30px;">登录</button>
+	  
+	          </form>
+		</div>
+		
+	</div>
+	
+	<!-- **版权信息** -->
+	<div align="center" class="copyrightText">
+		Copyright &copy;2019 <span class="blueTexts">成都市公安局龙泉驿分局</span>  
+		<div>版权所有  蜀ICP备86302602号</div>
+	</div>
+	
+<!-- 全局js -->
+<script src="./style/static/js/bootstrap.min.js?v=3.3.6" ></script>
+<script src="./style/static/js/ajax-util.js"></script>
+<script src="./style/static/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="./style/static/js/plugins/validate/messages_zh.min.js" ></script>
+<script src="./style/static/js/plugins/layer/layer.min.js" ></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#login").on('click',function(){$("#signupForm").submit();});
+        validateRule();
+        
+    });
+
+    $.validator.setDefaults({
+        submitHandler: function () {
+            login();
+        }
+    });
+    
+    
+
+    /**
+    * 登录
+    */
+    function login() {
+        $.ajax({
+            type: "POST",
+            url: "login",
+            data: $('#signupForm').serialize(),
+            success: function (r) {
+                 if (r.code == 0) {
+                    var index = layer.load(1, {
+                        shade: [0.1,'#fff'] //0.1透明度的白色背景
+                    });
+                    parent.location.href = './html/index.html'; 
+                } else {
+                    layer.msg(r.msg);
+                }
+            },
+        });
+    }
+
+    function validateRule() {
+        var icon = "<i class='fa fa-times-circle'></i> ";
+        $("#signupForm").validate({
+            rules: {
+                username: {
+                    required: true
+                },
+                password: {
+                    required: true
+                }
+            },
+            messages: {
+                username: {
+                    required: icon + "请输入您的用户名",
+                },
+                password: {
+                    required: icon + "请输入您的密码",
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

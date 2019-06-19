@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtlckj.base.jqfx.mapper.XqjqflMapper">
+
+	<select id="getTable" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<if test="state == '3'.toString()">
+			SELECT A1.NAME NAME,A1.CUNT NOWCOUNT,A2.CUNT LASTCOUNT,A3.CUNT LASTYEARCOUNT FROM
+			(SELECT P.NAME,CASE WHEN TEMP.NUM &gt;0 THEN TEMP.NUM ELSE 0 END CUNT  
+			FROM JWZH_PCS P LEFT JOIN (
+				SELECT J.JJDW_GAJGJGDM,COUNT(J.JJDW_GAJGJGDM) NUM FROM JWZH_ASJ_JQXX J,JWZH_DICT_VW3 D WHERE J.JQLBDM=D.DM 
+				AND J.BJSJ_RQSJ &gt; =TO_DATE(#{startNowTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss')
+				AND J.BJSJ_RQSJ &lt; =TO_DATE(#{endNowTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss') 
+				GROUP BY J.JJDW_GAJGJGDM
+				) TEMP
+			ON P.ORGCODE=TEMP.JJDW_GAJGJGDM
+	
+			)A1,
+			(SELECT P.NAME,CASE WHEN TEMP.NUM &gt;0 THEN TEMP.NUM ELSE 0 END CUNT  
+			FROM JWZH_PCS P LEFT JOIN (
+				SELECT J.JJDW_GAJGJGDM,COUNT(J.JJDW_GAJGJGDM) NUM FROM JWZH_ASJ_JQXX J,JWZH_DICT_VW3 D WHERE J.JQLBDM=D.DM 
+				AND J.BJSJ_RQSJ &gt; =TO_DATE(#{lastStartTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss')
+				AND J.BJSJ_RQSJ &lt; =TO_DATE(#{lastEndTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss') 
+				GROUP BY J.JJDW_GAJGJGDM
+				) TEMP
+			ON P.ORGCODE=TEMP.JJDW_GAJGJGDM
+	
+			)A2,
+			(SELECT P.NAME,CASE WHEN TEMP.NUM &gt;0 THEN TEMP.NUM ELSE 0 END CUNT  
+			FROM JWZH_PCS P LEFT JOIN (
+				SELECT J.JJDW_GAJGJGDM,COUNT(J.JJDW_GAJGJGDM) NUM FROM JWZH_ASJ_JQXX J,JWZH_DICT_VW3 D WHERE J.JQLBDM=D.DM 
+				AND J.BJSJ_RQSJ &gt; =TO_DATE(#{lastYearStartTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss')
+				AND J.BJSJ_RQSJ &lt; =TO_DATE(#{lastYearLastEndTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss') 
+				GROUP BY J.JJDW_GAJGJGDM
+				) TEMP
+			ON P.ORGCODE=TEMP.JJDW_GAJGJGDM
+	
+			)A3
+			WHERE A1.NAME=A2.NAME(+) AND A2.NAME=A3.NAME
+		</if>
+		<if test="state == '4'.toString()">
+			SELECT A1.NAME NAME,A1.CUNT NOWCOUNT,A2.CUNT LASTCOUNT,A3.CUNT LASTLASTCOUNT,A4.CUNT LASTYEARCOUNT FROM
+	        (SELECT P.NAME,CASE WHEN TEMP.NUM &gt;0 THEN TEMP.NUM ELSE 0 END CUNT  
+	        FROM JWZH_PCS P LEFT JOIN (
+	            SELECT J.JJDW_GAJGJGDM,COUNT(J.JJDW_GAJGJGDM) NUM FROM JWZH_ASJ_JQXX J,JWZH_DICT_VW3 D WHERE J.JQLBDM=D.DM 
+	            AND J.BJSJ_RQSJ &gt; =TO_DATE(#{startNowTime},'yyyy-mm-dd hh24:mi:ss')
+	            AND J.BJSJ_RQSJ &lt; =TO_DATE(#{endNowTime},'yyyy-mm-dd hh24:mi:ss') 
+	            GROUP BY J.JJDW_GAJGJGDM
+	            ) TEMP
+	        ON P.ORGCODE=TEMP.JJDW_GAJGJGDM
+	
+	        )A1,
+	        (SELECT P.NAME,CASE WHEN TEMP.NUM &gt;0 THEN TEMP.NUM ELSE 0 END CUNT  
+	        FROM JWZH_PCS P LEFT JOIN (
+	            SELECT J.JJDW_GAJGJGDM,COUNT(J.JJDW_GAJGJGDM) NUM FROM JWZH_ASJ_JQXX J,JWZH_DICT_VW3 D WHERE J.JQLBDM=D.DM 
+	            AND J.BJSJ_RQSJ &gt; =TO_DATE(#{lastStartTime},'yyyy-mm-dd hh24:mi:ss')
+	            AND J.BJSJ_RQSJ &lt; =TO_DATE(#{lastEndTime},'yyyy-mm-dd hh24:mi:ss') 
+	            GROUP BY J.JJDW_GAJGJGDM
+	            ) TEMP
+	        ON P.ORGCODE=TEMP.JJDW_GAJGJGDM
+	
+	        )A2,
+	        (SELECT P.NAME,CASE WHEN TEMP.NUM &gt;0 THEN TEMP.NUM ELSE 0 END CUNT  
+	        FROM JWZH_PCS P LEFT JOIN (
+	            SELECT J.JJDW_GAJGJGDM,COUNT(J.JJDW_GAJGJGDM) NUM FROM JWZH_ASJ_JQXX J,JWZH_DICT_VW3 D WHERE J.JQLBDM=D.DM 
+	            AND J.BJSJ_RQSJ &gt; =TO_DATE(#{lastLastStartTime},'yyyy-mm-dd hh24:mi:ss')
+	            AND J.BJSJ_RQSJ &lt; =TO_DATE(#{lastLastEndTime},'yyyy-mm-dd hh24:mi:ss') 
+	            GROUP BY J.JJDW_GAJGJGDM
+	            ) TEMP
+	        ON P.ORGCODE=TEMP.JJDW_GAJGJGDM
+	
+	        )A3,
+	        (SELECT P.NAME,CASE WHEN TEMP.NUM &gt;0 THEN TEMP.NUM ELSE 0 END CUNT  
+	        FROM JWZH_PCS P LEFT JOIN (
+	            SELECT J.JJDW_GAJGJGDM,COUNT(J.JJDW_GAJGJGDM) NUM FROM JWZH_ASJ_JQXX J,JWZH_DICT_VW3 D WHERE J.JQLBDM=D.DM 
+	            AND J.BJSJ_RQSJ &gt; =TO_DATE(#{lastYearStartTime},'yyyy-mm-dd hh24:mi:ss')
+	            AND J.BJSJ_RQSJ &lt; =TO_DATE(#{lastYearEndTime},'yyyy-mm-dd hh24:mi:ss') 
+	            GROUP BY J.JJDW_GAJGJGDM
+	            ) TEMP
+	        ON P.ORGCODE=TEMP.JJDW_GAJGJGDM
+	
+	        )A4
+	        WHERE A1.NAME=A2.NAME(+) AND A2.NAME=A3.NAME AND A3.NAME=A4.NAME
+		</if>
+		
+	</select>
+	
+	<select id="getTable2" resultType="java.util.HashMap">
+		SELECT A1.COUNT NOW,A2.COUNT LAST FROM (
+		SELECT COUNT(J.XXZJBH) COUNT FROM JWZH_ASJ_JQXX J WHERE J.BJSJ_RQSJ &gt;=TO_DATE(#{startNowTime},'yyyy-mm-dd hh24:mi:ss')
+		AND J.BJSJ_RQSJ &lt;=TO_DATE(#{endNowTime},'yyyy-mm-dd hh24:mi:ss')
+		AND J.JQLBDM IN (SELECT D.DM FROM JWZH_DICT_VW3 D WHERE D.CT=#{type})
+		AND J.JJDW_GAJGJGDM=(SELECT ORGCODE FROM JWZH_PCS WHERE NAME=#{name})
+		) A1,(
+		SELECT COUNT(J.XXZJBH) COUNT FROM JWZH_ASJ_JQXX J WHERE J.BJSJ_RQSJ &gt;=TO_DATE(#{lastStartTime},'yyyy-mm-dd hh24:mi:ss')
+		AND J.BJSJ_RQSJ &lt;=TO_DATE(#{lastEndTime},'yyyy-mm-dd hh24:mi:ss')
+		AND J.JQLBDM IN (SELECT D.DM FROM JWZH_DICT_VW3 D WHERE D.CT=#{type})
+		AND J.JJDW_GAJGJGDM=(SELECT ORGCODE FROM JWZH_PCS WHERE NAME=#{name})
+		)A2
+		
+	</select>
+</mapper>

@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <link rel="stylesheet" href="css/layui.css">
+		  <link rel="stylesheet" href="css/bootstrap.min.css">
+		  <link rel="stylesheet" href="css/addStyle.css">
+		  <link rel="stylesheet" href="css/modules/layer/default/layer.css">
+		  <link rel="stylesheet" href="css/modules/laydate/default/laydate.css">
+		  <link rel="stylesheet" href="font-size/iconfont.css">
+		  <link rel="stylesheet" href="../style/static/css/plugins/bootstrap-table/bootstrap-table.min.css">
+		<title></title>
+		<style type="text/css">
+		/* 控制table表的颜色显示 */
+			.pagination-info {
+				color:white
+			}
+		</style>
+	</head>
+
+	<body class="bgBackColor">
+		
+	<div class="scroll-1">       
+	   <div class="layui-row" >
+	
+            <div class="layui-col-md12 rightConSpace">
+                        
+                <div class="titleRightCon1">
+                
+                     <span class="leftTextWhite">历史分析</span>
+                     
+                     <span class="rightSearchCon">
+                           <label class="textWhite1">按名称查：</label>
+                           <div class="layui-input-inline" style="margin-top:-3px;">
+                               <input id="searchName" type="text" name="name" value=""  class="layui-input" placeholder="名称" />
+                            </div>
+                            &nbsp;&nbsp;
+                           <label class="textWhite1">按时间查：</label>
+                           <div class="layui-input-inline"  style="margin-top:-3px;">
+                               <input  type="text" name="time" id="searchTime" value="" class="layui-input" placeholder="时间段"/>
+                            </div>
+                            &nbsp;&nbsp;
+                             <button onclick="search()" class="layui-btn layui-btn-sm layui-btn-normal">
+                              <i class="icon iconfont">&#xe716;</i>&nbsp;&nbsp;搜索
+                           </button>
+                     </span>
+                           
+                </div>
+          
+                   <div class="tableConTwo marginTop20">
+                                            
+                        <table id="table">
+                        
+                            <!-- <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>展现方式</th>
+                                    <th>创建时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <tr>
+                                    <td>LSFX_00120180801</td>
+                                    <td>折线图</td>
+                                    <td>2018年8月1日 星期三 14:56</td>
+                                    <td>
+                                    	<button class="layui-btn layui-btn-sm layui-btn-normal">
+                                          分析
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm">
+                                         修改
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm layui-btn-danger">
+                                           删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>LSFX_00120180802</td>
+                                    <td>折线图</td>
+                                    <td>2018年8月1日 星期三 14:56</td>
+                                    <td>
+                                    	<button class="layui-btn layui-btn-sm layui-btn-normal">
+                                          分析
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm">
+                                         修改
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm layui-btn-danger">
+                                           删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>LSFX_00120180803</td>
+                                    <td>表格</td>
+                                    <td>2018年8月1日 星期三 14:56</td>
+                                    <td>
+                                    	<button class="layui-btn layui-btn-sm layui-btn-normal">
+                                          分析
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm">
+                                         修改
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm layui-btn-danger">
+                                           删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>LSFX_00120180804</td>
+                                    <td>表格</td>
+                                    <td>2018年8月1日 星期三 14:56</td>
+                                    <td>
+                                    	<button class="layui-btn layui-btn-sm layui-btn-normal">
+                                          分析
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm">
+                                         修改
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm layui-btn-danger">
+                                           删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>LSFX_00120180805</td>
+                                    <td>饼状图</td>
+                                    <td>2018年8月1日 星期三 14:56</td>
+                                    <td>
+                                    	<button class="layui-btn layui-btn-sm layui-btn-normal">
+                                          分析
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm">
+                                         修改
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm layui-btn-danger">
+                                           删除
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>LSFX_00120180806</td>
+                                    <td>折线图</td>
+                                    <td>2018年8月1日 星期三 14:56</td>
+                                    <td>
+                                    	<button class="layui-btn layui-btn-sm layui-btn-normal">
+                                          分析
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm">
+                                         修改
+                                        </button>
+                                        &nbsp;&nbsp;
+                                        <button class="layui-btn layui-btn-sm layui-btn-danger">
+                                           删除
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody> -->
+                            
+                        </table>
+                        
+                    </div>  
+	
+
+          </div>
+
+
+
+		</div>
+</div>
+
+
+<script src="layui.js"></script>
+<script src="lay/modules/tree.js"></script>
+<script src="lay/modules/laydate.js"></script>
+<script src="js/jquery-3.1.1.js"></script>
+<script src="lay/modules/layer.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- 最新的echarts核心 JavaScript 文件 -->
+<script src="lay/modules/code.js"></script> 
+<script src="lay/modules/carousel.js"></script> 
+<script src="lay/modules/element.js"></script> 
+<script src="lay/modules/jquery.js"></script> 
+<script src="lay/modules/form.js"></script> 
+<script src="lay/modules/layedit.js"></script> 
+<script src="lay/modules/laypage.js"></script> 
+<script src="lay/modules/laytpl.js"></script> 
+<script src="lay/modules/mobile.js"></script> 
+<script src="lay/modules/rate.js"></script> 
+<script src="lay/modules/table.js"></script> 
+<script src="lay/modules/util.js"></script> 
+<script src="lay/modules/upload.js"></script> 
+<script src="lay/modules/scrollbar.min.js"></script>
+<script src="js/moment.js"></script>
+<script src="../style/static/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../style/static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<!-- 页面自定义的js文件 -->
+<script src="js/analysis/historyAnalysis.js"></script>
+</body>
+
+</html>

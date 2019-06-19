@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtlckj.base.jqfx.mapper.SsyjMapper">
+	<resultMap type="com.mtlckj.base.jqfx.domain.Ssyj" id="ssyjResult">
+		<result property="wfjq" column="wfjq"/>
+		<result property="qc" column="qc"/>
+		<result property="lq" column="lq"/>
+		<result property="rsdq" column="rsdq"/>
+		<result property="scdq" column="scdq"/>
+		<result property="zp" column="zp"/>
+		<result property="md" column="md"/>
+	</resultMap>
+	
+	<resultMap type="com.mtlckj.base.jqfx.vo.SsyjHotMark" id="ssyjHotMarkResult">
+		<result property="lng" column="lng"/>
+		<result property="lat" column="lat"/>
+		<result property="id" column="id"/>
+		<result property="title" column="title"/>
+	</resultMap>
+	
+	<resultMap type="com.mtlckj.base.jqfx.domain.Lbtj" id="zsFourMOYResult">
+		<result property="zzs" column="zzs"/>
+		<result property="lastFirstYearMonthzs" column="lastFirstYearMonthzs"/>
+		<result property="lastSecondYearMonthzs" column="lastSecondYearMonthzs"/>
+		<result property="lastThirdYearMonthzs" column="lastThirdYearMonthzs"/>
+	</resultMap>
+	
+    <select id="countByWeek" parameterType="java.util.HashMap" resultMap="ssyjResult">
+    	select zp.zp, lq.lq,rsdq.rsdq,scdq.scdq,md.md,wfjq.wfjq,qc.qc from
+    	(
+    		select count(*) as zp from JWZH_ASJ_JQXX where jqlbdm in ('010406','020506')  
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+    	)zp,
+    	(
+    		select count(*) as lq from JWZH_ASJ_JQXX where EXISTS(
+    			select dm from JWZH_dict where (zdbh = 'BD_D_JQLBDM' and dm = JWZH_ASJ_JQXX.jqlbdm) and (ct like '%抢劫%' or ct like '%抢夺%')
+    		)
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+    	)lq,
+    	(
+    		select count(*) as rsdq from JWZH_ASJ_JQXX where jqlbdm = '01040201' 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+    	)rsdq,
+    	(
+    		select count(*) as scdq from JWZH_ASJ_JQXX where jqlbdm in ('01040203','01040281') 
+			and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}	
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+    	)scdq,
+    	(
+    		select count(*) as md from JWZH_ASJ_JQXX where jqlbdm in ('01040282','01040220') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+    	)md,
+    	(
+    		select count(*) as qc from JWZH_ASJ_JQXX where jqlbdm in('0104','010499','020599') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+    		<if test="orgcode !='' and orgcode != null">
+				and JJDW_GAJGJGDM = #{orgcode}
+			</if>
+    	)qc,
+    	(
+    		select count(*) as wfjq from JWZH_ASJ_JQXX where 1 = 1
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+    	)wfjq
+	</select>
+	
+	<select id="listZpByWeek" parameterType="java.util.HashMap" resultMap="ssyjHotMarkResult">
+		select SFBZDZ_DQJD lng,SFBZDZ_DQWD lat,XXZJBH id,'诈骗' title from JWZH_ASJ_JQXX where jqlbdm in ('010406','020506')  
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+	</select>
+	
+	<select id="listQcByWeek" parameterType="java.util.HashMap" resultMap="ssyjHotMarkResult">
+		select SFBZDZ_DQJD lng,SFBZDZ_DQWD lat,XXZJBH id,'侵财' title from JWZH_ASJ_JQXX where jqlbdm in ('0104','010499','020599')  
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+	</select>
+	
+	<select id="listLqByWeek" parameterType="java.util.HashMap" resultMap="ssyjHotMarkResult">
+		select SFBZDZ_DQJD lng,SFBZDZ_DQWD lat,XXZJBH id,'两抢' title from JWZH_ASJ_JQXX where EXISTS(
+    			select dm from JWZH_dict where (zdbh = 'BD_D_JQLBDM' and dm = JWZH_ASJ_JQXX.jqlbdm) and (ct like '%抢劫%' or ct like '%抢夺%')
+    		)
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+	</select>
+	
+	<select id="listRsdqByWeek" parameterType="java.util.HashMap" resultMap="ssyjHotMarkResult">
+		select SFBZDZ_DQJD lng,SFBZDZ_DQWD lat,XXZJBH id,'入室盗窃' title from JWZH_ASJ_JQXX where jqlbdm = '01040201' 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+	</select>
+	
+	<select id="listScdqByWeek" parameterType="java.util.HashMap" resultMap="ssyjHotMarkResult">
+		select SFBZDZ_DQJD lng,SFBZDZ_DQWD lat,XXZJBH id,'涉车盗窃' title from JWZH_ASJ_JQXX where jqlbdm in ('01040203','01040281') 
+			and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}	
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+	</select>
+	
+	<select id="listMdByWeek" parameterType="java.util.HashMap" resultMap="ssyjHotMarkResult">
+		select SFBZDZ_DQJD lng,SFBZDZ_DQWD lat,XXZJBH id,'涉车盗窃' title from JWZH_ASJ_JQXX where jqlbdm in ('01040282','01040220') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+	</select>
+	<select id="countZsByWeek" parameterType="java.util.HashMap" resultType="int">
+		select count(*) from JWZH_ASJ_JQXX where 1 = 1
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+	</select>
+	
+	<select id="zpZsFourMOY" parameterType="java.util.HashMap" resultType="com.mtlckj.base.jqfx.domain.Lbtj">
+		select bz.zs as zzs,qnyzs.yzs as lastFirstYearMonthzs,qqnyzs.yzs as lastSecondYearMonthzs,sqnyzs.yzs as lastThirdYearMonthzs from 
+		(
+			select count(*) as zs from JWZH_ASJ_JQXX where jqlbdm in ('010406','020506')  
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) bz,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in ('010406','020506')  
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) qnyzs,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in ('010406','020506')  
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qqnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) qqnyzs,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in ('010406','020506')  
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{sqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{sqnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) sqnyzs
+	</select>
+	<select id="qcZsFourMOY" parameterType="java.util.HashMap" resultType="com.mtlckj.base.jqfx.domain.Lbtj">
+		select bz.zs as zzs,qnyzs.yzs as lastFirstYearMonthzs,qqnyzs.yzs as lastSecondYearMonthzs,sqnyzs.yzs as lastThirdYearMonthzs from 
+		(
+		select count(*) as zs from JWZH_ASJ_JQXX where jqlbdm in('0104','010499','020599') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) bz,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in('0104','010499','020599') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) qnyzs,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in('0104','010499','020599') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qqnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) qqnyzs,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in('0104','010499','020599')  
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{sqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{sqnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) sqnyzs
+	</select>
+	<select id="lqZsFourMOY" parameterType="java.util.HashMap" resultType="com.mtlckj.base.jqfx.domain.Lbtj">
+		select bz.zs as zzs,qnyzs.yzs as lastFirstYearMonthzs,qqnyzs.yzs as lastSecondYearMonthzs,sqnyzs.yzs as lastThirdYearMonthzs from 
+		(
+			select count(*) as zs from JWZH_ASJ_JQXX where EXISTS(
+    			select dm from JWZH_dict where (zdbh = 'BD_D_JQLBDM' and dm = JWZH_ASJ_JQXX.jqlbdm) and (ct like '%抢劫%' or ct like '%抢夺%')
+    		)
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) bz,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where EXISTS(
+    			select dm from JWZH_dict where (zdbh = 'BD_D_JQLBDM' and dm = JWZH_ASJ_JQXX.jqlbdm) and (ct like '%抢劫%' or ct like '%抢夺%')
+    		)
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qnEnd}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) qnyzs,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where EXISTS(
+    			select dm from JWZH_dict where (zdbh = 'BD_D_JQLBDM' and dm = JWZH_ASJ_JQXX.jqlbdm) and (ct like '%抢劫%' or ct like '%抢夺%')
+    		)
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qqnEnd}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) qqnyzs,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where EXISTS(
+    			select dm from JWZH_dict where (zdbh = 'BD_D_JQLBDM' and dm = JWZH_ASJ_JQXX.jqlbdm) and (ct like '%抢劫%' or ct like '%抢夺%')
+    		)
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{sqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{sqnEnd}
+    		<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) sqnyzs
+	</select>
+	
+	<select id="rsdqZsFourMOY" parameterType="java.util.HashMap" resultType="com.mtlckj.base.jqfx.domain.Lbtj">
+		select bz.zs as zzs,qnyzs.yzs as lastFirstYearMonthzs,qqnyzs.yzs as lastSecondYearMonthzs,sqnyzs.yzs as lastThirdYearMonthzs from 
+		(
+			select count(*) as zs from JWZH_ASJ_JQXX where jqlbdm = '01040201' 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) bz,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm = '01040201' 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) qnyzs,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm = '01040201' 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qqnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) qqnyzs,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm = '01040201' 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{sqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{sqnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) sqnyzs
+	</select>
+	
+	<select id="scdqZsFourMOY" parameterType="java.util.HashMap" resultType="com.mtlckj.base.jqfx.domain.Lbtj">
+		select bz.zs as zzs,qnyzs.yzs as lastFirstYearMonthzs,qqnyzs.yzs as lastSecondYearMonthzs,sqnyzs.yzs as lastThirdYearMonthzs from 
+		(
+			select count(*) as zs from JWZH_ASJ_JQXX where jqlbdm in ('01040203','01040281') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) bz,
+		(select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in ('01040203','01040281') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) qnyzs,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in ('01040203','01040281') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qqnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) qqnyzs,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in ('01040203','01040281') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{sqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{sqnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) sqnyzs
+	</select>
+	
+	<select id="mdZsFourMOY" parameterType="java.util.HashMap" resultType="com.mtlckj.base.jqfx.domain.Lbtj">
+		select bz.zs as zzs,qnyzs.yzs as lastFirstYearMonthzs,qqnyzs.yzs as lastSecondYearMonthzs,sqnyzs.yzs as lastThirdYearMonthzs from 
+		(
+			select count(*) as zs from JWZH_ASJ_JQXX where jqlbdm in ('01040282','01040220') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) bz,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in ('01040282','01040220') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qnEnd}
+			<choose>
+		   			<when test="orgcode !='' and orgcode != null">
+		   				and JJDW_GAJGJGDM = #{orgcode}
+		   			</when>
+		   			<otherwise>
+		   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+		   			</otherwise>
+		   		</choose>
+		) qnyzs,
+		(select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in ('01040282','01040220') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qqnEnd}
+			<choose>
+		   			<when test="orgcode !='' and orgcode != null">
+		   				and JJDW_GAJGJGDM = #{orgcode}
+		   			</when>
+		   			<otherwise>
+		   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+		   			</otherwise>
+		   		</choose>
+		) qqnyzs,
+		(
+			select count(*) as yzs from JWZH_ASJ_JQXX where jqlbdm in ('01040282','01040220') 
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{sqnStart}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{sqnEnd}
+			<choose>
+	   			<when test="orgcode !='' and orgcode != null">
+	   				and JJDW_GAJGJGDM = #{orgcode}
+	   			</when>
+	   			<otherwise>
+	   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+	   			</otherwise>
+	   		</choose>
+		) sqnyzs
+	</select>
+	
+	<select id="wfjqZsFourMOY" parameterType="java.util.HashMap" resultType="com.mtlckj.base.jqfx.domain.Lbtj">
+		select bz.zs as zzs,qnyzs.yzs as lastFirstYearMonthzs,qqnyzs.yzs as lastSecondYearMonthzs,sqnyzs.yzs as lastThirdYearMonthzs from 
+		(select count(*) as zs from JWZH_ASJ_JQXX where 1=1
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{start}
+    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{end}
+    		<choose>
+    			<when test="orgcode !='' and orgcode != null">
+    				and JJDW_GAJGJGDM = #{orgcode}
+    			</when>
+    			<otherwise>
+    				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+    			</otherwise>
+    		</choose>) bz,
+			(
+				select count(*) as yzs from JWZH_ASJ_JQXX where 1=1
+		   		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qnStart}
+		   		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qnEnd}
+				<choose>
+		   			<when test="orgcode !='' and orgcode != null">
+		   				and JJDW_GAJGJGDM = #{orgcode}
+		   			</when>
+		   			<otherwise>
+		   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+		   			</otherwise>
+		   		</choose>
+   			) qnyzs,
+			(
+				select count(*) as yzs from JWZH_ASJ_JQXX where 1=1
+	    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{qqnStart}
+	    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{qqnEnd}
+				<choose>
+		   			<when test="orgcode !='' and orgcode != null">
+		   				and JJDW_GAJGJGDM = #{orgcode}
+		   			</when>
+		   			<otherwise>
+		   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+		   			</otherwise>
+		   		</choose>
+			) qqnyzs,
+			(
+				select count(*) as yzs from JWZH_ASJ_JQXX where 1=1
+	    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &gt;= #{sqnStart}
+	    		and to_char(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss') &lt;= #{sqnEnd}
+				<choose>
+		   			<when test="orgcode !='' and orgcode != null">
+		   				and JJDW_GAJGJGDM = #{orgcode}
+		   			</when>
+		   			<otherwise>
+		   				and JJDW_GAJGJGDM in ('510112400000','510112410000','510112420000','510112430000','510112440000','510112450000','510112460000','510112470000','510112480000','510112490000','510112500000','510112510000','510112520000','510112530000','510112540000','510112550000','510112580000')
+		   			</otherwise>
+		   		</choose>
+			) sqnyzs
+	</select>
+</mapper>

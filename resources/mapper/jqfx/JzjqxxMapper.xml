@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtlckj.base.jqfx.mapper.JzjqxxMapper">
+
+	<resultMap type="com.mtlckj.base.jqfx.domain.Jzjqxx"
+		id="jzjqxxResult">
+		<result property="jjdwbh" column="CJDW_GAJGJGDM" />
+		<result property="jjdwmc" column="CJDW_GAJGMC" />
+		<result property="bjsj" column="BJSJ_RQSJ" />
+		<result property="jqlb" column="JQLBDM" />
+		<result property="jqkssj" column="JQFSSJ_JQFSKSSJ" />
+		<result property="ct" column="CT" />
+		<result property="cunt" column="CUNT" />
+		<result property="name" column="NAME" />
+
+	</resultMap>
+	<resultMap type="com.mtlckj.base.jqfx.domain.JzjqxxVo"
+		id="jzjqxxVoResult">
+		<result property="jjdwbh" column="CJDW_GAJGJGDM" />
+		<result property="jjdwmc" column="CJDW_GAJGMC" />
+		<result property="bjsj" column="BJSJ_RQSJ" />
+		<result property="jqlb" column="JQLBDM" />
+		<result property="jqkssj" column="JQFSSJ_JQFSKSSJ" />
+		<result property="ct" column="CT" />
+		<result property="cunt" column="CUNT" />
+		<result property="name" column="NAME" />
+		<result property="cuntnow" column="CUNTNOW" />
+		<result property="cuntlast" column="CUNTLAST" />
+		<result property="cuntyear" column="CUNTYEAR" />
+		<result property="cuntlastt" column="CUNTYLASTT" />
+
+
+
+	</resultMap>
+
+
+
+	<select id="getWeekList" resultMap="jzjqxxResult">
+		SELECT AA.CT, SUM(CUN) CUNT FROM (
+		SELECT TT.CT, CASE WHEN TT.JQLBDM IS
+		NOT NULL THEN COUNT(TT.JQLBDM)
+		ELSE 0
+		END CUN FROM (SELECT T.CT,J.JQLBDM
+		from JWZH_DICT_VW T LEFT JOIN
+		JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&lt;=#{endTime}) TT
+		GROUP BY
+		TT.JQLBDM,TT.CT ) AA
+		<where>
+			1=1 AND AA.CT NOT IN ('非侵财')
+		</where>
+		GROUP BY AA.CT ORDER BY AA.CT
+
+	</select>
+
+	<select id="getWeekDs" resultMap="jzjqxxResult">
+		SELECT AA.CT, SUM(CUN) CUNT
+		FROM (
+		SELECT CASE WHEN TT.CT ='非侵财' THEN'非侵财'
+		WHEN TT.CT ='侵财' THEN'侵财'
+		ELSE '三盗两抢一诈骗' END CT,
+		CASE WHEN TT.JQLBDM IS NOT NULL THEN
+		COUNT(TT.JQLBDM)
+		ELSE 0 END CUN FROM
+		(SELECT T.CT,J.JQLBDM from
+		JWZH_DICT_VW T LEFT JOIN JWZH_ASJ_JQXX J ON
+		T.DM = J.JQLBDM AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&lt;=#{endTime}) TT
+		GROUP BY
+		TT.JQLBDM,TT.CT ) AA GROUP BY AA.CT ORDER BY AA.CT
+
+	</select>
+
+	<select id="getSum" resultMap="jzjqxxResult">
+		SELECT SUM(AA.CUN) CUNT FROM (SELECT CT, CASE WHEN TT.JQLBDM IS NOT
+		NULL THEN COUNT(TT.JQLBDM)
+		ELSE 0 END CUN FROM (SELECT T.CT,J.JQLBDM
+		from
+		( SELECT CT,DM FROM
+		JWZH_DICT
+		<where>
+			ZDBH='BD_D_JQLBDM'
+		</where>)
+		T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime}
+		AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endTime}) TT
+		GROUP BY
+		TT.JQLBDM,TT.CT) AA
+
+
+	</select>
+
+	<select id="getNowYearWeek" resultMap="jzjqxxResult">
+		SELECT JQWEEK CT,SUM(CTT) CUNT FROM (
+		SELECT T.JQWEEK,CASE WHEN T1.WEEK
+		IS NOT NULL THEN 1 ELSE 0 END CTT FROM (
+		SELECT ROWNUM AS JQWEEK FROM
+		DUAL CONNECT BY LEVEL &lt;=(SELECT TO_CHAR
+		(ADD_MONTHS(TRUNC(SYSDATE,'YYYY'),12)-1, 'WW') LW FROM DUAL)) T,
+		(SELECT TO_NUMBER(TO_CHAR(TO_DATE(TO_CHAR(BJSJ_RQSJ,'YYYYMMDD'),
+		'YYYYMMDD'), 'iw')) AS WEEK FROM JWZH_ASJ_JQXX
+		<where>
+			TO_CHAR(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime} AND
+			TO_CHAR(BJSJ_RQSJ,'yyyy-MM-dd
+			HH:mm:ss')&lt;=#{endTime}
+		</where>
+		) T1
+		<where>
+			T.JQWEEK= T1.WEEK(+)
+		</where>
+		) GROUP BY JQWEEK,CTT ORDER BY JQWEEK
+	</select>
+	<select id="getLastYearWeek" resultMap="jzjqxxResult">
+		SELECT JQWEEK CT,SUM(CTT) CUNT FROM (
+		SELECT T.JQWEEK,CASE WHEN T1.WEEK
+		IS NOT NULL THEN 1 ELSE 0 END CTT FROM (
+		SELECT ROWNUM AS JQWEEK FROM
+		DUAL CONNECT BY LEVEL &lt;=(SELECT TO_CHAR (TRUNC(SYSDATE,'YYYY')-1,
+		'WW') LW FROM DUAL)) T,
+		(SELECT
+		TO_NUMBER(TO_CHAR(TO_DATE(TO_CHAR(BJSJ_RQSJ,'YYYYMMDD'), 'YYYYMMDD'),
+		'iw')) AS WEEK FROM JWZH_ASJ_JQXX
+		<where>
+			TO_CHAR(BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime} AND
+			TO_CHAR(BJSJ_RQSJ,'yyyy-MM-dd
+			HH:mm:ss')&lt;=#{endTime}
+		</where>
+		) T1
+		<where>
+			T.JQWEEK= T1.WEEK(+)
+		</where>
+		) GROUP BY JQWEEK,CTT ORDER BY JQWEEK
+	</select>
+
+	<select id="getQqjqSum" resultMap="jzjqxxVoResult">
+		SELECT A1.NAME NAME,A1.CUNT CUNTNOW,A2.CUNT CUNTLAST,A3.CUNT
+		CUNTYEAR,A4.CUNT CUNTYLASTT FROM
+		(SELECT BB.NAME,SUM(BB.CUNT) CUNT FROM
+		( SELECT AA.NAME,AA.CT,SUM(AA.CUN)
+		CUNT FROM ( SELECT
+		TT.NAME,TT.ORGCODE, TT.CT, CASE
+		WHEN TT.JJDW_GAJGJGDM=TT.ORGCODE THEN
+		COUNT(TT.JJDW_GAJGJGDM) ELSE 0 END
+		CUN FROM (
+		SELECT
+		T.ORGCODE,T.NAME,T.CT,J.JQLBDM ,J.JJDW_GAJGJGDM from (SELECT
+		P.ORGCODE,
+		P.NAME,D.CT,D.DM FROM JWZH_PCS P LEFT JOIN JWZH_DICT_VW D ON
+		1=1
+		) T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&gt;=#{starNowTime,jdbcType=VARCHAR} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&lt;=#{endNowTime,jdbcType=VARCHAR}
+		) TT
+		GROUP BY
+		TT.CT,TT.JJDW_GAJGJGDM,TT.ORGCODE,TT.NAME ORDER BY TT.NAME) AA
+		GROUP BY
+		AA.NAME,AA.ORGCODE,AA.CT ORDER BY AA.NAME
+		) BB GROUP BY BB.NAME )A1,
+
+		(SELECT BB.NAME,SUM(BB.CUNT) CUNT FROM ( SELECT
+		AA.NAME,AA.CT,SUM(AA.CUN)
+		CUNT FROM ( SELECT TT.NAME,TT.ORGCODE, TT.CT,
+		CASE
+		WHEN TT.JJDW_GAJGJGDM=TT.ORGCODE THEN COUNT(TT.JJDW_GAJGJGDM) ELSE
+		0 END
+		CUN FROM (
+		SELECT T.ORGCODE,T.NAME,T.CT,J.JQLBDM ,J.JJDW_GAJGJGDM
+		from (SELECT
+		P.ORGCODE,
+		P.NAME,D.CT,D.DM FROM JWZH_PCS P LEFT JOIN
+		JWZH_DICT_VW D ON 1=1
+		) T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM
+		AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&gt;=#{starLastTime,jdbcType=VARCHAR} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&lt;=#{endLastTime,jdbcType=VARCHAR}
+		) TT
+		GROUP BY
+		TT.CT,TT.JJDW_GAJGJGDM,TT.ORGCODE,TT.NAME ORDER BY TT.NAME) AA
+		GROUP BY
+		AA.NAME,AA.ORGCODE,AA.CT ORDER BY AA.NAME
+		) BB GROUP BY BB.NAME )A2,
+
+		(SELECT BB.NAME,SUM(BB.CUNT) CUNT FROM ( SELECT
+		AA.NAME,AA.CT,SUM(AA.CUN)
+		CUNT FROM ( SELECT TT.NAME,TT.ORGCODE, TT.CT,
+		CASE
+		WHEN TT.JJDW_GAJGJGDM=TT.ORGCODE THEN COUNT(TT.JJDW_GAJGJGDM) ELSE
+		0 END
+		CUN FROM (
+		SELECT T.ORGCODE,T.NAME,T.CT,J.JQLBDM ,J.JJDW_GAJGJGDM
+		from (SELECT
+		P.ORGCODE,
+		P.NAME,D.CT,D.DM FROM JWZH_PCS P LEFT JOIN
+		JWZH_DICT_VW D ON 1=1
+		) T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM
+		AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&gt;=#{startYearTime,jdbcType=VARCHAR} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&lt;=#{endYearTime,jdbcType=VARCHAR}
+		) TT
+		GROUP BY
+		TT.CT,TT.JJDW_GAJGJGDM,TT.ORGCODE,TT.NAME ORDER BY TT.NAME) AA
+		GROUP BY
+		AA.NAME,AA.ORGCODE,AA.CT ORDER BY AA.NAME
+		) BB GROUP BY BB.NAME )A3,
+		(SELECT BB.NAME,SUM(BB.CUNT) CUNT FROM ( SELECT
+		AA.NAME,AA.CT,SUM(AA.CUN)
+		CUNT FROM ( SELECT TT.NAME,TT.ORGCODE, TT.CT,
+		CASE
+		WHEN TT.JJDW_GAJGJGDM=TT.ORGCODE THEN COUNT(TT.JJDW_GAJGJGDM) ELSE
+		0 END
+		CUN FROM (
+		SELECT T.ORGCODE,T.NAME,T.CT,J.JQLBDM ,J.JJDW_GAJGJGDM
+		from (SELECT
+		P.ORGCODE,
+		P.NAME,D.CT,D.DM FROM JWZH_PCS P LEFT JOIN
+		JWZH_DICT_VW D ON 1=1
+		) T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM
+		AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&gt;=#{starLasttTime,jdbcType=VARCHAR} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&lt;=#{endLasttTime,jdbcType=VARCHAR}
+		) TT
+		GROUP BY
+		TT.CT,TT.JJDW_GAJGJGDM,TT.ORGCODE,TT.NAME ORDER BY TT.NAME) AA
+		GROUP BY
+		AA.NAME,AA.ORGCODE,AA.CT ORDER BY AA.NAME
+		) BB GROUP BY BB.NAME )A4
+		WHERE A1.NAME=A2.NAME(+) AND A2.NAME=A3.NAME AND A4.NAME=A3.NAME
+		<!-- SELECT BB.NAME,SUM(BB.CUNT) CUNT FROM ( SELECT AA.NAME,AA.CT,SUM(AA.CUN) 
+			CUNT FROM ( SELECT TT.NAME,TT.ORGCODE, TT.CT, CASE WHEN TT.JJDW_GAJGJGDM=TT.ORGCODE 
+			THEN COUNT(TT.JJDW_GAJGJGDM) ELSE 0 END CUN FROM ( SELECT T.ORGCODE,T.NAME,T.CT,J.JQLBDM 
+			,J.JJDW_GAJGJGDM from (SELECT P.ORGCODE, P.NAME,D.CT,D.DM FROM JWZH_PCS P 
+			LEFT JOIN JWZH_DICT_VW D ON 1=1 ) T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM 
+			AND TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime} AND TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd 
+			HH:mm:ss')&lt;=#{endTime} ) TT GROUP BY TT.CT,TT.JJDW_GAJGJGDM,TT.ORGCODE,TT.NAME 
+			ORDER BY TT.NAME) AA GROUP BY AA.NAME,AA.ORGCODE,AA.CT ORDER BY AA.CT ) BB 
+			GROUP BY BB.NAME -->
+
+	</select>
+	<select id="getQqjq" resultMap="jzjqxxVoResult">
+		SELECT A1.NAME NAME,A1.CT CT,A1.CUNT CUNTNOW,A2.CUNT CUNTLAST FROM
+		(SELECT AA.NAME,AA.CT,SUM(AA.CUN) CUNT FROM ( SELECT
+		TT.NAME,TT.ORGCODE, TT.CT, CASE
+		WHEN TT.JJDW_GAJGJGDM=TT.ORGCODE THEN
+		COUNT(TT.JJDW_GAJGJGDM) ELSE 0 END
+		CUN FROM (
+		SELECT
+		T.ORGCODE,T.NAME,T.CT,J.JQLBDM ,J.JJDW_GAJGJGDM from (SELECT
+		P.ORGCODE,
+		P.NAME,D.CT,D.DM FROM JWZH_PCS P LEFT JOIN JWZH_DICT_VW D ON
+		1=1
+		) T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&gt;=#{starNowTime,jdbcType=VARCHAR} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&lt;=#{endNowTime,jdbcType=VARCHAR}
+		) TT
+		GROUP BY
+		TT.CT,TT.JJDW_GAJGJGDM,TT.ORGCODE,TT.NAME ORDER BY TT.NAME) AA
+		<where>
+			AA.NAME=#{name,jdbcType=VARCHAR}
+		</where>
+		GROUP BY AA.NAME,AA.ORGCODE,AA.CT ORDER BY AA.NAME) A1,
+		(SELECT
+		AA.NAME,AA.CT,SUM(AA.CUN) CUNT FROM ( SELECT TT.NAME,TT.ORGCODE,
+		TT.CT, CASE
+		WHEN TT.JJDW_GAJGJGDM=TT.ORGCODE THEN
+		COUNT(TT.JJDW_GAJGJGDM) ELSE 0 END
+		CUN FROM (
+		SELECT
+		T.ORGCODE,T.NAME,T.CT,J.JQLBDM ,J.JJDW_GAJGJGDM from (SELECT
+		P.ORGCODE,
+		P.NAME,D.CT,D.DM FROM JWZH_PCS P LEFT JOIN JWZH_DICT_VW D ON
+		1=1
+		) T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&gt;=#{starLastTime,jdbcType=VARCHAR} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&lt;=#{endLastTime,jdbcType=VARCHAR}
+		) TT
+		GROUP BY
+		TT.CT,TT.JJDW_GAJGJGDM,TT.ORGCODE,TT.NAME ORDER BY TT.NAME) AA
+		<where>
+			AA.NAME=#{name,jdbcType=VARCHAR}
+		</where>
+		GROUP BY AA.NAME,AA.ORGCODE,AA.CT ORDER BY AA.NAME) A2
+		<where> 1=1 AND A1.CT=A2.CT(+)</where>
+
+
+	</select>
+	<!-- 全区各辖区违法警情累计同比统计 -->
+	<select id="getQqjqTb" resultMap="jzjqxxVoResult">
+		SELECT A1.NAME,A1.CUNT CUNTNOW,A2.CUNT CUNTLAST FROM (SELECT
+		AA.NAME,SUM(AA.CUN) CUNT FROM ( SELECT TT.NAME,TT.ORGCODE, CASE
+		WHEN
+		TT.JJDW_GAJGJGDM=TT.ORGCODE THEN COUNT(TT.JJDW_GAJGJGDM) ELSE 0 END
+		CUN FROM (
+		SELECT T.ORGCODE,T.NAME,T.CT,J.JQLBDM ,J.JJDW_GAJGJGDM from
+		(SELECT
+		P.ORGCODE,
+		P.NAME,D.CT,D.DM FROM JWZH_PCS P LEFT JOIN ( SELECT
+		DM, CT
+		FROM JWZH_DICT
+		<where>
+			ZDBH = 'BD_D_JQLBDM'
+		</where>
+		) D ON 1=1
+		) T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&gt;=#{starNowTime,jdbcType=VARCHAR} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&lt;=#{endNowTime,jdbcType=VARCHAR}
+		) TT
+		GROUP BY
+		TT.CT,TT.JJDW_GAJGJGDM,TT.ORGCODE,TT.NAME ORDER BY TT.NAME) AA
+		GROUP BY
+		AA.NAME,AA.ORGCODE ORDER BY AA.NAME) A1,
+
+		(SELECT AA.NAME,SUM(AA.CUN)
+		CUNT FROM ( SELECT TT.NAME,TT.ORGCODE, CASE
+		WHEN
+		TT.JJDW_GAJGJGDM=TT.ORGCODE THEN COUNT(TT.JJDW_GAJGJGDM) ELSE 0 END
+		CUN FROM (
+		SELECT T.ORGCODE,T.NAME,T.CT,J.JQLBDM ,J.JJDW_GAJGJGDM from
+		(SELECT
+		P.ORGCODE,
+		P.NAME,D.CT,D.DM FROM JWZH_PCS P LEFT JOIN ( SELECT
+		DM, CT
+		FROM JWZH_DICT
+		<where>
+			ZDBH = 'BD_D_JQLBDM'
+		</where>
+		) D ON 1=1
+		) T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&gt;=#{starLastTime,jdbcType=VARCHAR} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+		HH:mm:ss')&lt;=#{endLastTime,jdbcType=VARCHAR}
+		) TT
+		GROUP BY
+		TT.CT,TT.JJDW_GAJGJGDM,TT.ORGCODE,TT.NAME ORDER BY TT.NAME) AA
+		GROUP BY
+		AA.NAME,AA.ORGCODE ORDER BY AA.NAME)A2
+		<where> 1=1 AND A1.NAME= A2.NAME
+		</where>
+	</select>
+	<!-- 三盗两抢一诈骗“警情及其他警情情况 -->
+	<select id="getDqzTbHb" resultMap="jzjqxxVoResult">
+		SELECT A1.CT,A1.CUNT CUNTNOW,A2.CUNT CUNTLAST FROM (SELECT AA.CT, CASE WHEN AA.JQLBDM IS NOT NULL THEN COUNT( AA.JQLBDM) ELSE 0
+		END CUNT FROM (SELECT A.* ,J.JQLBDM FROM JWZH_DICT_VW A LEFT JOIN JWZH_ASJ_JQXX J ON
+		J.JQLBDM=A.DM AND TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{starNowTime,jdbcType=VARCHAR} AND
+		 TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endNowTime,jdbcType=VARCHAR}
+		)AA WHERE AA.CT NOT IN ('非侵财', '侵财')
+		GROUP BY AA.CT, AA.JQLBDM ) A1,
+		(SELECT AA.CT, CASE WHEN AA.JQLBDM IS NOT NULL THEN COUNT( AA.JQLBDM) ELSE 0
+		END CUNT FROM (SELECT A.* ,J.JQLBDM FROM JWZH_DICT_VW A LEFT JOIN JWZH_ASJ_JQXX J ON
+		J.JQLBDM=A.DM AND TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{starLastTime,jdbcType=VARCHAR} AND
+		 TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endLastTime,jdbcType=VARCHAR}
+		)AA WHERE AA.CT NOT IN ('非侵财', '侵财')
+		GROUP BY AA.CT, AA.JQLBDM )A2 WHERE 1=1 AND A1.CT=A2.CT
+	</select>
+</mapper>

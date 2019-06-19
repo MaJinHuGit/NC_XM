@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mtlckj.base.common.mapper.DzfxMapper">
+
+	
+
+	<select id="list" resultType="com.mtlckj.base.common.domain.DzfxDO">
+		select 
+		`dzfx_id` dzfxId,
+		`dzfx_text` dzfxText,
+		`create_time` createTime,
+		`dzfx_name` dzfxName,
+		`dzfx_type` dzfxType
+		from
+			dzfx
+		<where>
+			<if test="dzfxId != null and dzfxId != ''"> and dzfx_id = #{dzfxId} </if>
+			<if test="dzfxText != null and dzfxText != ''"> and dzfx_text = #{dzfxText} </if>
+			<if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+			<if test="dzfxName != null and dzfxName != ''"> and dzfx_name = #{dzfxName} </if>
+			<if test="dzfxType != null and dzfxType != ''"> and dzfx_type = #{dzfxType} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by dzfx_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	
+
+	<insert id="save" parameterType="com.mtlckj.base.common.domain.DzfxDO"
+		useGeneratedKeys="true" keyProperty="dzfxId">
+		insert into dzfx
+		(
+		`dzfx_text`,
+		`create_time`,
+		`dzfx_name`,
+		`dzfx_type`
+		)
+		values
+		(
+		#{dzfxText},
+		#{createTime},
+		#{dzfxName},
+		#{dzfxType}
+		)
+	</insert>
+	
+	<select id="count" resultType="int">
+		select count(*) from dzfx
+		<where>
+			<if test="dzfxId != null and dzfxId != ''"> and dzfx_id = #{dzfxId} </if>
+			<if test="dzfxText != null and dzfxText != ''"> and dzfx_text = #{dzfxText} </if>
+			<if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+			<if test="dzfxName != null and dzfxName != ''"> and dzfx_name = #{dzfxName} </if>
+			<if test="dzfxType != null and dzfxType != ''"> and dzfx_type = #{dzfxType} </if>
+		</where>
+	</select>
+	<select id="countForHistory" resultType="int">
+		select count(*) from dzfx
+		<where>
+			<if test="dzfxId != null and dzfxId != ''"> and dzfx_id = #{dzfxId} </if>
+			<if test="dzfxText != null and dzfxText != ''"> and dzfx_text = #{dzfxText} </if>
+			<if test="startTime != null and startTime != ''"> 
+				and create_time <![CDATA[>=]]> STR_TO_DATE('${startTime}','%Y-%m-%d %H:%i:%s')
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and create_time <![CDATA[<=]]> STR_TO_DATE('${endTime}','%Y-%m-%d %H:%i:%s')
+			</if>
+			<if test="dzfxName != null and dzfxName != ''"> and dzfx_name like '%${dzfxName}%' </if>
+			<if test="dzfxType != null and dzfxType != ''"> and dzfx_type = #{dzfxType} </if>
+		</where>
+	</select>
+	
+	<select id="getById" resultType="com.mtlckj.base.common.domain.DzfxDO">
+		select 
+			`dzfx_id` dzfxId,
+			`dzfx_text` dzfxText,
+			`create_time` createTime,
+			`dzfx_name` dzfxName,
+			`dzfx_type` dzfxType
+		from
+			dzfx
+		where
+			dzfx_id = #{dzfxId}
+	</select>
+	<select id="search" resultType="com.mtlckj.base.common.domain.DzfxDO">
+		select 
+			`dzfx_id` dzfxId,
+			`dzfx_text` dzfxText,
+			`create_time` createTime,
+			`dzfx_name` dzfxName,
+			`dzfx_type` dzfxType
+		from
+			dzfx
+		<where>
+			<if test="dzfxId != null and dzfxId != ''"> and dzfx_id = #{dzfxId} </if>
+			<if test="dzfxText != null and dzfxText != ''"> and dzfx_text = #{dzfxText} </if>
+			<if test="createTime != null and createTime != ''">and create_time = #{createTime}</if>
+			<if test="startTime != null and startTime != ''"> 
+				and create_time <![CDATA[>=]]> STR_TO_DATE('${startTime}','%Y-%m-%d %H:%i:%s')
+			</if>
+			<if test="endTime != null and endTime != ''">
+				and create_time <![CDATA[<=]]> STR_TO_DATE('${endTime}','%Y-%m-%d %H:%i:%s')
+			</if>
+			<if test="dzfxName != null and dzfxName != ''"> and dzfx_name like '%${dzfxName}%' </if>
+			<if test="dzfxType != null and dzfxType != ''"> and dzfx_type = #{dzfxType} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by dzfx_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<update id="update" parameterType="com.mtlckj.base.common.domain.DzfxDO">
+		update dzfx
+		<set>
+			<if test="dzfxId != null and dzfxId != ''"> `dzfx_id`= #{dzfxId},</if>
+			<if test="dzfxText != null and dzfxText != ''">`dzfx_text` = #{dzfxText}, </if>
+			<if test="createTime != null and createTime != ''">`create_time` = #{createTime}, </if>
+			<if test="dzfxName != null and dzfxName != ''">`dzfx_name` = #{dzfxName}, </if>
+			<if test="dzfxType != null and dzfxType != ''">`dzfx_type` = #{dzfxType} </if>
+		</set>
+			where dzfx_id = #{dzfxId}
+	</update>
+
+	<delete id="remove">
+			delete from dzfx where dzfx_id = #{dzfxId}
+	</delete> 
+
+	
+</mapper>

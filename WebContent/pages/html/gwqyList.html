@@ -1,0 +1,294 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title></title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/layui.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/addStyle.css">
+<link rel="stylesheet" href="css/modules/layer/default/layer.css">
+<link rel="stylesheet" href="css/modules/laydate/default/laydate.css">
+<link rel="stylesheet" href="font-size/iconfont.css">
+<title></title>
+<style>
+.selectStyle100 {
+	width: 100px;
+	color: black;
+	height: 34px;
+	padding-left: 5px;
+	border: 1px solid #e6e6e6;
+}
+</style>
+</head>
+
+<body class="bgBackColor">
+	<div class="scroll-1">
+		<div class="layui-row">
+
+			<div class="layui-col-md12 rightConSpace">
+
+
+				<div class="layui-row layui-col-space10">
+
+					<div class="layui-col-md12 leftConTwo">
+
+						<span>高危区域图</span>
+						<div style="width: 100%; height: 20px;">
+							<span id="jtime" style="text-align:center;font-size:14px;">545646</span>
+						</div>
+
+
+
+						<div class="tableConTwo" style="padding: 20px;">
+
+							<div id="zEchart" style="width: 100%; height: 400px;"></div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	<script src="js/jquery-3.1.1.js"></script>
+	<script src="layui.js"></script>
+	<script src="js/echarts.js"></script>
+	<script src="js/echarts-wordcloud.js"></script>
+	<script src="../style/js/jqfx/ztyp/ztgk.js"></script>
+	<script src="lay/modules/tree.js"></script>
+	<script src="lay/modules/laydate.js"></script>
+
+	<script src="lay/modules/layer.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<!-- 最新的echarts核心 JavaScript 文件 -->
+	<script src="lay/modules/code.js"></script>
+	<script src="lay/modules/carousel.js"></script>
+	<script src="lay/modules/element.js"></script>
+	<script src="lay/modules/jquery.js"></script>
+	<script src="lay/modules/form.js"></script>
+	<script src="lay/modules/layedit.js"></script>
+	<script src="lay/modules/laypage.js"></script>
+	<script src="lay/modules/laytpl.js"></script>
+	<script src="lay/modules/mobile.js"></script>
+	<script src="lay/modules/rate.js"></script>
+	<script src="lay/modules/table.js"></script>
+	<script src="lay/modules/util.js"></script>
+	<script src="lay/modules/upload.js"></script>
+	<script src="lay/modules/scrollbar.min.js"></script>
+
+	<script type="text/javascript">
+	
+ 	var myChart  = echarts.init(document.getElementById("zEchart"));
+ 	
+	var startTime = getUrlParam("startTime");
+	var endTime = getUrlParam("endTime");
+	var strArr = getUrlParam("strArr");
+	var parentArr = getUrlParam("parentArr");
+	var nameArr = getUrlParam2("nameArr");
+	var pcsArr = getUrlParam2("pcsArr");
+	var text = '开始时间：'+startTime+'&nbsp;&nbsp;&nbsp;&nbsp;结束时间：'+endTime;
+	document.getElementById("jtime").innerHTML = text;
+ 	
+
+ 	initEchart(startTime,endTime,strArr,nameArr,parentArr,pcsArr);
+ 	
+ 	function initEchart(startTime,endTime,strArr,nameArr,parentArr,pcsArr) {
+ 		var url = "../jqfx/selectType/gwqy";
+ 		$.get(url, {
+ 			startTime:startTime,
+ 			endTime:endTime,
+ 			strArr:strArr,
+ 			nameArr:nameArr,
+ 			parentArr:parentArr,
+ 			pcsArr:encodeURI(pcsArr)
+ 		}, function(data) {
+ 			var datas = data.list;
+ 			var arr  = [];
+ 			var arr2  = [];
+ 			var leg = [];
+ 			for (var i = 0; i < datas.length; i++) {
+ 	 			
+ 				var val = datas[i].count;
+ 				var val2 = datas[i].countLast;
+ 				var name = datas[i].pcsName;
+ 				var startTime = datas[i].startTime;
+ 				var startLastTime = datas[i].startLastTime;
+ 				var endTime = datas[i].endTime;
+ 				var endLastTime = datas[i].endLastTime;
+ 				var orgcode = datas[i].orgcode;
+ 				var strArr = datas[i].strArr;
+ 				var isParent = datas[i].parentArr;
+ 				leg.push(name);
+ 				arr.push({
+ 						name: name,
+ 						value:val,
+ 						startTime:startTime,
+ 						endTime:endTime,
+ 						orgcode:orgcode,
+ 						strArr:strArr,
+ 						isParent:isParent
+ 					});
+ 				arr2.push({
+ 						name: name,
+						value:val2,
+						startTime:startLastTime,
+						endTime:endLastTime,
+						orgcode:orgcode,
+						strArr:strArr,
+						isParent:isParent
+ 				});
+ 			}
+ 			myChart.setOption({
+ 				xAxis : [ {data : leg}],
+ 				series : [ {data:arr2},{data:arr}]
+ 			});
+ 			myChart.on("click", function(params){
+ 				var startTime = params.data.startTime;
+ 				var endTime = params.data.endTime;
+ 				var orgcode = params.data.orgcode;
+ 				var pcsname = params.data.name;
+ 				var strArr = params.data.strArr;
+ 				var isParent = params.data.isParent;
+ 				var index= layer.open({
+ 					type : 2,
+ 					title : pcsname,
+ 					maxmin : true,
+ 					area:['1000px', '580px'],
+ 					shadeClose : false, // 点击遮罩关闭层
+ 					content : 'gwqy2.html?startTime='+startTime+'&endTime='+endTime+'&orgcode='+orgcode+'&strArr='+strArr+'&isParent='+isParent // iframe的url
+ 				})
+ 		});
+ 		})
+ 	}
+ 	
+ 	var option = {
+ 		//图表提示框
+ 		tooltip : {
+ 			trigger : 'axis'
+ 		},
+ 		grid : {
+ 			x : '6%',
+ 			y : '12%',
+ 			x2 : '2%',
+ 			y2 : '30%',
+ 			borderWidth : '0',
+
+ 		},
+ 		//是否充许托动自动计算
+ 		calculable : true,
+ 		//图例
+ 		legend : {
+ 			data : [{
+ 				name: '上期',
+ 				textStyle:{color:"#809bca"}
+ 			},{
+ 				name: '本期',
+ 				textStyle:{color:"#809bca"}  
+ 			}],
+ 			top : 'top'
+ 		},
+ 		//x轴
+ 		xAxis : [ {
+ 			type : 'category',
+
+ 			axisLine : {
+ 				lineStyle : {
+ 					color : 'rgb(109,109,109)',
+ 					width : 1
+ 				}
+ 			},
+ 			splitLine : {
+ 				show : false
+ 			},//去除网格线
+ 			splitArea : {
+ 				show : false
+ 			},//保留网格区域	
+ 			axisLabel : { //文字倾斜
+ 				interval : 0,
+ 				rotate : 40,
+ 			},
+ 			data : [  ],
+ 			axisLabel : {//坐标轴刻度标签的相关设置。
+ 				interval : 0,
+ 				formatter : function(value) {
+ 					if (value != undefined) {
+ 						return value.split("").join("\n")
+ 					}
+ 					;
+ 				}
+ 			}
+ 		} ],
+ 		//y轴
+ 		yAxis : [ {
+ 			type : 'value',
+ 			// name : '本月新增警情',
+ 			verticalAlign : 'middle',
+ 			axisLabel : {
+ 				formatter : '{value}'
+ 			},
+ 			axisLine : {
+ 				lineStyle : {
+ 					color : 'rgb(109,109,109)',
+ 					width : 1
+ 				}
+ 			},
+
+ 			splitLine : {
+ 				show : false
+ 			},//去除网格线
+ 			splitArea : {
+ 				show : false
+ 			},//保留网格区域
+ 		} ],
+ 		//系列
+ 		series : [ {
+            name:'上期',
+            type:'bar',
+			//barWidth : 12,
+			itemStyle: {
+			  normal: {
+				  //color: 'rgba(128,155,202,0.5)'
+				 color: 'rgb(65,80,111)',
+				 label:{show:true,position:'top'}
+				}
+            },
+            data:[]
+        },{
+            name:'本期',
+            type:'bar',
+			//barWidth : 12,
+			itemStyle: {
+			  normal: {
+				  //color: 'rgba(61,99,160,0.5)'						   
+				    color: 'rgb(66,143,213)',
+					label:{show:true,position:'top'}
+				}
+            },
+            data:[]
+        }]
+ 	};  
+ 	myChart.setOption(option);
+
+ 	function getUrlParam(name) {
+ 	    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+ 	    var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+ 	    if (r != null) return unescape(r[2]); return null; //返回参数值
+ 	}
+ 	
+ 	function getUrlParam2(name) {
+ 	   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+ 	   var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+ 	   if (r != null) return decodeURI(r[2]); return null; //返回参数值,中文解码
+ 	}
+</script>
+</body>
+
+</html>

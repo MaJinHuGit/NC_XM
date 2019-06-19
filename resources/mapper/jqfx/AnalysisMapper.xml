@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mtlckj.base.jqfx.mapper.AnalysisMapper">
+
+	<select id="analysis" resultType="map" parameterType="com.mtlckj.base.jqfx.vo.AnalysisParam"  statementType="STATEMENT">
+	SELECT t.${wdm} as ${wdzs} 
+	<foreach collection="zb" index="index" item="zb_item">
+		,NVL (t${index}.c, 0) AS "${zb_item.zbm}"
+	</foreach>
+  FROM (  SELECT ${wdm}, COUNT (1) c
+            FROM ${bm}
+        GROUP BY ${wdm}) t
+        <foreach collection="zb" item="zb_item" index="index">
+        	FULL JOIN (  SELECT ${wdm}, COUNT (1) c
+                      FROM ${bm}
+                      <where>
+                      	<foreach collection="zb_item.filters" item="filter" index="filter_index">
+                      		${filter.logicOp} ${filter.condition}
+                      	</foreach>
+                      </where>
+                  GROUP BY ${wdm}) t${index}
+          	ON t.${wdm} = t${index}.${wdm}
+        </foreach>
+         WHERE t.${wdm} IS NOT NULL
+UNION ALL
+SELECT t.${wdm} AS ${wdzs}
+	<foreach collection="zb" index="index" item="zb_item" >
+		,NVL (SUM (t${index}.c), 0) AS "${zb_item.zbm}"
+	</foreach>
+  FROM (  SELECT ${wdm}, COUNT (1) c
+            FROM ${bm}
+        GROUP BY ${wdm}) t
+       <foreach collection="zb" item="zb_item" index="index">
+        	FULL JOIN (  SELECT ${wdm}, COUNT (1) c
+                      FROM ${bm}
+                      <where>
+                      	<foreach collection="zb_item.filters" item="filter" index="filter_index">
+                      		${filter.logicOp} ${filter.condition}
+                      	</foreach>
+                      </where>
+                  GROUP BY ${wdm}) t${index}
+          	ON t.${wdm} = t${index}.${wdm}
+        </foreach>
+ WHERE t.${wdm} IS NULL
+ GROUP BY t.${wdm}
+	</select>
+</mapper>

@@ -1,0 +1,2090 @@
+
+<html>
+
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>首页</title>
+<link rel="stylesheet" href="css/layui.css">
+<link rel="stylesheet" href="css/admin.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/addStyle.css">
+<link rel="stylesheet" href="font-size/iconfont.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/modules/laydate/default/laydate.css">
+<link rel="stylesheet" href="css/modules/layer/default/layer.css">
+<link rel="stylesheet" href="../style/css/hddjq.css">
+<style>
+.spaceChange {
+	margin-left: -15px;
+	margin-right: -15px;
+	border: none;
+	margin-top: -10px;
+}
+
+.heightChange {
+	border1: 1px solid red;
+	background-color: #373743;
+	color: white;
+	margin-top: -10px;
+	height: 30px;
+	line-height: 30px;
+	padding-bottom: 15px;
+}
+
+.row {
+	margin-left: -6px;
+	margin-right: 0px;
+}
+
+.bg-success {
+	background-color: #28a745
+}
+
+.bg-warning {
+	background-color: #ffc107
+}
+
+.bg-danger {
+	background-color: #dc3545
+}
+
+.innerTitleCon ul {
+	width: 100%;
+	overflow: auto;
+	overflow-y: hidden;
+}
+
+.innerTitleCon ul li {
+	float: left;
+	color: white;
+	width: auto !important;
+	text-align: center;
+	cursor: pointer;
+	margin-right: 5px;
+}
+
+.innerTitleCon {
+	background: #24242c;
+	height: auto;
+	line-height: 40px;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.layuiadmin-card-text {
+	background: #009688;
+	color: #777;
+	padding: 14px;
+}
+
+.largeText {
+	font-style: normal;
+	font-size: 26px;
+	font-weight: 300;
+	color: #009688;
+	color: white;
+	text-align: center;
+}
+
+.layui-text-top {
+	color: white;
+	text-align: center;
+}
+
+.layuiadmin-card-text .layui-text-top i {
+	margin-right: 0px;
+	font-size: 16px;
+	color: white;
+}
+
+.layuiadmin-card-text .layui-text-center {
+	height: auto;
+	line-height: 22px;
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+
+.layui-text-bottom ul {
+	width: 100%;
+	overflow: hidden;
+}
+
+.layui-text-bottom ul li {
+	width: 50%;
+	float: left;
+	font-size: 10px;
+	color: #ccc;
+}
+
+.cardRed {
+	background: #f44336;
+}
+
+.cardBlue {
+	background: #2196f3;
+}
+</style>
+</head>
+
+<body class="bgBackColor">
+	<div class="scroll-1">
+		<div class="layui-row">
+			<div class="layui-col-md12 rightConSpace">
+				<div class="titleRightCon">
+					<span class="leftTextWhite">应用概况</span> <span
+						class="rightTextGreen"><a href="demoManagerIndex.html"><i
+							class="icon iconfont icon-guanli"></i>&nbsp;模块管理</a></span>
+				</div>
+				<!------------------------------------------------------------------------------------------------>
+				<div class="RightConFirst">
+					<!-- 右侧内容导航栏 start -->
+
+					<div class="layui-row">
+						<div class="layui-col-md11">
+							<div class="innerTitleCon">
+								<ul class="nav nav-pills" id="tab">
+									<li class="active"><a href="#right1" onclick="loadBzjq()" data-toggle="pill">本周警情</a>
+									</li>
+									<li><a href="#right2" onclick="loadWffz()" data-toggle="pill">违法犯罪警情</a></li>
+									<li><a href="#right3" onclick="loadHddjq()" data-toggle="pill">黄、赌、毒警情</a></li>
+									<li><a href="#right4" onclick="loadXf()" data-toggle="pill">消防及救助</a></li>
+									<li><a href="#right5" onclick="loadZdj()" data-toggle="pill">周打击成效汇总</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="layui-col-md1" align="right">
+							<button class="layui-btn layui-btn-normal"
+								style="margin-top: 10px;">添加项</button>
+						</div>
+					</div>
+					<!-- <div class="innerTitleCon">
+			
+				<ul class="nav nav-pills" id="tab" >
+					<li class="active">
+						<a href="#right1" data-toggle="pill">本周警情</a>
+					</li>
+					<li>
+						<a href="#right2" data-toggle="pill">违法犯罪警情</a>
+					</li>
+					<li>
+						<a href="#right3" data-toggle="pill">黄、赌、毒警情</a>
+					</li>
+					<li>
+						<a href="#right4" data-toggle="pill">消防及救助</a>
+					</li>
+					<li>
+						<a href="#right5" data-toggle="pill">周打击成效汇总</a>
+					</li>
+				</ul>
+				
+			</div> -->
+
+					<!-- 右侧内容导航栏 end -->
+
+					<!-- 右侧内容信息 start -->
+					<div class="tab-content" id="tab-content">
+						<div class="tab-pane fade in active" id="right1">
+							<div class="layui-row" style="margin: 16px;">
+								<div class="layui-col-md12">
+									<select class="selectStyle150" name="modules"
+										style="margin-right: 20px; float: left;" lay-verify="required"
+										lay-search="">
+										<option value="1">时间段</option>
+										<option value="2">快速选择</option>
+									</select>
+									<div class="zxsj" style="float: left;">
+										<label class="textWhite1">时间范围：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="time" id="dateTime1" value=""
+												class="layui-input " placeholder="选择时间范围"
+												readonly="readonly" /> <input type="hidden"
+												id="dateTime1hidden" />
+										</div>
+									</div>
+									<div class="ksms"
+										style="display: none; color: white; float: left;">
+										<label class="textWhite1">时间范围：</label> <input type="radio"
+											name="choose" value="bn" checked="checked" />&nbsp;本年&nbsp;&nbsp;
+										<input type="radio" name="choose" value="bj" />&nbsp;本季度&nbsp;&nbsp;
+										<input type="radio" name="choose" value="by" />&nbsp;本月&nbsp;&nbsp;
+										<input type="radio" name="choose" value="bz" />&nbsp;本周
+									</div>
+								</div>
+
+							</div>
+							<div class="layui-row layui-col-space10 RightConTwo">
+								<!-- 本周全区各类警情对比表 start -->
+								<div class="layui-col-md6 leftConTwo">
+									<span id="bzjqdbt" style="padding-top: 10px;">本周全区各类警情对比表</span>
+									<div class="tableConTwo">
+										
+
+										<!-- <div id="bzjq1" style="width:100%;height:360px;">
+									<div class="row" id="row1" style="margin-top: 20px;color: white;">
+							         <div class="col-lg-3 col-6" onclick="goToBzjqView('重复报警')">
+							            <div id="cfbj1" class="small-box bg-success" style="width: 130px;height: 140px">
+							              <div class="inner" id="cfbj">
+							              </div>
+							              <div class="icon">
+							                <i class="ion ion-bag"></i>
+							              </div> 
+							            
+							            </div>
+							          </div>
+							          <div class="col-lg-3 col-6" onclick="goToBzjqView('投诉')">
+							            <div id="ts1" class="small-box bg-success" style="width: 130px;height: 140px" >
+							              <div class="inner" id="ts">
+							              </div>
+							              <div class="icon">
+							                <i class="ion ion-stats-bars"></i>
+							              </div>
+							             
+							            </div>
+							          </div>
+							          <div class="col-lg-3 col-6" onclick="goToBzjqView('噪音扰民')">
+							            <div id="zyrm1" class="small-box bg-success" style="width: 130px;height: 140px">
+							              <div class="inner" id="zyrm">
+							               
+							              </div>
+							              <div class="icon">
+							                <i class="ion ion-person-add"></i>
+							              </div>
+							            
+							            </div>
+							          </div>
+							          <div class="col-lg-3 col-6" onclick="goToBzjqView('骚扰误报')">
+							            <div id="srwb1" class="small-box bg-success" style="width: 130px;height: 140px">
+							              <div class="inner" id="srwb">
+							               
+							              </div>
+							              <div class="icon">
+							                <i class="ion ion-pie-graph"></i>
+							              </div>
+							            
+							            </div>
+							          </div>
+							     	</div>
+								
+									<div class="row" id="row2" style="margin-top: 30px;color: white;">
+							          <div class="col-lg-3 col-6" onclick="goToBzjqView('求助')">
+							            <div id="qz1" class="small-box bg-success" style="width: 130px;height: 140px">
+							              <div class="inner" id="qz">
+							              </div>
+							              <div class="icon">
+							                <i class="ion ion-bag"></i>
+							              </div> 
+							            
+							            </div>
+							          </div>
+							          <div class="col-lg-3 col-6">
+							            <div id="zx1" class="small-box bg-success" style="width: 130px;height: 140px" >
+							              <div class="inner" id="zx" onclick="goToBzjqView('咨询')">
+							              </div>
+							              <div class="icon">
+							                <i class="ion ion-stats-bars"></i>
+							              </div>
+							             
+							            </div>
+							          </div>
+							          <div class="col-lg-3 col-6" onclick="goToBzjqView('火灾')">
+							            <div id="hz1" class="small-box bg-success" style="width: 130px;height: 140px">
+							              <div class="inner" id="hz">
+							               
+							              </div>
+							              <div class="icon">
+							                <i class="ion ion-person-add"></i>
+							              </div>
+							             
+							            </div>
+							          </div>
+							          <div class="col-lg-3 col-6"  onclick="goToBzjqView('交通事故')">
+							            <div id="jtsg1" class="small-box bg-success" style="width: 130px;height: 140px">
+							              <div class="inner" id="jtsg">
+							               
+							              </div>
+							              <div class="icon">
+							                <i class="ion ion-pie-graph"></i>
+							              </div>
+							            
+							            </div>
+							          </div>
+							     	</div>
+								</div> -->
+										<table id= "weekTable" style="margin-top: -5px">
+									<thead>
+										<tr>
+											<th>警情类别</th>
+											<th>数量</th>
+											<th>上期</th>
+											<th>环比</th>
+											<th>同期</th>
+											<th>同比</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!-- <tr>
+											<td>其他类警情</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr> -->
+										<tr>
+											<td>违法犯罪警情</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>总警情</td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+										
+										<div class="layui-row layui-col-space10"
+											style="padding: 15px;">
+											<div class="layui-col-md3" id="cfbj"
+												onclick="goToBzjqView('重复报警')">
+												<!-- <div class="layuiadmin-card-text">
+						                  <div class="layui-text-top">
+							                  <i class="layui-icon layui-icon-read"></i>&nbsp;重复报警
+						                  </div>
+						                  <div class="layui-text-center largeText">45646</div>
+						                  <div class="layui-text-bottom">
+							                 <ul class="">
+							                 	<li>
+							                 		<div>同比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 	<li>
+							                 		<div>环比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 </ul>
+						                  </div>
+						                </div> -->
+											</div>
+											<div class="layui-col-md3" id="ts"
+												onclick="goToBzjqView('投诉')">
+												<!-- <div class="layuiadmin-card-text cardBlue">
+						                  <div class="layui-text-top">
+							                  <i class="layui-icon layui-icon-read"></i>&nbsp;重复报警
+						                  </div>
+						                  <div class="layui-text-center largeText">45646</div>
+						                  <div class="layui-text-bottom">
+							                 <ul class="">
+							                 	<li>
+							                 		<div>同比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 	<li>
+							                 		<div>环比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 </ul>
+						                  </div>
+						                </div> -->
+											</div>
+											<div class="layui-col-md3" id="zyrm"
+												onclick="goToBzjqView('噪音扰民')">
+												<!-- <div class="layuiadmin-card-text cardRed">
+						                  <div class="layui-text-top">
+							                  <i class="layui-icon layui-icon-read"></i>&nbsp;重复报警
+						                  </div>
+						                  <div class="layui-text-center largeText">45646</div>
+						                  <div class="layui-text-bottom">
+							                 <ul class="">
+							                 	<li>
+							                 		<div>同比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 	<li>
+							                 		<div>环比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 </ul>
+						                  </div>
+						                </div> -->
+											</div>
+											<div class="layui-col-md3" id="srwb"
+												onclick="goToBzjqView('骚扰误报')">
+												<!-- <div class="layuiadmin-card-text">
+						                  <div class="layui-text-top">
+							                  <i class="layui-icon layui-icon-read"></i>&nbsp;重复报警
+						                  </div>
+						                  <div class="layui-text-center largeText">45646</div>
+						                  <div class="layui-text-bottom">
+							                 <ul class="">
+							                 	<li>
+							                 		<div>同比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 	<li>
+							                 		<div>环比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 </ul>
+						                  </div>
+						                </div> -->
+											</div>
+											<div class="layui-col-md3" id="qz"
+												nclick="goToBzjqView('求助')">
+												<!-- <div class="layuiadmin-card-text">
+						                  <div class="layui-text-top">
+							                  <i class="layui-icon layui-icon-read"></i>&nbsp;重复报警
+						                  </div>
+						                  <div class="layui-text-center largeText">45646</div>
+						                  <div class="layui-text-bottom">
+							                 <ul class="">
+							                 	<li>
+							                 		<div>同比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 	<li>
+							                 		<div>环比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 </ul>
+						                  </div>
+						                </div> -->
+											</div>
+											<div class="layui-col-md3" id="zx"
+												onclick="goToBzjqView('咨询')">
+												<!-- <div class="layuiadmin-card-text">
+						                  <div class="layui-text-top">
+							                  <i class="layui-icon layui-icon-read"></i>&nbsp;重复报警
+						                  </div>
+						                  <div class="layui-text-center largeText">45646</div>
+						                  <div class="layui-text-bottom">
+							                 <ul class="">
+							                 	<li>
+							                 		<div>同比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 	<li>
+							                 		<div>环比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 </ul>
+						                  </div>
+						                </div> -->
+											</div>
+											<div class="layui-col-md3" id="hz"
+												onclick="goToBzjqView('火灾')">
+												<!-- <div class="layuiadmin-card-text">
+						                  <div class="layui-text-top">
+							                  <i class="layui-icon layui-icon-read"></i>&nbsp;重复报警
+						                  </div>
+						                  <div class="layui-text-center largeText">45646</div>
+						                  <div class="layui-text-bottom">
+							                 <ul class="">
+							                 	<li>
+							                 		<div>同比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 	<li>
+							                 		<div>环比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 </ul>
+						                  </div>
+						                </div> -->
+											</div>
+
+											<div class="layui-col-md3" id="jtsg"
+												onclick="goToBzjqView('交通事故')">
+												<!-- <div class="layuiadmin-card-text">
+						                  <div class="layui-text-top">
+							                  <i class="layui-icon layui-icon-read"></i>&nbsp;重复报警
+						                  </div>
+						                  <div class="layui-text-center largeText">45646</div>
+						                  <div class="layui-text-bottom">
+							                 <ul class="">
+							                 	<li>
+							                 		<div>同比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 	<li>
+							                 		<div>环比</div>
+							                 		<div>0.01%</div>
+							                 	</li>
+							                 </ul>
+						                  </div>
+						                </div> -->
+											</div>
+										</div>
+								
+									</div>
+								</div>
+								<!-- 本周全区各类警情对比表 end -->
+
+								<!-- 本周全区各类警情占比图 start -->
+								<div class="layui-col-md6 rightConTwo">
+									<span id="bzjqzbt" style="padding-top: 10px;">本周全区各类警情占比图</span>
+									<div class="pieConTwo" style="margin-top: 15px;">
+										<div id="bzjq2" style="height: 416px; width: 100%;"></div>
+									</div>
+								</div>
+								<!-- 本周全区各类警情占比图 end -->
+							</div>
+						</div>
+						<div class="tab-pane fade in" id="right2">
+							<div class="layui-row" style="margin: 16px;">
+								<div class="layui-col-md12">
+									<select class="selectStyle150" name="modules"
+										style="margin-right: 20px; float: left;" lay-verify="required"
+										lay-search="">
+										<option value="1">时间段</option>
+										<option value="2">快速选择</option>
+									</select>
+									<div class="zxsj" style="float: left;">
+										<label class="textWhite1">时间范围：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="time" id="dateTime2" value=""
+												class="layui-input " placeholder="选择时间范围"
+												readonly="readonly" />
+										</div>
+									</div>
+									<div class="ksms"
+										style="display: none; color: white; float: left;">
+										<label class="textWhite1">时间范围：</label> <input type="radio"
+											name="choose2" value="bn" />&nbsp;本年&nbsp;&nbsp; <input
+											type="radio" name="choose2" value="bj" />&nbsp;本季度&nbsp;&nbsp;
+										<input type="radio" name="choose2" value="by" />&nbsp;本月&nbsp;&nbsp;
+										<input type="radio" name="choose2" value="bz" />&nbsp;本周
+									</div>
+								</div>
+							</div>
+							<div class="docContentTitle">
+								<p>违法犯罪警情情况</p>
+								<div class="docTitleBtn">
+									<button class="layui-btn layui-btn-xs">
+										<i class="icon iconfont">&#xe752;</i>&nbsp;导出word文件
+									</button>
+								</div>
+							</div>
+							<div class="docContent">
+								<div id="ms">
+									本周共接报各类违法犯罪警情<span id="nowSum">243</span>件，非侵财类违法犯罪警情<span
+										id="fqcNowSum">243</span>件，环比上周<span id="fqcLastSum">243</span>件<span
+										id="hbFqc"></span>： 侵财类违法犯罪警情<span id="qcNowSum">243</span>件，环比上周<span
+										id="qcLastSum">243</span>件<span id="hbQc">243</span>。
+									“三盗两抢一诈骗“警情<span id="dqzNowSum">243</span>件，环比上周<span
+										id="dqzLastSum">243</span>件<span id="hbDqz">243</span>，同比<span
+										id="dqzLastYearSum"></span>件<span id="tbDqz">243</span>。
+								</div>
+								<p class="docContentBtn">
+									<a>收起&nbsp;<i class="icon iconfont">&#xe624;</i></a>
+								</p>
+							</div>
+							<div class="layui-row layui-col-space10 RightConTwo">
+								<!-- 全区违法犯罪警情趋势对比图 start -->
+								<div class="layui-col-md6 leftConTwo">
+									<span style="padding-top: 10px;" id="qqwffzqsdbt">全区违法犯罪警情趋势对比图</span>
+									<div class="pieConTwo">
+										<div id="wffzjq1" style="height: 300px; width: 100%;"></div>
+									</div>
+								</div>
+								<!-- 全区违法犯罪警情趋势对比图 end -->
+
+								<!-- 本周违法犯罪警情对比图 start -->
+								<div class="layui-col-md6 rightConTwo">
+									<span style="padding-top: 10px;" id="bzwffzdbt">本周违法犯罪警情对比图</span>
+									<div class="pieConTwo">
+										<div id="wffzjq2" style="height: 300px; width: 100%;"></div>
+									</div>
+								</div>
+								<!-- 本周违法犯罪警情对比图 end -->
+							</div>
+							<!-- 四个统计表按钮START -->
+							<div style="height:30px;line-height:30px;margin-top:50px;border:1px solid #ccc">
+								<ul class="nav nav-pills">
+									<li id="tab_1" class="active"><a href="#" onclick="showhide1()"
+										data-toggle="pill">未反馈违法犯罪具体警情统计表</a></li>
+									<li id="tab_2"><a href="#" onclick="showhide2()" data-toggle="pill">全区各所辖区警情分类统计表</a>
+									</li>
+									<li id="tab_3"><a href="#" onclick="showhide3()" data-toggle="pill">全区各辖区违法警情累计同比统计表</a>
+									</li>
+									<li id="tab_4"><a href="#" onclick="showhide4()" data-toggle="pill">"三盗两抢一诈骗"警情及其他警情情况</a>
+									</li>
+								</ul>
+							</div>
+							<!-- 四个统计表按钮END -->
+							<div id="showhide"
+								class="layui-row layui-col-space10 RightConTwo">
+
+								<!-- 未反馈违法犯罪具体警情统计表 start -->
+								<div id="show_1" class="layui-col-md12 leftConTwo">
+									<span style="padding-top: 0px;">未反馈违法犯罪具体警情统计表</span>
+									<div class="tableConTwo">
+										<table>
+											<thead>
+												<tr>
+													<th>派出所</th>
+													<th>上周</th>
+													<th>本周</th>
+													<th>环比</th>
+													<th>去年同期</th>
+													<th>今年累计（件）</th>
+													<th>去年同期累计（件）</th>
+													<th>同比去年</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>龙泉所</td>
+													<td>23</td>
+													<td>11</td>
+													<td>1.7%</td>
+													<td>34</td>
+													<td>5869</td>
+													<td>2535</td>
+													<td>12%</td>
+												</tr>
+												<tr>
+													<td>北干道</td>
+													<td>23</td>
+													<td>11</td>
+													<td>1.7%</td>
+													<td>34</td>
+													<td>5869</td>
+													<td>2535</td>
+													<td>12%</td>
+												</tr>
+												<tr>
+													<td>十陵所</td>
+													<td>23</td>
+													<td>11</td>
+													<td>1.7%</td>
+													<td>34</td>
+													<td>5869</td>
+													<td>2535</td>
+													<td>12%</td>
+												</tr>
+												<tr>
+													<td>总计</td>
+													<td>69</td>
+													<td>33</td>
+													<td>1.7%</td>
+													<td>102</td>
+													<td>168856</td>
+													<td>7856</td>
+													<td>14%</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<!-- 未反馈违法犯罪具体警情统计表 end -->
+
+								<!-- 全区各所辖区警情分类统计表 start -->
+								<div id="show_2" class="layui-col-md12 rightConTwo"
+									style="display: none;">
+									<span style="padding-top: 0px;">全区各所辖区警情分类统计表</span>
+									<div class="tableConTwo">
+										<table id="ff">
+											<thead>
+												<tr>
+													<th rowspan="2">派出所</th>
+													<th rowspan="2">上周合计</th>
+													<th rowspan="2">本周合计</th>
+													<th rowspan="2">去年同月周常量</th>
+													<th rowspan="2">抢劫</th>
+													<th rowspan="2">抢夺</th>
+													<th colspan="5" class="bottom_border">盗窃</th>
+													<th rowspan="2">扒窃</th>
+													<th rowspan="2">诈骗</th>
+													<th rowspan="2">非侵财</th>
+												</tr>
+
+												<tr>
+													<th>入室盗窃</th>
+													<th>盗窃汽车</th>
+													<th>盗窃车内物品</th>
+													<th>摩托车盗窃</th>
+													<th>其他盗窃</th>
+
+												</tr>
+											</thead>
+
+											<tbody>
+												<tr>
+													<td>龙泉所</td>
+													<td title="商城"><label class="red_text">12↑</label></td>
+													<td><label class="blue_text">1↓</label></td>
+													<td>7</td>
+													<td>4</td>
+													<td>9</td>
+													<td><label class="blue_text">5↓</label></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td><label class="blue_text">1↓</label></td>
+													<td>2</td>
+													<td>5</td>
+													<td>1</td>
+
+
+												</tr>
+												<tr>
+													<td>北干道</td>
+													<td><label class="red_text">23↑</label></td>
+													<td><label class="blue_text">11↓</label></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td><label class="blue_text">1↓</label></td>
+													<td>2</td>
+													<td>1</td>
+													<td>7</td>
+													<td>4</td>
+													<td><label class="red_text">3↑</label></td>
+													<td><label class="blue_text">11↓</label></td>
+
+													<td><label class="red_text">1↑</label></td>
+
+												</tr>
+												<tr>
+													<td>十陵所</td>
+													<td><label class="red_text">2↑</label></td>
+													<td><label class="blue_text">11↓</label></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td><label class="red_text">3↑</label></td>
+													<td><label class="blue_text">11↓</label></td>
+													<td>1</td>
+													<td>7</td>
+													<td>4</td>
+													<td><label class="blue_text">1↓</label></td>
+													<td><label class="blue_text">6↓</label></td>
+													<td>2</td>
+
+												</tr>
+
+											</tbody>
+
+										</table>
+
+									</div>
+
+								</div>
+								<!-- 全区各所辖区警情分类统计表 end -->
+
+								<!-- 全区各辖区违法警情累计同比统计表 start -->
+								<div id="show_3" class="layui-col-md12 leftConTwo"
+									style="display: none;">
+
+									<span style="padding-top: 0px;">全区各辖区违法警情累计同比统计表</span>
+
+									<div class="tableConTwo">
+
+										<table id="qqwffwtb">
+
+											<thead>
+												<tr>
+													<th width="40%">单位</th>
+													<th width="20%">截止目前累计（件） 2017年12月21日至2018年6月23日</th>
+													<th width="20%">去年同期累计（件）2016年12月21日至2017年6月23日</th>
+													<th width="20%">同比</th>
+												</tr>
+											</thead>
+
+											<tbody>
+												<tr>
+													<td>龙泉所</td>
+													<td>3232</td>
+													<td>3304</td>
+													<td>15.5%</td>
+												</tr>
+												<tr>
+													<td>北干道</td>
+													<td>675</td>
+													<td>664</td>
+													<td>5.6%</td>
+												</tr>
+												<tr>
+													<td>十陵所</td>
+													<td>4</td>
+													<td>4</td>
+													<td>持平</td>
+												</tr>
+
+
+											</tbody>
+
+										</table>
+
+									</div>
+
+								</div>
+								<!-- 全区各辖区违法警情累计同比统计表 end -->
+
+								<!-- ”三盗两抢一诈骗“警情及其他警情情况 start -->
+								<div id="show_4" class="layui-col-md12 rightConTwo"
+									style="display: none;">
+
+									<span style="padding-top: 0px;">”三盗两抢一诈骗“警情及其他警情情况</span>
+
+									<div class="tableConTwo">
+
+										<table id="szlqyzp">
+
+											<thead>
+												<tr>
+													<th width="20%">类型</th>
+													<th width="10%">本周（件）</th>
+													<th width="10%">上周（件）</th>
+													<th width="10%">环比</th>
+													<th width="20%">截止目前累计（件）2017年12月21日至2018年6月23日</th>
+													<th width="20%">去年同期累计（件）2017年12月21日至2018年6月23日</th>
+													<th width="10%">同比</th>
+												</tr>
+											</thead>
+
+											<tbody>
+												<tr>
+													<td>抢劫</td>
+													<td>32</td>
+													<td>14</td>
+													<td>-2.2%</td>
+													<td>10</td>
+													<td>13</td>
+													<td>15.5%</td>
+												</tr>
+												<tr>
+													<td>抢夺</td>
+													<td>675</td>
+													<td>664</td>
+													<td>10</td>
+													<td>639</td>
+													<td>13</td>
+													<td>5.6%</td>
+												</tr>
+												<tr>
+													<td>入室抢劫</td>
+													<td>4</td>
+													<td>14</td>
+													<td>持平</td>
+													<td>4</td>
+													<td>13</td>
+													<td>持平</td>
+												</tr>
+
+											</tbody>
+
+										</table>
+
+									</div>
+
+								</div>
+								<!-- ”三盗两抢一诈骗“警情及其他警情情况 end -->
+							</div>
+						</div>
+						<div class="tab-pane fade in" id="right3">
+							<div class="layui-row" style="margin: 16px;">
+								<div class="layui-col-md12">
+									<select class="selectStyle150" name="modules"
+										style="margin-right: 20px; float: left;" lay-verify="required"
+										lay-search="">
+										<option value="1">时间段</option>
+										<option value="2">快速选择</option>
+									</select>
+									<div class="zxsj" style="float: left;">
+										<label class="textWhite1">时间范围：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="time" id="dateTime3" value=""
+												class="layui-input " placeholder="选择时间范围"
+												readonly="readonly" /> <input type="hidden"
+												id="dateTime3hidden" />
+										</div>
+									</div>
+									<div class="ksms"
+										style="display: none; color: white; float: left;">
+										<label class="textWhite1">时间范围：</label> <input type="radio"
+											name="choose" value="bn" checked="checked" />&nbsp;本年&nbsp;&nbsp;
+										<input type="radio" name="choose" value="bj" />&nbsp;本季度&nbsp;&nbsp;
+										<input type="radio" name="choose" value="by" />&nbsp;本月&nbsp;&nbsp;
+										<input type="radio" name="choose" value="bz" />&nbsp;本周
+									</div>
+								</div>
+							</div>
+							<div class="docContentTitle">
+								<p>”黄、赌、毒“警情汇总</p>
+								<div class="docTitleBtn">
+									<button class="layui-btn layui-btn-xs">
+										<i class="icon iconfont">&#xe752;</i>&nbsp;导出word文件
+									</button>
+								</div>
+							</div>
+							<div class="docContent">
+								<div>
+									<p>本周未接报非法集资、环境污染、食药安全的警情。</p>
+								</div>
+								<p class="docContentBtn">
+									<a>收起&nbsp;<i class="icon iconfont">&#xe624;</i></a>
+								</p>
+							</div>
+							<div class="layui-row layui-col-space10 RightConTwo">
+								<!-- 全区”黄、赌、毒“警情汇总表 start -->
+								<div class="layui-col-md12 leftConTwo">
+									<span style="padding-top: 10px;">全区”黄、赌、毒“警情汇总表</span>
+									<div class="tableConTwo">
+										<table>
+											<thead>
+												<tr>
+													<th rowspan="3">派出所</th>
+													<th colspan="9" class="bottom_border">警情分类</th>
+													<th rowspan="3">合计</th>
+												</tr>
+												<tr>
+													<th colspan="3" class="bottom_border">黄</th>
+													<th colspan="3" class="bottom_border">赌</th>
+													<th colspan="3" class="bottom_border">毒</th>
+												</tr>
+												<tr>
+													<th>警情数</th>
+													<th>未发现数</th>
+													<th>查处数</th>
+													<th>警情数</th>
+													<th>未发现数</th>
+													<th>查处数</th>
+													<th>警情数</th>
+													<th>未发现数</th>
+													<th>查处数</th>
+												</tr>
+											</thead>
+											<tbody id="hddjqhzt">
+												<tr>
+													<td>龙泉所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>大面所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>洛带所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>山泉所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>柏合所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>十陵所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>西河所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>洪安所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>黄土所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>洪河所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>万兴所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>经开所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>平安所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>同安所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>茶店所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>怡和所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+												<tr>
+													<td>北干道所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td>0</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<!-- 全区”黄、赌、毒“警情汇总表 end -->
+
+								<!-- 全区”黄、赌、毒“累计警情对比表 start -->
+								<div class="layui-col-md12 leftConTwo">
+									<span style="padding-top: 0px;">全区”黄、赌、毒“累计警情对比表</span>
+									<div class="tableConTwo">
+										<table>
+											<thead>
+												<tr>
+													<th rowspan="3">派出所</th>
+													<th colspan="9" class="bottom_border">警情分类</th>
+												</tr>
+												<tr>
+													<th colspan="3" class="bottom_border">黄</th>
+													<th colspan="3" class="bottom_border">赌</th>
+													<th colspan="3" class="bottom_border">毒</th>
+												</tr>
+												<tr>
+													<th>截止目前累计</th>
+													<th>同期</th>
+													<th>同比</th>
+													<th>截止目前累计</th>
+													<th>同期</th>
+													<th>同比</th>
+													<th>截止目前累计</th>
+													<th>同期</th>
+													<th>同比</th>
+												</tr>
+											</thead>
+											<tbody id="hddjqdbt">
+												<tr>
+													<td>龙泉所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>大面所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>洛带所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>山泉所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>柏合所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>十陵所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>西河所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>洪安所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>黄土所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>洪河所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>万兴所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>经开所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>平安所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>同安所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>茶店所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>怡和所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+												<tr>
+													<td>北干道所</td>
+													<td class="clickClass" data-lb="01">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="02">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass" data-lb="03">0</td>
+													<td class="clickClass">0</td>
+													<td class="clickClass">0</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<!-- 全区”黄、赌、毒“累计警情对比表 end -->
+							</div>
+						</div>
+						<div class="tab-pane fade in" id="right4">
+							<div class="layui-row" style="margin: 16px;">
+								<div class="layui-col-md12">
+
+									<select class="selectStyle150" name="modules"
+										style="margin-right: 20px; float: left;" lay-verify="required"
+										lay-search="">
+										<option value="1">时间段</option>
+										<option value="2">快速选择</option>
+									</select>
+
+									<div class="zxsj" style="float: left;">
+										<label class="textWhite1">时间范围：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="time" id="dateTime4" value=""
+												class="layui-input " placeholder="选择时间范围"
+												readonly="readonly" />
+										</div>
+									</div>
+									<div class="ksms"
+										style="display: none; color: white; float: left;">
+										<label class="textWhite1">时间范围：</label> <input type="radio"
+											name="choose" value="bn" checked="checked" />&nbsp;本年&nbsp;&nbsp;
+										<input type="radio" name="choose" value="bj" />&nbsp;本季度&nbsp;&nbsp;
+										<input type="radio" name="choose" value="by" />&nbsp;本月&nbsp;&nbsp;
+										<input type="radio" name="choose" value="bz" />&nbsp;本周
+									</div>
+
+								</div>
+							</div>
+
+							<div class="docContentTitle">
+
+								<p>一消防及救助情况</p>
+
+								<div class="docTitleBtn">
+
+									<button class="layui-btn layui-btn-xs">
+										<i class="icon iconfont">&#xe752;</i>&nbsp;导出word文件
+									</button>
+
+								</div>
+
+							</div>
+
+							<div class="docContent">
+
+								<div>
+
+									上周，全区“110”共接报各类警情3232件，环比上周3304件下降2.2%，同比去年同期2799件上升15.5%，日均接报461件：其中，接报违
+									法犯罪警情243件（占7.5%，110接报169件，派出所自接报74件），环比上周283件（110接报178件，派出所自接报105件）下降14.1%，同比3
+									17件下降23.3%。</div>
+
+								<p class="docContentBtn">
+									<a>收起&nbsp;<i class="icon iconfont">&#xe624;</i></a>
+								</p>
+
+							</div>
+
+						</div>
+
+						<div class="tab-pane fade in" id="right5">
+
+							<div class="layui-row" style="margin: 16px;">
+								<div class="layui-col-md12">
+
+									<select class="selectStyle150" name="modules"
+										style="margin-right: 20px; float: left;" lay-verify="required"
+										lay-search="">
+										<option value="1">时间段</option>
+										<option value="2">快速选择</option>
+									</select>
+
+									<div class="zxsj" style="float: left;">
+										<label class="textWhite1">时间范围：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="time" id="dateTime5" value=""
+												class="layui-input " placeholder="选择时间范围"
+												readonly="readonly" />
+										</div>
+									</div>
+									<div class="ksms"
+										style="display: none; color: white; float: left;">
+										<label class="textWhite1">时间范围：</label> <input type="radio"
+											name="choose" value="bn" checked="checked" />&nbsp;本年&nbsp;&nbsp;
+										<input type="radio" name="choose" value="bj" />&nbsp;本季度&nbsp;&nbsp;
+										<input type="radio" name="choose" value="by" />&nbsp;本月&nbsp;&nbsp;
+										<input type="radio" name="choose" value="bz" />&nbsp;本周
+									</div>
+
+								</div>
+							</div>
+
+							<div class="docContentTitle">
+
+								<p>周打击成效汇总情况</p>
+
+								<div class="docTitleBtn">
+
+									<button class="layui-btn layui-btn-xs">
+										<i class="icon iconfont">&#xe752;</i>&nbsp;导出word文件
+									</button>
+
+								</div>
+
+							</div>
+
+							<div class="docContent">
+
+								<div>
+
+									<p>本周未接报非法集资、环境污染、食药安全的警情。</p>
+
+								</div>
+
+								<p class="docContentBtn">
+									<a>收起&nbsp;<i class="icon iconfont">&#xe624;</i></a>
+								</p>
+
+							</div>
+
+							<div class="layui-row layui-col-space10 RightConTwo">
+
+								<!-- 全区”黄、赌、毒“警情汇总表 start -->
+								<div class="layui-col-md12 leftConTwo">
+
+									<span style="padding-top: 10px;">周打击成效汇总情况</span>
+
+									<div class="tableConTwo">
+
+										<table>
+
+											<thead>
+												<tr>
+													<th colspan="12" class="bottom_border">周打击成效统计表</th>
+												</tr>
+												<tr>
+													<th rowspan="3" colspan="2" class="bottom_border">派出所</th>
+													<th rowspan="2" colspan="2" class="bottom_border">合计(3.25-6.23)</th>
+													<th colspan="8" class="bottom_border">时间</th>
+												</tr>
+												<tr>
+													<th colspan="2" class="bottom_border">5月27日-6月2号</th>
+													<th colspan="2" class="bottom_border">6月3日-6月9号</th>
+													<th colspan="2" class="bottom_border">6月10日-6月16号</th>
+													<th colspan="2" class="bottom_border">6月17日-6月23号</th>
+												</tr>
+												<tr>
+													<th>刑事拘留</th>
+													<th>行政拘留</th>
+													<th>刑事拘留</th>
+													<th>行政拘留</th>
+													<th>刑事拘留</th>
+													<th>行政拘留</th>
+													<th>刑事拘留</th>
+													<th>行政拘留</th>
+													<th>刑事拘留</th>
+													<th>行政拘留</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td rowspan="5">一类所</td>
+													<td>龙泉所</td>
+													<td>15</td>
+													<td>30</td>
+													<td>9</td>
+													<td>3</td>
+													<td>2</td>
+													<td>5</td>
+													<td>2</td>
+													<td>6</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+												<tr>
+													<td>北干道所</td>
+													<td>15</td>
+													<td>30</td>
+													<td>9</td>
+													<td>3</td>
+													<td>2</td>
+													<td>5</td>
+													<td>2</td>
+													<td>6</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+												<tr>
+													<td>洪河所</td>
+													<td>15</td>
+													<td>30</td>
+													<td>9</td>
+													<td>3</td>
+													<td>2</td>
+													<td>5</td>
+													<td>2</td>
+													<td>6</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+												<tr>
+													<td>大面所</td>
+													<td>15</td>
+													<td>30</td>
+													<td>9</td>
+													<td>3</td>
+													<td>2</td>
+													<td>5</td>
+													<td>2</td>
+													<td>6</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+												<tr>
+													<td>柏合所</td>
+													<td>15</td>
+													<td>30</td>
+													<td>9</td>
+													<td>3</td>
+													<td>2</td>
+													<td>5</td>
+													<td>2</td>
+													<td>6</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+
+											</tbody>
+
+										</table>
+
+									</div>
+
+								</div>
+								<!-- 全区”黄、赌、毒“警情汇总表 end -->
+
+								<div class="layui-col-md12 leftConTwo">
+
+									<span style="padding-top: 0px;">周打击成效汇总情况</span>
+
+									<div class="tableConTwo">
+
+										<table>
+
+											<thead>
+												<tr>
+													<th colspan="12" class="bottom_border">周打击成效统计表</th>
+												</tr>
+												<tr>
+													<th rowspan="3" colspan="2" class="bottom_border">部门</th>
+													<th rowspan="2" colspan="2" class="bottom_border">合计(3.25-6.23)</th>
+													<th colspan="8" class="bottom_border">时间</th>
+												</tr>
+												<tr>
+													<th colspan="2" class="bottom_border">5月27日-6月2号</th>
+													<th colspan="2" class="bottom_border">6月3日-6月9号</th>
+													<th colspan="2" class="bottom_border">6月10日-6月16号</th>
+													<th colspan="2" class="bottom_border">6月17日-6月23号</th>
+												</tr>
+												<tr>
+													<th>刑事拘留</th>
+													<th>行政拘留</th>
+													<th>刑事拘留</th>
+													<th>行政拘留</th>
+													<th>刑事拘留</th>
+													<th>行政拘留</th>
+													<th>刑事拘留</th>
+													<th>行政拘留</th>
+													<th>刑事拘留</th>
+													<th>行政拘留</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td rowspan="5">职能部门</td>
+													<td>刑警大队</td>
+													<td>15</td>
+													<td>30</td>
+													<td>9</td>
+													<td>3</td>
+													<td>2</td>
+													<td>5</td>
+													<td>2</td>
+													<td>6</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+												<tr>
+													<td>经侦大队</td>
+													<td>15</td>
+													<td>30</td>
+													<td>9</td>
+													<td>3</td>
+													<td>2</td>
+													<td>5</td>
+													<td>2</td>
+													<td>6</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+												<tr>
+													<td>交警大队</td>
+													<td>15</td>
+													<td>30</td>
+													<td>9</td>
+													<td>3</td>
+													<td>2</td>
+													<td>5</td>
+													<td>2</td>
+													<td>6</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+												<tr>
+													<td>治安大队</td>
+													<td>15</td>
+													<td>30</td>
+													<td>9</td>
+													<td>3</td>
+													<td>2</td>
+													<td>5</td>
+													<td>2</td>
+													<td>6</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+												<tr>
+													<td>禁毒大队</td>
+													<td>15</td>
+													<td>30</td>
+													<td>9</td>
+													<td>3</td>
+													<td>2</td>
+													<td>5</td>
+													<td>2</td>
+													<td>6</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+
+											</tbody>
+
+										</table>
+
+									</div>
+
+								</div>
+
+							</div>
+
+						</div>
+
+						<div class="tab-pane fade in" id="right6">
+
+							<div class="layui-row" style="margin: 16px;">
+								<div class="layui-col-md12">
+
+									<select class="selectStyle150" name="modules"
+										style="margin-right: 20px; float: left;" lay-verify="required"
+										lay-search="">
+										<option value="1">时间段</option>
+										<option value="2">快速选择</option>
+									</select>
+
+									<div class="zxsj" style="float: left;">
+										<label class="textWhite1">时间范围：</label>
+										<div class="layui-input-inline">
+											<input type="text" name="time" id="dateTime6" value=""
+												class="layui-input " placeholder="选择时间范围"
+												readonly="readonly" />
+										</div>
+									</div>
+									<div class="ksms"
+										style="display: none; color: white; float: left;">
+										<label class="textWhite1">时间范围：</label> <input type="radio"
+											name="choose" value="bn" checked="checked" />&nbsp;本年&nbsp;&nbsp;
+										<input type="radio" name="choose" value="bj" />&nbsp;本季度&nbsp;&nbsp;
+										<input type="radio" name="choose" value="by" />&nbsp;本月&nbsp;&nbsp;
+										<input type="radio" name="choose" value="bz" />&nbsp;本周
+									</div>
+
+								</div>
+							</div>
+
+							<div class="docContentTitle">
+
+								<p>市局警情监测通报</p>
+
+								<div class="docTitleBtn">
+
+									<button class="layui-btn layui-btn-xs">
+										<i class="icon iconfont">&#xe752;</i>&nbsp;导出word文件
+									</button>
+
+								</div>
+
+							</div>
+
+							<div class="docContent">
+
+								<div>
+
+									上周，全区“110”共接报各类警情3232件，环比上周3304件下降2.2%，同比去年同期2799件上升15.5%，日均接报461件：其中，接报违
+									法犯罪警情243件（占7.5%，110接报169件，派出所自接报74件），环比上周283件（110接报178件，派出所自接报105件）下降14.1%，同比3
+									17件下降23.3%。</div>
+
+								<p class="docContentBtn">
+									<a>收起&nbsp;<i class="icon iconfont">&#xe624;</i></a>
+								</p>
+
+							</div>
+
+							<div class="layui-row layui-col-space10 RightConTwo">
+
+								<!-- 市局警情监测通报 start -->
+								<div class="layui-col-md12 leftConTwo">
+
+									<span style="padding-top: 10px;">全市警情四色预警数据统计图</span>
+
+									<div class="tableConTwo">
+
+										<table>
+
+											<thead>
+												<tr>
+													<th>单位</th>
+													<th>类别</th>
+													<th>本周</th>
+													<th>去年同月周常量</th>
+													<th>本周浮动比例</th>
+													<th>近三年周常量</th>
+													<th>近三年周可浮动值</th>
+													<th>可浮动比例</th>
+													<th>预警提示</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td rowspan="6">龙泉驿</td>
+													<td>违法犯罪</td>
+													<td>233</td>
+													<td>58</td>
+													<td>12%</td>
+													<td>586.8</td>
+													<td>35</td>
+													<td>12%</td>
+													<td></td>
+												</tr>
+												<tr>
+													<td>侵财类</td>
+													<td>233</td>
+													<td>58</td>
+													<td>12%</td>
+													<td>586.8</td>
+													<td>35</td>
+													<td>12%</td>
+													<td></td>
+												</tr>
+												<tr>
+													<td>两抢</td>
+													<td>233</td>
+													<td>58</td>
+													<td>12%</td>
+													<td>586.8</td>
+													<td>35</td>
+													<td>12%</td>
+													<td></td>
+												</tr>
+												<tr>
+													<td>入室盗窃</td>
+													<td>233</td>
+													<td>58</td>
+													<td>12%</td>
+													<td>586.8</td>
+													<td>35</td>
+													<td>12%</td>
+													<td></td>
+												</tr>
+												<tr>
+													<td>涉车类盗窃</td>
+													<td>233</td>
+													<td>58</td>
+													<td>12%</td>
+													<td>586.8</td>
+													<td>35</td>
+													<td>12%</td>
+													<td></td>
+												</tr>
+												<tr>
+													<td>诈骗</td>
+													<td>233</td>
+													<td>58</td>
+													<td>12%</td>
+													<td>586.8</td>
+													<td>35</td>
+													<td>12%</td>
+													<td></td>
+												</tr>
+											</tbody>
+
+										</table>
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 右侧内容信息 end -->
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../style/static/js/jquery.min.js?v=2.1.4"></script>
+	<script src="layui.js"></script>
+	<script src="lay/modules/laydate.js"></script>
+	<script src="lay/modules/layer.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/echarts.js"></script>
+	<script src="js/echarts-wordcloud.js"></script>
+	<script src="js/showEcharts.js"></script>
+	<script src="lay/modules/code.js"></script>
+	<script src="lay/modules/carousel.js"></script>
+	<script src="lay/modules/element.js"></script>
+	<script src="lay/modules/form.js"></script>
+	<script src="lay/modules/layedit.js"></script>
+	<script src="lay/modules/laypage.js"></script>
+	<script src="lay/modules/laytpl.js"></script>
+	<script src="lay/modules/mobile.js"></script>
+	<script src="lay/modules/rate.js"></script>
+	<script src="lay/modules/table.js"></script>
+	<script src="lay/modules/util.js"></script>
+	<script src="lay/modules/upload.js"></script>
+	<script src="../style/js/jqfx/bzjq.js"></script>
+	<script src="../style/js/jqfx/wffzjq.js"></script>
+	<script src="../style/js/jqfx/hddjq.js"></script>
+	<script src="../style/js/sys.js"></script>
+
+	<script src="lay/modules/tree.js"></script>
+	<script src="js/police/policeSituation.js"></script>
+
+
+	<script type="text/javascript">
+
+
+	
+
+	
+	var charts = [];
+	//var chart1 = echarts.init(document.getElementById("bzjq1"));
+	var chart2 = echarts.init(document.getElementById("bzjq2"));
+	var chart3 = echarts.init(document.getElementById("wffzjq1"));
+	var chart4 = echarts.init(document.getElementById("wffzjq2"));
+	//chart1.setOption(bzjq1);
+	chart2.setOption(bzjq2);
+	chart3.setOption(wffzjq1);
+	chart4.setOption(wffzjq2);
+	//charts.push(chart1);
+	charts.push(chart2);
+	charts.push(chart3);
+	charts.push(chart4);
+			
+	$(window).resize(function() {
+		for(var i = 0; i < charts.length; i++) {
+			charts[i].resize();
+		}
+	});
+	//解决tab切换不显示问题 在加载窗口后重新渲染。
+	$('a[data-toggle="pill"]').on('shown.bs.tab', function(e) {
+		for(var i = 0; i < charts.length; i++) {
+			charts[i].resize();
+		}
+	});
+	
+	layui.use('laydate', function(){
+		var laydate = layui.laydate;
+		//日期范围
+		//常规用法
+		laydate.render({
+			elem: '#dateTime1',
+			theme: 'grid',
+			range: true,
+			done: function(value){//控件选择完毕后的回调---点击日期、清空、现在、确定均会触发。
+				if(value!=""){
+					$("#dateTime1hidden").val(value)
+					var str = value.split("-");
+					var startDate = str[0]+"-"+str[1]+"-"+str[2]+"00:00:00";
+					var endDate = str[3]+"-"+str[4]+"-"+str[5]+" 23:59:59";
+					bzjqLoad(startDate.trim(),endDate.trim());
+					
+				}
+			}
+		});
+		laydate.render({
+			elem: '#dateTime2',
+			theme: 'grid',
+			range: true,
+			done: function(value){//控件选择完毕后的回调---点击日期、清空、现在、确定均会触发。
+				if(value!=""){
+					$("#dateTime3hidden").val(value)
+					var str = value.split("-");
+					var startDate = str[0]+"-"+str[1]+"-"+str[2]+"00:00:00";
+					var endDate = str[3]+"-"+str[4]+"-"+str[5]+" 23:59:59";
+					alert(startDate.trim()+"--"+endDate.trim())
+					//全区违法犯罪警情趋势对比图
+					initEchart1(startDate.trim(),endDate.trim());
+					//本周违法犯罪警情对比图
+					initEchart2(startDate.trim(),endDate.trim());
+					//违法犯罪警情文字描述
+					initDs(startDate.trim(),endDate.trim());
+					//全区各所辖区警情分类统
+					qqJqFl(startDate.trim(),endDate.trim());
+					
+				}
+			}
+		});
+		laydate.render({
+			elem: '#dateTime3',
+			theme: 'grid',
+			range: true,
+			
+		});
+		laydate.render({
+			elem: '#dateTime4',
+			theme: 'grid',
+			range: true
+		});
+		laydate.render({
+			elem: '#dateTime5',
+			theme: 'grid',
+			range: true
+		});
+		laydate.render({
+			elem: '#dateTime6',
+			theme: 'grid',
+			range: true
+		});
+	});
+	
+	$(".selectStyle150").change(function(){
+		$(this).next(".zxsj").children("div").children().val("");
+		if($(this).val()==1){
+			$(this).next(".zxsj").show();
+			$(this).next().next().hide();
+		}
+		if($(this).val()==2){
+			$(this).next().next().show();
+			$(this).next(".zxsj").hide();
+		}
+	})
+</script>
+</body>
+</html>

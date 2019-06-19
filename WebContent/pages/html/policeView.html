@@ -1,0 +1,258 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		  <link rel="stylesheet" href="css/layui.css">
+          <link rel="stylesheet" href="css/bootstrap.min.css">
+          <link rel="stylesheet" href="css/addStyle.css">
+		  <link rel="stylesheet" href="css/modules/layer/default/layer.css">
+		  <link rel="stylesheet" href="css/modules/laydate/default/laydate.css">
+          <link rel="stylesheet" href="font-size/iconfont.css">
+		<title></title>
+		
+	<style>
+	ul li a{color:black;}
+	.layui-col-md6{margin-bottom:10px;}
+	</style>
+	</head>
+
+	<body class="whiteBack">
+		<div class="scroll-1">
+			<div class="layui-row" style="padding:20px;padding-top:40px;">
+		
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">警情类别</label>
+						</div>
+						<div class="layui-col-md8">				
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="盗窃电动自行车" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">报警时间</label>
+						</div>
+						<div class="layui-col-md8">
+							
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="2018年9月18日 09:00:00" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">事发地址</label>
+						</div>
+						<div class="layui-col-md8">
+							
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="东山国际H区11栋负一楼" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">报案人</label>
+						</div>
+						<div class="layui-col-md8">
+							
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="陈小军" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">报案人联系电话</label>
+						</div>
+						<div class="layui-col-md8">
+							
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="18284502092" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">报案人现住址</label>
+						</div>
+						<div class="layui-col-md8">
+							
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="四川省成都市龙泉驿区柏合镇爱琴路88号11栋1单元1005号" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">接警人</label>
+						</div>
+						<div class="layui-col-md8">	
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="李沛" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">接警单位</label>
+						</div>
+						<div class="layui-col-md8">	
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="四川省成都市公安局龙泉驿区分局柏合派出所" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">警情状态</label>
+						</div>
+						<div class="layui-col-md8">	
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="已处理" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">警情性质</label>
+						</div>
+						<div class="layui-col-md8">	
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="违法犯罪案件" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">录入人姓名</label>
+						</div>
+						<div class="layui-col-md8">	
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="李沛" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md6">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<label class="layui-form-label">录入人部门</label>
+						</div>
+						<div class="layui-col-md8">	
+							<input type="text" name="title" lay-verify="title" autocomplete="off" value="四川省成都市公安局龙泉驿区分局柏合派出所" class="layui-input1" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<!--<div class="layui-col-md4">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<span class="leftTitleName">警情类别：</span>
+						</div>
+						<div class="layui-col-md8">
+							<div class="rightMsgName">
+							盗窃电动自行车</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md4">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<span class="leftTitleName">报警时间：</span>
+						</div>
+						<div class="layui-col-md8">
+							<div class="rightMsgName">2018年9月18日 09:00:00</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="layui-col-md4">
+					<div class="layui-row">
+						<div class="layui-col-md4">
+							<span class="leftTitleName">事发地址：</span>
+						</div>
+						<div class="layui-col-md8">
+							<div class="rightMsgName">东山国际H区11栋负一楼</div>
+						</div>
+					</div>
+				</div>-->
+
+				<div class="layui-col-md12">
+					<div class="layui-row">
+						<div class="layui-col-md2">
+							<label class="layui-form-label">简要案情</label>
+						</div>
+						<div class="layui-col-md10">	
+							<textarea placeholder="" style="text-align:left;" class="layui-textarea1" disabled>
+								2018年9月18日9时许，我所接陈小军（男28岁，现住龙泉驿区柏合镇东山国际H区11栋1单元1005号）。报警称：其电动三轮车被盗。经调查，2018年9月17日20时30分许，陈小军将一辆红色战虎牌电动三轮车停放在东山国际H区11栋负一楼140号停车位上，今日7时30分许发现被盗。损失价值1800余元。
+							</textarea>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+<script src="layui.js"></script>
+<script src="lay/modules/tree.js"></script>
+<script src="lay/modules/laydate.js"></script>
+<script src="js/jquery-3.1.1.js"></script>
+<script src="lay/modules/layer.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="lay/modules/code.js"></script> 
+<script src="lay/modules/carousel.js"></script> 
+<script src="lay/modules/element.js"></script> 
+<script src="lay/modules/jquery.js"></script> 
+<script src="lay/modules/form.js"></script> 
+<script src="lay/modules/layedit.js"></script> 
+<script src="lay/modules/laypage.js"></script> 
+<script src="lay/modules/laytpl.js"></script> 
+<script src="lay/modules/mobile.js"></script> 
+<script src="lay/modules/rate.js"></script> 
+<script src="lay/modules/table.js"></script> 
+<script src="lay/modules/util.js"></script> 
+<script src="lay/modules/upload.js"></script> 
+<script src="lay/modules/scrollbar.min.js"></script>
+
+<script type="text/javascript">
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+  
+   //日期范围
+  laydate.render({
+    elem: '#test6'
+    ,range: true
+  });
+  
+});
+
+$(function(){
+        $(".listType li").click(function(){
+            $(".listType li").eq($(this).index()).addClass("changeColor");
+			//$(".listType li").eq($(this).index()).addClass("changeColor").siblings().removeClass("changeColor");
+        })
+    })
+</script>
+
+	</body>
+
+</html>

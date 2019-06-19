@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtlckj.base.jqfx.mapper.HddjqMapper">
+	
+	
+	<!-- 根据办理单位获得警情 -->
+	<select id="getHddjqByBldw" resultType="com.mtlckj.base.jqfx.vo.HddjqVo">
+	 	select count(*) as jqs,lb,bldw from HDDJQ where bldw = #{bldw} and 
+	 	TO_CHAR(TO_DATE(bjsj,'yyyy-MM-dd hh24:mi:ss'),'yyyy-MM-dd hh24:mi:ss') >= #{start} and 
+	 	#{end} >= TO_CHAR(TO_DATE(bjsj,'yyyy-MM-dd hh24:mi:ss'),'yyyy-MM-dd hh24:mi:ss')
+	 	group by lb,bldw 
+	</select>
+	
+	<select id="getList" resultType="com.mtlckj.base.jqfx.domain.Hddjq">
+		select t2.id,t2.lb,t2.bjsj,t2.jbnr,t2.bldw,t2.bljg,t2.bz,t2.sqmj,t2.fsbz,t2.ccbz from 
+		(
+			select rownum rn, t.* from 
+			(
+				select * from HDDJQ where TO_CHAR(TO_DATE(bjsj,'yyyy-MM-dd hh24:mi:ss'),'yyyy-MM-dd hh24:mi:ss') &gt;= #{start} 
+				and TO_CHAR(TO_DATE(bjsj,'yyyy-MM-dd hh24:mi:ss'),'yyyy-MM-dd hh24:mi:ss') &lt;= #{end}
+				<if test="search !='' and search != null">
+					and bjnr like concat(concat('%',#{search}),'%')
+					or bljg like concat(concat('%',#{search}),'%')
+					or sqmc like concat(concat('%',#{search}),'%')
+					or bz like concat(concat('%',#{search}),'%')
+				</if>
+				<if test="bldw != null and bldw != ''"> and bldw = #{bldw} </if>
+				<if test="lb != null and lb != ''"> and lb = #{lb} </if>
+				<choose>
+					<when test="sort != null and sort.trim() != ''">
+						order by ${sort} ${order}
+					</when>
+					<otherwise>
+						order by bjsj desc
+					</otherwise>
+				</choose>
+			)t   
+			where rownum &lt; #{limit} 
+		)t2
+		where rn &gt; = #{offset}
+	</select>
+	
+	
+	
+	<select id="count" resultType="int">
+		select count(*) from HDDJQ where TO_CHAR(TO_DATE(bjsj,'yyyy-MM-dd hh24:mi:ss'),'yyyy-MM-dd hh24:mi:ss') &gt;= #{start} 
+		and TO_CHAR(TO_DATE(bjsj,'yyyy-MM-dd hh24:mi:ss'),'yyyy-MM-dd hh24:mi:ss') &lt;= #{end}
+			<if test="search !='' and search != null">
+				and bjnr like concat(concat('%',#{search}),'%')
+				or bljg like concat(concat('%',#{search}),'%')
+				or sqmc like concat(concat('%',#{search}),'%')
+				or bz like concat(concat('%',#{search}),'%')
+			</if>
+			<if test="bldw != null and bldw != ''"> and bldw = #{bldw} </if>
+			<if test="lb != null and lb != ''"> and lb = #{lb} </if>
+	</select>
+	
+</mapper>

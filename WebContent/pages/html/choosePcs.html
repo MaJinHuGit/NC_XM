@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/layui.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/addStyle.css">
+<link rel="stylesheet" href="css/modules/layer/default/layer.css">
+<link rel="stylesheet" href="css/modules/laydate/default/laydate.css">
+<link rel="stylesheet" href="font-size/iconfont.css">
+<title></title>
+<style>
+ul li a {
+	color: black;
+}
+</style>
+</head>
+<body class="whiteBack">
+	<div class="scroll-1">
+		<div class="layui-row">
+			<div class="layui-col-md12" style="padding: 20px;">
+				<div class="" align="center">
+					<ul id="pscname" class="listType">
+						<li>盗窃</li>
+						<li>抢劫</li>
+						<li>违法警情</li>
+						<li>诈骗</li>
+						<li>摩、电</li>
+						<li>入室盗窃</li>
+						<li>涉车盗窃</li>
+						<li>两抢</li>
+						<li>侵财类</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="layui.js"></script>
+	<script src="lay/modules/tree.js"></script>
+	<script src="lay/modules/laydate.js"></script>
+	<script src="js/jquery-3.1.1.js"></script>
+	<script src="lay/modules/layer.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="lay/modules/code.js"></script>
+	<script src="lay/modules/carousel.js"></script>
+	<script src="lay/modules/element.js"></script>
+	<script src="lay/modules/jquery.js"></script>
+	<script src="lay/modules/form.js"></script>
+	<script src="lay/modules/layedit.js"></script>
+	<script src="lay/modules/laypage.js"></script>
+	<script src="lay/modules/laytpl.js"></script>
+	<script src="lay/modules/mobile.js"></script>
+	<script src="lay/modules/rate.js"></script>
+	<script src="lay/modules/table.js"></script>
+	<script src="lay/modules/util.js"></script>
+	<script src="lay/modules/upload.js"></script>
+	<script src="lay/modules/scrollbar.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			getPcs();
+		})
+		
+		var lists = document.getElementById("pscname");
+		
+		lists.addEventListener("click",function(event){
+			
+			var target = event.target;
+			if(target.nodeName == "LI"){
+				target.classList.add("changeColor");
+				var name = target.innerHTML;
+			}
+			
+		});
+		
+		function getTarget(){
+			var obj = document.getElementsByClassName('changeColor');
+			return obj;
+		}
+		
+		function getPcs() {
+			$.ajax({
+				url : '../jqfx/selectType/getPcsList',
+				type : 'GET',
+				dataType : 'json',
+				success : function(msg) {
+					var data = msg.list;
+					var text = '';
+					for (var i = 0; i < data.length; i++) {
+						text += "<li>" + data[i].JC + "</li>";
+					}
+					$(".listType").html(text);
+				}
+			});
+		}
+	</script>
+</body>
+</html>

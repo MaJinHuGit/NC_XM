@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		  <link rel="stylesheet" href="css/layui.css">
+		  <link rel="stylesheet" href="css/layer.css">
+          <link rel="stylesheet" href="css/layui.mobile.css">
+          <link rel="stylesheet" href="css/bootstrap.min.css">
+          <link rel="stylesheet" href="css/global.css">
+          <link rel="stylesheet" href="css/addStyle.css">
+          <link rel="stylesheet" href="font-size/iconfont.css">
+          
+		  <link href="../style/static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+<link href="../style/static/css/bootstrap-table.min.css" rel="stylesheet">
+		<title></title>
+
+	</head>
+
+	<body class="whiteBack">
+		<div class="scroll-1">
+		<div align="center" style="margin:20px;">
+				<ul class="nav nav-pills" style="height:40px;line-height:40px;">
+					<li class="active"><a href="#right1" data-toggle="pill" class="textBlack">新建</a></li>
+					<li><a href="#right2" data-toggle="pill" class="textBlack">已有</a></li>
+				</ul>
+				<div class="centerLine"></div>
+				<div class="tab-content" style="margin:10px auto 20px;">
+					<div class="tab-pane fade in active" id="right1">
+						<form id="mainForm"  enctype="multipart/form-data" >
+							<table class="childPagesBox" border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td valign="middle">名称:</td>
+									<td><input type="text" name="tablename" value=""  class="textBlack selectStyle300" placeholder="名称" /></td>
+								</tr>
+								<tr>
+									<td valign="middle">导入字段:</td>
+									<td>
+									<input type="file" name="excelFile" value="" onchange="getFilePath()"  id="test3" style="float:left;display: none"  />
+									<button type="button" onclick="uploadTable()" class="layui-btn layui-btn-sm" id="" style="float:left;margin-left:10px;"><i class="icon iconfont">&#xe655;</i>&nbsp;导入字段</button>
+									&nbsp;&nbsp;&nbsp;&nbsp;<a href="../jqfx/sys/downLoadTableMb"><button type="button" class="layui-btn layui-btn-sm layui-btn-normal"  id="test33">
+										<i class="icon iconfont">&#xe655;</i>&nbsp;导出模板</button></a>
+										
+										&nbsp;&nbsp;&nbsp;&nbsp;<span id="fileName"></span>&nbsp;&nbsp;&nbsp;
+										<span style="color: red">只能导入后缀名为xls的文件</span>
+									<!-- href="${ctxPath}/dataRes/downLoadFieldMb" -->
+									</td>
+								</tr>
+							</table>
+							
+						 </form>
+						<div class="centerLine"></div>
+						<div class="tableConTwoChild marginTop20" style="margin-top: -15px">
+						<table id="exampleTable" data-mobile-responsive="true"></table>           
+					</div>
+					<div class="layui-layer-btn layui-layer-btn-">
+					<a class="layui-layer-btn0" onclick="uplaodSub()">确定</a>
+					<a class="layui-layer-btn1" onclick="uplaodQx()">取消</a></div>
+				</div>
+				
+				<div class="tab-pane fade in" id="right2">
+					<!-- <table class="childPagesBox" border="0" cellpadding="0" cellspacing="0">
+						<tr>
+							<td valign="middle">已有资源:</td>
+							<td>
+								<select name="modules1" lay-verify="required" lay-search="" class="selectStyle150">           
+									<option value="1">资源1</option>
+									<option value="2">资源2</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td valign="middle">名称:</td>
+							<td><input type="text" name="name" value=""  class="textBlack selectStyle300" placeholder="名称" /></td>
+						</tr>
+						<tr>
+							<td valign="middle">导入字段:</td>
+							<td>
+								<input type="text" name="name" value=""  style="float:left;" class="textBlack selectStyle" placeholder="导入字段" />
+								<button type="button" class="layui-btn layui-btn-sm" id="" style="float:left;margin-left:10px;"><i class="icon iconfont">&#xe655;</i>&nbsp;导入字段</button>
+							</td>
+						</tr>
+					</table> -->
+				
+					<div class="tableConTwoChild marginTop20" >
+					<table id="exampleTable2" data-mobile-responsive="true"></table>       
+					
+					</div>
+				
+			    </div>
+			   </div>
+		 </div>
+
+	</div>
+<script src="js/jquery-3.1.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="../style/static/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="../style/static/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="../style/static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="layui.js"></script>
+<script src="lay/modules/tree.js"></script>
+<script src="lay/modules/laydate.js"></script>
+<script src="lay/modules/layer.js"></script>
+<!-- 最新的echarts核心 JavaScript 文件 -->
+<script src="lay/modules/code.js"></script> 
+<script src="lay/modules/carousel.js"></script> 
+<script src="lay/modules/element.js"></script> 
+<script src="lay/modules/jquery.js"></script> 
+<script src="lay/modules/form.js"></script> 
+<script src="lay/modules/layedit.js"></script> 
+<script src="lay/modules/laypage.js"></script> 
+<script src="lay/modules/laytpl.js"></script> 
+<script src="lay/modules/mobile.js"></script> 
+<script src="lay/modules/rate.js"></script> 
+<script src="lay/modules/table.js"></script> 
+<script src="lay/modules/util.js"></script> 
+<script src="lay/modules/upload.js"></script> 
+<script src="lay/modules/scrollbar.min.js"></script>
+
+<script src="../style/js/sys.js"></script>
+<script src="../style/static/js/jquery.form.js"></script>
+<script src="../style/js/jqfx/systemManagerAdd.js"></script>
+<script type="text/javascript">
+	//解决tab切换不显示问题 在加载窗口后重新渲染。
+	$('a[data-toggle="pill"]').on('shown.bs.tab', function(e) {
+		for(var i = 0; i < charts.length; i++) {
+			charts[i].resize();
+		}
+	});
+
+</script>
+<script>
+/* layui.use('upload', function(){
+  var $ = layui.jquery
+  ,upload = layui.upload;
+  
+  //指定允许上传的文件类型
+  upload.render({
+    elem: '#test3'
+    ,url: '/upload/'
+    ,accept: 'file' //普通文件
+    ,done: function(res){
+      console.log(res)
+    }
+  });
+ 
+  
+}); */
+</script>
+
+	</body>
+
+</html>

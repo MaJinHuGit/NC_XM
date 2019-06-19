@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtlckj.base.jqfx.mapper.SysMapper">
+	<update id="createNewTable" statementType="STATEMENT">
+		CREATE TABLE
+		${tableName}
+		(
+		${field}
+		)
+	</update>
+	<select id="getZjTableCount" resultType="java.lang.String">
+		SELECT MAX(A.S) FROM
+		(select TO_NUMBER(LTRIM(
+		TABLE_NAME,'TABLE')) S from user_tab_comments where TABLE_NAME like 'TABLE%') A
+	</select>
+	<update id="updateTableComment" statementType="STATEMENT"
+		parameterType="java.lang.String">
+
+		COMMENT ON TABLE ${tableName} IS '${comment}'
+	</update>
+
+	<update id="updateFieldComment" statementType="STATEMENT"
+		parameterType="java.lang.String">
+		COMMENT ON COLUMN ${field} IS '${comment}'
+
+	</update>
+
+	<select id="getTable"
+		resultType="com.mtlckj.base.jqfx.domain.Sys">
+		select a.TABLE_NAME tablename,a.COMMENTS comments from (select rownum
+		rn, t.* from
+		(
+		select aa.TABLE_NAME ,bb.COMMENTS
+		from user_tables aa,user_tab_comments bb
+		WHERE aa.TABLE_NAME=bb.TABLE_NAME
+		and aa.TABLE_NAME not in ('COSTUM_ANALYSIS','HDDJQ','JWZH_ASJ_JQXX','JWZH_DICT','JWZH_PCS'
+        ,'TABRESOURCE','WFFZJQ')
+		order by aa.TABLE_NAME
+
+		) t)a
+		<where>
+			a.RN&gt;#{offset} AND a.RN&lt;#{limit}
+		</where>
+	</select>
+
+	<select id="countSj" resultType="int" statementType="STATEMENT"
+		parameterType="java.lang.String">
+		select count(*) from ${tablename}
+	</select>
+
+	<select id="count" resultType="int">
+		 select count(*) from (select aa.TABLE_NAME ,bb.COMMENTS
+        from user_tables aa,user_tab_comments bb
+        WHERE aa.TABLE_NAME=bb.TABLE_NAME
+        and aa.TABLE_NAME not in ('COSTUM_ANALYSIS','HDDJQ','JWZH_ASJ_JQXX','JWZH_DICT','JWZH_PCS'
+        ,'TABRESOURCE','WFFZJQ')
+        order by aa.TABLE_NAME)
+		
+	</select>
+<select id="getFieldNoId"
+		resultType="com.mtlckj.base.jqfx.domain.Fields">
+
+ SELECT TABLE_NAME TABLENAME,COLUMN_NAME COLUMNNAME,COMMENTS COMMENTS,DATA_TYPE DATATYPE FROM (SELECT ROWNUM RN,A.*,B.DATA_TYPE FROM 
+ (SELECT TABLE_NAME, COLUMN_NAME,COMMENTS FROM USER_COL_COMMENTS WHERE TABLE_NAME='TABLE8') A, 
+ (SELECT TABLE_NAME, COLUMN_NAME,DATA_TYPE FROM USER_TAB_COLUMNS WHERE TABLE_NAME='TABLE8') B WHERE A.COLUMN_NAME = B.COLUMN_NAME ) AA 
+ WHERE COLUMN_NAME not in ('ID') 
+ </select>
+ 
+	<select id="getFields"
+		resultType="com.mtlckj.base.jqfx.domain.Fields">
+		SELECT
+		TABLE_NAME TABLENAME,COLUMN_NAME COLUMNNAME,COMMENTS
+		COMMENTS,DATA_TYPE DATATYPE FROM (SELECT ROWNUM
+		RN,A.*,B.DATA_TYPE FROM
+		(SELECT TABLE_NAME, COLUMN_NAME,COMMENTS FROM
+		USER_COL_COMMENTS WHERE
+		TABLE_NAME=#{tablename}) A,
+		(SELECT TABLE_NAME, COLUMN_NAME,DATA_TYPE
+		FROM USER_TAB_COLUMNS WHERE
+		TABLE_NAME=#{tablename}) B
+		<where> A.COLUMN_NAME = B.COLUMN_NAME</where>
+		) AA
+		<if test="offset != null and limit != null">
+			<where>
+
+				AA.RN&gt;#{offset} AND AA.RN&lt;#{limit}
+			</where>
+		</if>
+
+	</select>
+
+	<select id="countFields" resultType="int">
+		select count(*) from (select
+		TABLE_NAME, COLUMN_NAME,COMMENTS from user_col_comments where
+		TABLE_NAME=#{tablename}) a,
+		(select TABLE_NAME, COLUMN_NAME,DATA_TYPE
+		from user_tab_columns where
+		TABLE_NAME=#{tablename}) b
+		where
+		a.COLUMN_NAME = b.COLUMN_NAME
+
+	</select>
+
+	<insert id="save" useGeneratedKeys="true" keyProperty="ID"
+		statementType="STATEMENT">
+		insert into ${tablename}
+		(${field}
+		<!-- `username`, `name`, `password`, `dept_id`, `email`, `mobile`, `status`, 
+			`user_id_create`, `gmt_create`, `gmt_modified`, `sex`, `birth`, `pic_id`, 
+			`live_address`, `hobby`, `province`, `city`, `district` -->
+		)
+		values
+		(${value}
+		<!-- #{username}, #{name}, #{password}, #{deptId}, #{email}, #{mobile}, 
+			#{status}, #{userIdCreate}, #{gmtCreate}, #{gmtModified}, #{sex}, #{birth}, 
+			#{picId}, #{liveAddress}, #{hobby}, #{province}, #{city}, #{district} -->
+		)
+	</insert>
+	
+	<!--修改字段类型  -->
+	<update id="updateFieldType" statementType="STATEMENT"
+		parameterType="java.lang.String">
+		alter table ${tablename} modify (${field})
+		<!-- alter table Student modify (id varchar2(64)); -->
+	</update>
+	<!-- 添加字段 -->
+	<update id="addField" statementType="STATEMENT"
+		parameterType="java.lang.String">
+		alter table ${tablename}
+add (${field})
+		<!-- alter table test1
+add (name varchar2(30) ); -->
+	</update>
+	<!-- 删除字段 -->
+	<update id="deleteField" statementType="STATEMENT"
+		parameterType="java.lang.String">
+		alter table ${tablename}
+	drop column ${field}
+		<!-- alter table test1
+	drop column name; -->
+	</update>
+	<!--自定义字段名称后缀数字的最大值  -->
+	<select id="getZjFieldCount" resultType="java.lang.String">
+		SELECT MAX(A.S) FROM
+        (select TO_NUMBER(LTRIM(
+        COLUMN_NAME,'FIELD')) S from USER_COL_COMMENTS where COLUMN_NAME like 'FIELD%') A
+	</select>
+  	<!--判断字段中文名是否有重复  -->
+  	<select id="countComments" resultType="int">
+  		SELECT COUNT(*) FROM
+        USER_COL_COMMENTS WHERE
+        TABLE_NAME=#{tablename} AND COMMENTS=#{comment}
+  	</select>
+	<insert id="saveTable" parameterType="com.mtlckj.base.jqfx.domain.TableResource" useGeneratedKeys="true" keyProperty="userId">
+		insert into TABRESOURCE
+		(
+			tablecomments, 
+			tablename, 
+			createtime, 
+			username
+			
+		)
+		values
+		(
+			#{tablecomments}, 
+			#{tablename}, 
+			 TO_DATE(#{createtime},'yyyy/MM/dd hh24:mi:ss'), 
+			#{username}
+			
+		)
+	</insert>
+</mapper>

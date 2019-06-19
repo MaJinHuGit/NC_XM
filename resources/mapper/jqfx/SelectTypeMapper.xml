@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtlckj.base.jqfx.mapper.SelectTypeMapper">
+
+	<resultMap type="com.mtlckj.base.jqfx.domain.Details"
+		id="detailResult">
+		<result property="jqbh" column="JQBH" />
+		<result property="jjdbh" column="JJDBH" />
+		<result property="jqlydm" column="JQLYDM" />
+		<result property="bjfsdm" column="BJFSDM" />
+		<result property="rqsj" column="BJSJ_RQSJ" />
+		<result property="dzmc" column="SFDZ_DZMC" />
+		<result property="bzdz" column="SFBZDZ_DZMC" />
+		<result property="jyaq" column="JYAQ" />
+		<result property="sfzh" column="CLJQR_JMSFHM" />
+		<result property="xm" column="JJR_XM" />
+		<result property="gajgmc" column="JJDW_GAJGMC" />
+		<result property="gajgdm" column="JJDW_GAJGJGDM" />
+		<result property="bxm" column="BAR_XM" />
+		<result property="bsfzh" column="BAR_CYZJ_ZJHM" />
+		<result property="lxdh" column="BAR_LXDH" />
+
+	</resultMap>
+	<select id="getReturnTree"
+		resultType="com.mtlckj.base.jqfx.domain.ReturnTree">
+		select distinct JD.DM dm,JD.CT ct from JWZH_DICT jd where
+		JD.ZDBH='BD_D_JQLBDM'
+	</select>
+
+	<select id="getGwxq"
+		resultType="com.mtlckj.base.jqfx.domain.Gwxq">
+		SELECT * FROM
+		(
+		SELECT A.*, ROWNUM RN FROM (
+		SELECT T.JC PCSNAME,CASE WHEN T1.CT &gt;0 THEN T1.CT ELSE 0 END COUNT FROM
+		JWZH_PCS T ,(
+		SELECT JJDW_GAJGJGDM,COUNT(*) CT FROM JWZH_ASJ_JQXX WHERE
+
+		<foreach item="item" collection="paramList" index="index"
+			open="(" separator="OR" close=")">
+			<if test="item.isParent == 'true'.toString()">
+				JQLBDM like concat(#{item.num},'%')
+			</if>
+			<if test="item.isParent == 'false'.toString()">
+				JQLBDM = #{item.num}
+			</if>
+		</foreach>
+
+		and BJSJ_RQSJ &gt;=to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+		and BJSJ_RQSJ &lt;=to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+		GROUP BY JJDW_GAJGJGDM order by CT desc
+		) T1 WHERE T.ORGCODE =
+		T1.JJDW_GAJGJGDM(+)
+		) A WHERE ROWNUM &lt;= 3
+		)
+		WHERE RN &gt;= 0
+	</select>
+	
+	<select id="getGwxq2" resultType="com.mtlckj.base.jqfx.domain.Gwxq">
+		SELECT * FROM
+		(
+		SELECT A.*, ROWNUM RN FROM (
+		SELECT T.JC PCSNAME,CASE WHEN T1.CT &gt;0 THEN T1.CT ELSE 0 END COUNT FROM(
+			SELECT JC,ORGCODE FROM JWZH_PCS WHERE JC IN
+			<foreach item="item" collection="pcs" index="index"
+			open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		)T,(
+		SELECT JJDW_GAJGJGDM,COUNT(*) CT FROM JWZH_ASJ_JQXX WHERE
+
+		<foreach item="item" collection="paramList" index="index"
+			open="(" separator="OR" close=")">
+			<if test="item.isParent == 'true'.toString()">
+				JQLBDM like concat(#{item.num},'%')
+			</if>
+			<if test="item.isParent == 'false'.toString()">
+				JQLBDM = #{item.num}
+			</if>
+		</foreach>
+
+		and BJSJ_RQSJ &gt;=to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+		and BJSJ_RQSJ &lt;=to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+		GROUP BY JJDW_GAJGJGDM order by CT desc
+		) T1 WHERE T.ORGCODE =
+		T1.JJDW_GAJGJGDM(+)
+		) A WHERE ROWNUM &lt;= 3
+		)
+		WHERE RN &gt;= 0
+	</select>
+
+	<select id="getZtgk" resultType="int">
+		select count(*) from JWZH_ASJ_JQXX where 
+		<if test="isParent == 'true'.toString()"> 
+			JQLBDM like concat(#{typeNum},'%') 
+		</if> 
+		<if test="isParent == 'false'.toString()"> 
+			JQLBDM = #{typeNum} 
+		</if> 
+		<if test="pcsArr != null">
+			and JJDW_GAJGJGDM in (select ORGCODE from JWZH_PCS where JC in
+				<foreach item="item" collection="pcsArr" index="index"
+				open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			)
+		</if>
+		and BJSJ_RQSJ &gt;=to_date(#{startTime},'yyyy-mm-dd 
+		hh24:mi:ss') and BJSJ_RQSJ &lt;=to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+
+		
+	</select>
+	<select id="getTu1"
+		resultType="com.mtlckj.base.jqfx.domain.DateCount">
+		SELECT A.DAY,CASE WHEN B.COUNTS &gt; 0 THEN B.COUNTS ELSE 0 END COUNT
+		FROM(
+		SELECT TO_CHAR(TO_DATE(#{startTime}, 'yyyy-MM-dd') + ROWNUM - 1,
+		'yyyy-MM-dd') AS DAY FROM DUAL
+		CONNECT BY ROWNUM &lt;= TRUNC(TO_DATE(#{endTime}, 'yyyy-MM-dd') -
+		TO_DATE(#{startTime}, 'yyyy-MM-dd')) + 1
+		) A,(
+		SELECT BJSJ,COUNT(*) COUNTS FROM( SELECT
+		T.JQLBDM,TO_CHAR(T.BJSJ_RQSJ,'yyyy-MM-dd') BJSJ FROM JWZH_ASJ_JQXX T
+		WHERE BJSJ_RQSJ &lt;=TO_DATE(#{endTime}, 'yyyy-MM-dd') AND BJSJ_RQSJ
+		&gt;=TO_DATE(#{startTime}, 'yyyy-MM-dd') and
+		<if test="isParent == 'true'.toString()">
+			JQLBDM like concat(#{typeno},'%')
+		</if>
+		<if test="isParent == 'false'.toString()">
+			JQLBDM = #{typeno}
+		</if>
+		<if test="pcs != null">
+			AND JJDW_GAJGJGDM IN (SELECT ORGCODE FROM JWZH_PCS WHERE JC IN
+				<foreach item="item" collection="pcs" index="index"
+				open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			)
+		</if>
+
+		) GROUP BY BJSJ
+		) B WHERE A.DAY = B.BJSJ(+) ORDER BY DAY
+	</select>
+
+	<select id="getTu2" resultType="java.util.HashMap">
+		select a.cn countNow,b.cl countLast from (
+		select count(*) cn from JWZH_ASJ_JQXX j where
+		<if test="isParent == 'true'.toString()">
+			JQLBDM like concat(#{typeNum},'%')
+		</if>
+		<if test="isParent == 'false'.toString()">
+			JQLBDM = #{typeNum}
+		</if>
+		<if test="pcs != null">
+			AND JJDW_GAJGJGDM IN (SELECT ORGCODE FROM JWZH_PCS WHERE JC IN
+				<foreach item="item" collection="pcs" index="index"
+				open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			)
+		</if>
+		and J.BJSJ_RQSJ &gt;=to_date(#{startNowTime},'yyyy-mm-dd hh24:mi:ss')
+
+		and J.BJSJ_RQSJ &lt;=to_date(#{endNowTime},'yyyy-mm-dd hh24:mi:ss')
+		) a, (
+		select count(*) cl from JWZH_ASJ_JQXX j where
+		<if test="isParent == 'true'.toString()">
+			JQLBDM like concat(#{typeNum},'%')
+		</if>
+		<if test="isParent == 'false'.toString()">
+			JQLBDM = #{typeNum}
+		</if>
+		<if test="pcs != null">
+			AND JJDW_GAJGJGDM IN (SELECT ORGCODE FROM JWZH_PCS WHERE JC IN
+				<foreach item="item" collection="pcs" index="index"
+				open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			)
+		</if>
+		and J.BJSJ_RQSJ &gt;=to_date(#{startLastTime},'yyyy-mm-dd hh24:mi:ss')
+
+		and J.BJSJ_RQSJ &lt;=to_date(#{endLastTime},'yyyy-mm-dd hh24:mi:ss')
+		) b
+	</select>
+
+	<select id="getList" resultType="java.util.HashMap">
+		select * from(
+		select a.*,rownum rn from (
+		select JQBH,BJSJ_RQSJ,SFDZ_DZMC,CJDW_GAJGMC,BAR_XM,BAR_LXDH
+		from JWZH_ASJ_JQXX where
+		<if test="isParent == 'true'.toString()">
+			JQLBDM like concat(#{num},'%')
+		</if>
+		<if test="isParent == 'false'.toString()">
+			JQLBDM = #{num}
+		</if>
+		<if test="pcs != null">
+			AND JJDW_GAJGJGDM IN (SELECT ORGCODE FROM JWZH_PCS WHERE JC IN
+				<foreach item="item" collection="pcs" index="index"
+				open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			)
+		</if>
+		and BJSJ_RQSJ &gt;=TO_DATE(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+		and BJSJ_RQSJ &lt;=TO_DATE(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+		order by BJSJ_RQSJ desc
+		) a where rownum &lt;#{limit}
+		)where rn &gt;#{offset}
+	</select>
+
+	<select id="getTotal" resultType="int">
+		select count(*) from JWZH_ASJ_JQXX where
+		<if test="isParent == 'true'.toString()">
+			JQLBDM like concat(#{num},'%')
+		</if>
+		<if test="isParent == 'false'.toString()">
+			JQLBDM = #{num}
+		</if>
+		and BJSJ_RQSJ &gt;=TO_DATE(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+		and BJSJ_RQSJ &lt;=TO_DATE(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+	</select>
+
+	<select id="gwqy" resultType="java.util.HashMap">
+		SELECT L.PCS,L.ORGCODE,L.COUNTNOW,CASE WHEN L1.LASTCOUNT &gt;0 THEN L1.LASTCOUNT ELSE 0 END LASTCOUNT FROM(
+      	SELECT T.JC PCS,ORGCODE,CASE WHEN T1.CT &gt;0 THEN T1.CT ELSE 0 END COUNTNOW
+        FROM JWZH_PCS T ,(
+        SELECT JJDW_GAJGJGDM,CASE WHEN COUNT(*) &gt;0 THEN COUNT(*) ELSE 0 END CT FROM JWZH_ASJ_JQXX WHERE
+        <foreach item="item" collection="paramList" index="index"
+			open="(" separator="OR" close=")">
+			<if test="item.isParent == 'true'.toString()">
+				JQLBDM like concat(#{item.num},'%')
+			</if>
+			<if test="item.isParent == 'false'.toString()">
+				JQLBDM = #{item.num}
+			</if>
+		</foreach>
+      	AND BJSJ_RQSJ &gt;=TO_DATE(#{startNowTime},'yyyy-mm-dd hh24:mi:ss') 
+     	AND BJSJ_RQSJ &lt;=TO_DATE(#{endNowTime},'yyyy-mm-dd hh24:mi:ss')
+      
+        GROUP BY JJDW_GAJGJGDM
+        
+        ) T1 WHERE T.ORGCODE = T1.JJDW_GAJGJGDM(+)
+
+        ) L,(
+        SELECT JJDW_GAJGJGDM,CASE WHEN COUNT(*) &gt;0 THEN COUNT(*) ELSE 0 END LASTCOUNT FROM JWZH_ASJ_JQXX WHERE
+        <foreach item="item" collection="paramList" index="index"
+			open="(" separator="OR" close=")">
+			<if test="item.isParent == 'true'.toString()">
+				JQLBDM like concat(#{item.num},'%')
+			</if>
+			<if test="item.isParent == 'false'.toString()">
+				JQLBDM = #{item.num}
+			</if>
+		</foreach>
+
+        AND BJSJ_RQSJ &gt;=TO_DATE(#{startLastTime},'yyyy-mm-dd hh24:mi:ss')
+        AND BJSJ_RQSJ &lt;=TO_DATE(#{endLastTime},'yyyy-mm-dd hh24:mi:ss')
+
+        GROUP BY JJDW_GAJGJGDM
+      ) L1 WHERE L.ORGCODE = L1.JJDW_GAJGJGDM(+)
+	</select>
+	
+	<select id="gwqy2" resultType="java.util.HashMap">
+		SELECT L1.JC PCS,L1.ORGCODE,L1.CT COUNTNOW,L2.CT LASTCOUNT FROM (
+		SELECT T1.JC,T1.ORGCODE,CASE WHEN T2.CT>0 THEN T2.CT ELSE 0 END CT FROM (SELECT T.JC,T.ORGCODE FROM JWZH_PCS T WHERE T.JC IN 
+		<foreach item="item" collection="pcs" index="index"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		) T1,(
+		SELECT JJDW_GAJGJGDM,COUNT(*) CT FROM JWZH_ASJ_JQXX WHERE 
+		<foreach item="item" collection="paramList" index="index"
+			open="(" separator="OR" close=")">
+			<if test="item.isParent == 'true'.toString()">
+				JQLBDM like concat(#{item.num},'%')
+			</if>
+			<if test="item.isParent == 'false'.toString()">
+				JQLBDM = #{item.num}
+			</if>
+		</foreach>
+      	AND BJSJ_RQSJ &gt;=TO_DATE(#{startNowTime},'yyyy-mm-dd hh24:mi:ss') 
+     	AND BJSJ_RQSJ &lt;=TO_DATE(#{endNowTime},'yyyy-mm-dd hh24:mi:ss') 
+		GROUP BY JJDW_GAJGJGDM ) T2  WHERE T1.ORGCODE = T2.JJDW_GAJGJGDM(+)
+		) L1,(
+		SELECT T1.JC,T1.ORGCODE,CASE WHEN T2.CT>0 THEN T2.CT ELSE 0 END CT FROM (SELECT T.JC,T.ORGCODE FROM JWZH_PCS T WHERE T.JC IN 
+		<foreach item="item" collection="pcs" index="index"
+			open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		) T1,(
+		SELECT JJDW_GAJGJGDM,COUNT(*) CT FROM JWZH_ASJ_JQXX WHERE 
+		<foreach item="item" collection="paramList" index="index"
+			open="(" separator="OR" close=")">
+			<if test="item.isParent == 'true'.toString()">
+				JQLBDM like concat(#{item.num},'%')
+			</if>
+			<if test="item.isParent == 'false'.toString()">
+				JQLBDM = #{item.num}
+			</if>
+		</foreach>
+      	AND BJSJ_RQSJ &gt;=TO_DATE(#{startLastTime},'yyyy-mm-dd hh24:mi:ss')
+        AND BJSJ_RQSJ &lt;=TO_DATE(#{endLastTime},'yyyy-mm-dd hh24:mi:ss')
+		GROUP BY JJDW_GAJGJGDM ) T2  WHERE T1.ORGCODE = T2.JJDW_GAJGJGDM(+)
+		) L2 WHERE L1.JC=L2.JC
+	</select>
+
+	<select id="findByOrgcode" resultType="java.util.HashMap">
+		<if test="search != null and search != ''">
+			SELECT * FROM
+			(
+			SELECT TB.*, ROWNUM RN FROM (
+				SELECT TA.* FROM (
+					select CT,a.jqbh,BJSJ_RQSJ,a.SFDZ_DZMC,a.BAR_XM,a.BAR_LXDH from (
+					select * from JWZH_ASJ_JQXX where
+					<foreach item="item" collection="paramList" index="index"
+						open="(" separator="OR" close=")">
+						<if test="item.isParent == 'true'.toString()">
+							JQLBDM like concat(#{item.num},'%')
+						</if>
+						<if test="item.isParent == 'false'.toString()">
+							JQLBDM = #{item.num}
+						</if>
+					</foreach>
+					and JJDW_GAJGJGDM=#{orgcode}
+					and BJSJ_RQSJ &gt;=TO_DATE(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+					and BJSJ_RQSJ &lt;=TO_DATE(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+					) a left
+					join JWZH_DICT on a.JQLBDM=DM and ZDBH='BD_D_JQLBDM' order by
+					a.BJSJ_RQSJ desc
+				) TA WHERE (TA.CT LIKE #{search} OR TA.JQBH LIKE #{search} OR TA.BJSJ_RQSJ LIKE #{search}
+				OR TA.SFDZ_DZMC LIKE #{search} OR TA.BAR_XM LIKE #{search} OR TA.BAR_LXDH LIKE #{search}) 
+			) TB WHERE ROWNUM &lt;#{limit}
+			)
+			WHERE RN &gt;#{offset}
+		</if>
+		<if test="search == null or search == ''">
+			SELECT * FROM
+			(
+			SELECT TB.*, ROWNUM RN FROM (
+			
+			select CT,a.jqbh,BJSJ_RQSJ,a.SFDZ_DZMC,a.BAR_XM,a.BAR_LXDH from (
+			select * from JWZH_ASJ_JQXX where
+			<foreach item="item" collection="paramList" index="index"
+				open="(" separator="OR" close=")">
+				<if test="item.isParent == 'true'.toString()">
+					JQLBDM like concat(#{item.num},'%')
+				</if>
+				<if test="item.isParent == 'false'.toString()">
+					JQLBDM = #{item.num}
+				</if>
+			</foreach>
+			and JJDW_GAJGJGDM=#{orgcode}
+			and BJSJ_RQSJ &gt;=TO_DATE(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+			and BJSJ_RQSJ &lt;=TO_DATE(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+			) a left
+			join JWZH_DICT on a.JQLBDM=DM and ZDBH='BD_D_JQLBDM' order by
+			a.BJSJ_RQSJ desc
+			) TB WHERE ROWNUM &lt;#{limit}
+			)
+			WHERE RN &gt;#{offset}
+		</if>
+		
+	</select>
+
+	<select id="getTotalByOrgcode" resultType="int">
+		select count(*) from JWZH_ASJ_JQXX where
+		<foreach item="item" collection="paramList" index="index"
+			open="(" separator="OR" close=")">
+			<if test="item.isParent == 'true'.toString()">
+				JQLBDM like concat(#{item.num},'%')
+			</if>
+			<if test="item.isParent == 'false'.toString()">
+				JQLBDM = #{item.num}
+			</if>
+		</foreach>
+		and JJDW_GAJGJGDM=#{orgcode}
+		and BJSJ_RQSJ &gt;=TO_DATE(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+		and BJSJ_RQSJ &lt;=TO_DATE(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+	</select>
+	
+	<select id="forMap" resultType="java.util.HashMap">
+		SELECT SFBZDZ_DQJD,SFBZDZ_DQWD,XXZJBH FROM JWZH_ASJ_JQXX
+		WHERE BJSJ_RQSJ &gt;=TO_DATE(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+		AND BJSJ_RQSJ &lt;=TO_DATE(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+		AND
+		<if test="isParent == 'true'.toString()">
+			JQLBDM like concat(#{num},'%')
+		</if>
+		<if test="isParent == 'false'.toString()">
+			JQLBDM = #{num}
+		</if>
+		<if test="pcs != null">
+			and JJDW_GAJGJGDM in (select ORGCODE from JWZH_PCS where JC in
+				<foreach item="item" collection="pcs" index="index"
+				open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			)
+		</if>
+	</select>
+	
+	<select id="getPcsList" resultType="java.util.HashMap">
+		SELECT ORGCODE,NAME,JC FROM JWZH_PCS
+	</select>
+	
+</mapper>

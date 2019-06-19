@@ -1,0 +1,271 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		  <link rel="stylesheet" href="css/layui.css">
+          <link rel="stylesheet" href="css/bootstrap.min.css">
+          <link rel="stylesheet" href="css/addStyle.css">
+		  <link rel="stylesheet" href="css/modules/layer/default/layer.css">
+		  <link rel="stylesheet" href="css/modules/laydate/default/laydate.css">
+          <link rel="stylesheet" href="font-size/iconfont.css">
+		<title></title>
+		
+	<style>
+	ul li a{color:black;}
+	</style>
+	</head>
+
+	<body class="whiteBack">
+		<div class="scroll-1">
+			
+			<div style="width:850px;margin:10px auto;">
+				
+				<div class="layui-row">
+
+				<div class="layui-col-md12" style="height:500px;" >
+					<div style="padding:10px 0 10px 0;">
+						当前警情类别：<button class="layui-btn layui-btn-sm layui-btn-radius">盗窃</button>
+					</div>
+					<div class="layui-carousel" id="changeCon" lay-filter="" style="width:850px;height:500px;">
+					  <div carousel-item="">
+						
+						<div class="layui-row">
+							<div class="layui-col-md12" align="center" style="padding-bottom:10px;font-size:16px;">地段分布</div>
+							<div class="layui-col-md9">
+								<div id="longquanMap" align="center" style="width:100%;height:500px;border:1px solid #ccc;"></div>
+							</div>
+							<div class="layui-col-md3 mapTableMsg">
+								<div class="scroll-1">
+						
+									<table class="mapTableStyle">
+
+										<tbody>
+											<tr>
+												<td>    
+													<div class="textWhite textBlack">龙泉派出所5件</div>
+													<span class="textColor">集中在双龙路附近500米左右</span>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<div class="textWhite textBlack">大面派出所4件</div>
+													<span class="textColor">集中在红河北路300米左右</span>
+												</td>
+											</tr>
+										</tbody>
+										
+									</table>
+								
+								</div>
+							</div>
+						</div>
+						
+						<div class="layui-row">
+							<div class="layui-col-md12" align="center" style="padding-bottom:10px;font-size:16px;">时段分布</div>
+							
+							<div class="layui-col-md12">
+								<div id="timePieEcharts" align="center" style="width:850px;height:500px;border:1px solid #ccc;"></div>
+							</div>
+							
+						</div>
+						
+						<div class="layui-row">
+							<div class="layui-col-md12" align="center" style="padding-bottom:10px;font-size:16px;">数值分布</div>
+							
+							<div class="layui-col-md12">
+								<div id="numberPieEcharts" align="center" style="width:850px;height:500px;border:1px solid #ccc;padding:10px;"></div>
+							</div>
+							
+						</div>
+						
+					  </div>
+					</div>
+				</div>
+				
+			</div>
+				
+			</div>
+			
+			
+			
+		</div>
+		
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=wlOtsuUwhs3vAFH1AIiOx3E2PfDyrqRW"></script>
+<script src="layui.js"></script>
+<script type="text/javascript" src="js/echarts.min.js"></script>
+<script src="js/spreadEcharts.js"></script>
+<script src="lay/modules/tree.js"></script>
+<script src="lay/modules/laydate.js"></script>
+<script src="js/jquery-3.1.1.js"></script>
+<script src="lay/modules/layer.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="lay/modules/code.js"></script> 
+<script src="lay/modules/carousel.js"></script> 
+<script src="lay/modules/element.js"></script> 
+<script src="lay/modules/jquery.js"></script> 
+<script src="lay/modules/form.js"></script> 
+<script src="lay/modules/layedit.js"></script> 
+<script src="lay/modules/laypage.js"></script> 
+<script src="lay/modules/laytpl.js"></script> 
+<script src="lay/modules/mobile.js"></script> 
+<script src="lay/modules/rate.js"></script> 
+<script src="lay/modules/table.js"></script> 
+<script src="lay/modules/util.js"></script> 
+<script src="lay/modules/upload.js"></script> 
+<script src="lay/modules/scrollbar.min.js"></script>
+
+<script type="text/javascript">
+	var charts = [];
+	var chart1 = echarts.init(document.getElementById("timePieEcharts"));
+	var chart2 = echarts.init(document.getElementById("numberPieEcharts"));
+
+	chart1.setOption(option1);
+	chart2.setOption(option2);
+
+	charts.push(chart1);
+	charts.push(chart2);
+
+	$(window).resize(function() {
+		for(var i = 0; i < charts.length; i++) {
+			charts[i].resize();
+		}
+	});
+</script>
+	
+<script type="text/javascript">
+layui.use('laydate', function(){
+  var laydate = layui.laydate;
+  
+   //日期范围
+  laydate.render({
+    elem: '#test6'
+	,theme: 'grid'
+    ,range: true
+  });
+  
+});
+
+layui.use(['carousel', 'form'], function(){
+  var carousel = layui.carousel
+  ,form = layui.form;
+  
+  //常规轮播
+  carousel.render({
+    elem: '#changeCon'
+    ,arrow: 'always'
+	//,interval: 1800
+    ,anim: 'default'
+	,indicator: 'none'
+	,autoplay: false
+    ,height: '580px'
+	,width: 'auto'
+  });
+ });
+ 
+$(function(){
+        $(".listType li").click(function(){
+            $(".listType li").eq($(this).index()).addClass("changeColor");
+			//$(".listType li").eq($(this).index()).addClass("changeColor").siblings().removeClass("changeColor");
+        })
+    })
+	
+
+ <!--龙泉驿地图 start -->
+	var map = new BMap.Map("longquanMap");          // 创建地图实例  
+	var point = new BMap.Point(104.274227,30.553425);  // 创建点坐标
+	var opts = {type: BMAP_NAVIGATION_CONTROL_LARGE};
+	map.centerAndZoom(point, 15);                 // 初始化地图，设置中心点坐标和地图级别  
+	map.enableScrollWheelZoom(true);
+	var local = new BMap.LocalSearch(map, {
+		renderOptions:{map: map}
+	});	
+	//local.search("派出所");
+	//热力图
+	var points =[
+    {"lng":104.274227,"lat":30.553425,"count":15},
+    {"lng":104.298387,"lat":30.693327,"count":51},
+    {"lng":104.33647,"lat":30.648352,"count":115},
+    {"lng":104.273918,"lat":30.575948,"count":40},
+    {"lng":104.405944,"lat":30.613609,"count":0},
+    {"lng":104.2552,"lat":30.599393,"count":166},
+	{"lng":104.160201,"lat":30.614568,"count":50},
+    {"lng":104.358853,"lat":30.510944,"count":351},
+    {"lng":104.323937,"lat":30.545266,"count":15},
+    {"lng":104.278564,"lat":30.581971,"count":140},
+    {"lng":104.278727,"lat":30.581712,"count":0},
+    {"lng":104.321197,"lat":30.540796,"count":168},
+	{"lng":104.441436,"lat":30.637232,"count":66},
+	{"lng":104.3831,"lat":30.680167,"count":150},
+    {"lng":104.384062,"lat":30.679757,"count":51},
+    {"lng":104.35492,"lat":30.695406,"count":185},
+    {"lng":104.394536,"lat":30.654387,"count":240},
+    {"lng":104.332923,"lat":30.641782,"count":0},
+    {"lng":104.319284,"lat":30.648442,"count":258},
+	{"lng":104.194691,"lat":30.665779,"count":140},
+    {"lng":104.183874,"lat":30.669584,"count":0},
+    {"lng":104.198146,"lat":30.594158,"count":168},
+	{"lng":104.257061,"lat":30.577969,"count":166},
+	{"lng":104.267035,"lat":30.58076,"count":150},
+    {"lng":104.267179,"lat":30.578138,"count":151},
+    {"lng":104.193852,"lat":30.552691,"count":185},
+    {"lng":104.354929,"lat":30.695268,"count":240},
+    {"lng":104.33349,"lat":30.642138,"count":0},
+    {"lng":104.31748,"lat":30.615828,"count":258},
+	{"lng":104.235311,"lat":30.661361,"count":140},
+    {"lng":104.177676,"lat":30.641149,"count":0},
+    {"lng":104.174486,"lat":30.625981,"count":68},
+	{"lng":104.274518,"lat":30.562852,"count":66},
+	{"lng":104.266031,"lat":30.570695,"count":150},
+    {"lng":104.229162,"lat":30.523758,"count":151},
+    {"lng":104.298509,"lat":30.693185,"count":85},
+    {"lng":104.336411,"lat":30.648475,"count":24},
+    {"lng":104.331656,"lat":30.648017,"count":0},
+    {"lng":104.194722,"lat":30.665964,"count":258},
+	{"lng":104.167797,"lat":30.669241,"count":0}
+	];
+
+	
+	//标注点及标签
+	function addMarker(point){
+		var marker = new BMap.Marker(point);
+		map.addOverlay(marker);
+		marker.addEventListener("click",attribute);
+	}
+	//map.setViewport(pointArray);
+	for (var i = 0; i < points.length; i ++) {
+		var point = new BMap.Point(points[i].lng , points[i].lat );
+		
+		addMarker(point);
+		
+		//addMarker(point);
+	}
+	
+	//单击触发事件
+	function attribute(e){
+		var p = e.target;
+		var index= layer.open({
+			type : 2,
+			title : '查看详情',
+			maxmin : true,
+			area:['1000px', '640px'],
+			shadeClose : false, // 点击遮罩关闭层
+			content : 'policeView.html' // iframe的url
+		})
+		layer.full(index);
+	}	
+
+
+<!--龙泉驿地图 end -->
+
+
+</script>
+
+	</body>
+
+</html>

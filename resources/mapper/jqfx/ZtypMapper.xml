@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtlckj.base.jqfx.mapper.ZtypMapper">
+
+	<resultMap type="com.mtlckj.base.jqfx.domain.Ztyp" id="ztypResult">
+		
+		<result property="bjsj" column="BJSJ_RQSJ" />
+		<result property="jqlb" column="JQLBDM" />
+		<result property="ct" column="CT" />
+		<result property="cunt" column="CUNT" />
+		<result property="cuntnow" column="CUNTNOW" />
+		<result property="cuntlast" column="CUNTLAST" />
+		<result property="name" column="NAME" />
+		<result property="sfdzmc" column="SFDZ_DZMC" />
+		<result property="sfbzdzmc" column="SFBZDZ_DZMC" />
+		<result property="barxm" column="BAR_XM" />
+		<result property="barlxdh" column="BAR_LXDH" />
+		<result property="barxzdz" column="BAR_XZZ_DZMC" />
+		<result property="jjrxm" column="JJR_XM" />
+		<result property="jjdwjgdm" column="CJDW_GAJGJGDM" />
+		<result property="jqztdm" column="JQZTDM" />
+		<result property="lrrxm" column="XT_LRRXM" />
+		<result property="lrrbmjgdm" column="XT_LRRBMID" />
+		<result property="jqxzdm" column="JQXZDM" />
+		<result property="jyaq" column="JYAQ" />
+		<result property="jd" column="SFBZDZ_DQJD" />
+		<result property="wd" column="SFBZDZ_DQWD" />
+		<result property="dates" column="DATES" />
+		
+	</resultMap>
+	
+	 <select id="getJqzst" resultMap="ztypResult">
+	 
+	SELECT W1.DATES,W1.CT,SUM(CUNTS) CUNT FROM( SELECT WW.DATES,WW.CT,CASE WHEN WW.TIMES=WW.DATES THEN SUM(CUNT) ELSE 0 END CUNTS FROM 
+(SELECT BB.DATES,CC.* FROM ( SELECT TO_CHAR(TO_DATE(#{startTime,jdbcType=VARCHAR},'YYYY-MM-DD HH24:MI:SS')+LEVEL-1,'YYYY-MM-DD') AS 
+DATES FROM dual CONNECT BY LEVEL &lt;= TO_DATE(#{endTime,jdbcType=VARCHAR},'YYYY-MM-DD HH24:MI:SS')-TO_DATE(#{startTime,jdbcType=VARCHAR},'YYYY-MM-DD HH24:MI:SS')+1 ) 
+BB LEFT JOIN ( SELECT TT.CT, CASE WHEN TT.JQLBDM IS NOT NULL THEN COUNT(TT.JQLBDM) ELSE 0 END CUNT,TT.TIMES FROM (
+SELECT T.CT,J.JQLBDM,TO_CHAR(J.BJSJ_RQSJ,'YYYY-MM-DD') TIMES from (SELECT DM,CASE WHEN DM LIKE '010402%' THEN '盗窃' ELSE 
+CT END CT,FULLCT FROM JWZH_DICT_VW  <where> (CT IN ('抢夺','抢劫','诈骗') OR DM LIKE '010402%') AND DM LIKE'01%'  </where>) T LEFT 
+JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime,jdbcType=VARCHAR} AND 
+TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endTime,jdbcType=VARCHAR}) TT GROUP BY TT.JQLBDM,TT.CT,TT.TIMES ) CC ON 1= 1 ORDER BY BB.DATES ) WW 
+GROUP BY WW.DATES,WW.CT,WW.TIMES) W1 GROUP BY W1.DATES,W1.CT ORDER BY W1.DATES 
+	 
+		<!-- SELECT W1.DATES,W1.CT,SUM(CUNTS) CUNT FROM(
+		SELECT WW.DATES,WW.CT,CASE WHEN WW.TIMES=WW.DATES THEN SUM(CUNT)  ELSE 0 END CUNTS FROM
+		(SELECT BB.DATES,CC.* FROM 
+		(
+		SELECT TO_CHAR(TO_DATE(#{startTime},'YYYY-MM-DD HH24:MI:SS')+LEVEL-1,'YYYY-MM-DD')  AS DATES FROM  dual 
+		CONNECT BY LEVEL &lt;= TO_DATE(#{endTime},'YYYY-MM-DD HH24:MI:SS')-TO_DATE(#{startTime},'YYYY-MM-DD HH24:MI:SS')+1
+		) BB LEFT JOIN 
+		(
+		SELECT TT.CT, CASE WHEN TT.JQLBDM IS NOT NULL THEN COUNT(TT.JQLBDM) ELSE 0
+		END CUNT,TT.TIMES FROM (SELECT T.CT,J.JQLBDM,TO_CHAR(J.BJSJ_RQSJ,'YYYY-MM-DD') TIMES  from (SELECT DM,CASE WHEN  DM LIKE '010402%' THEN '盗窃'  ELSE CT
+		END CT,FULLCT  FROM JWZH_DICT_VW 
+		 <where>
+		 (CT IN ('抢夺','抢劫','诈骗') OR DM LIKE '010402%') AND DM LIKE'01%'
+		  </where>
+		 ) T LEFT JOIN
+		JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endTime}) TT GROUP BY TT.JQLBDM,TT.CT,TT.TIMES 
+		
+		) CC ON   1= 1  ORDER BY BB.DATES ) WW  GROUP BY  WW.DATES,WW.CT,WW.TIMES) W1  GROUP BY W1.DATES,W1.CT ORDER BY  W1.DATES -->
+	</select>
+	 <select id="getJqzstTime" resultMap="ztypResult">
+	 	SELECT TO_CHAR(TO_DATE(#{startTime},'YYYY-MM-DD HH24:MI:SS')+LEVEL-1,'YYYY-MM-DD')  AS DATES FROM  dual 
+		CONNECT BY LEVEL &lt;= TO_DATE(#{endTime},'YYYY-MM-DD HH24:MI:SS')-TO_DATE(#{startTime},'YYYY-MM-DD HH24:MI:SS')+1
+	 </select>
+	 <select id="getJqlbtjs" resultMap="ztypResult">
+	 	SELECT C1.CT,C1.CUNT CUNTNOW,C2.CUNT CUNTLAST FROM(
+		SELECT BB.CT,SUM(BB.CUN) CUNT FROM (SELECT TT.CT, CASE WHEN TT.JQLBDM IS NOT NULL 
+		THEN COUNT(TT.JQLBDM) ELSE 0
+		END CUN FROM (SELECT T.CT,J.JQLBDM  from (
+		SELECT DM,CASE WHEN  DM IN  ('01040202','01040221','01040281','01040282','01040299' ) THEN '盗窃'  ELSE CT
+		END CT,FULLCT  FROM JWZH_DICT_VW  
+		 <where> 
+		(CT IN ('抢夺','抢劫','诈骗') OR DM LIKE '010402%')  AND DM LIKE'01%'
+		 </where>
+		  
+		  UNION ALL SELECT DM,'赌博'CT,CT FULLCT FROM JWZH_DICT  <where>  DM IN('010505') AND ZDBH = 'BD_D_JQLBDM'</where>
+		) T LEFT JOIN
+		JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startNowTime} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endNowTime}) TT GROUP BY TT.JQLBDM,TT.CT) BB GROUP BY BB.CT
+		) C1,			
+		(SELECT BB.CT,SUM(BB.CUN) CUNT FROM (SELECT TT.CT, CASE WHEN TT.JQLBDM IS NOT NULL 
+		THEN COUNT(TT.JQLBDM) ELSE 0
+		END CUN FROM (SELECT T.CT,J.JQLBDM  from (
+		SELECT DM,CASE WHEN  DM IN  ('01040202','01040221','01040281','01040282','01040299' ) THEN '盗窃'  ELSE CT
+		END CT,FULLCT  FROM JWZH_DICT_VW  
+		 <where> 
+		(CT IN ('抢夺','抢劫','诈骗') OR DM LIKE '010402%')  AND DM LIKE'01%'
+		 </where>
+		  UNION ALL SELECT DM,'赌博'CT,CT FULLCT FROM JWZH_DICT  <where>  DM IN('010505') AND ZDBH = 'BD_D_JQLBDM'</where>
+		 
+		) T LEFT JOIN
+		JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startLastTime} AND
+		TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endLastTime}) TT GROUP BY TT.JQLBDM,TT.CT) BB GROUP BY BB.CT
+		)C2 <where> C1.CT=C2.CT</where>
+	</select>
+	<!-- 高危辖区 数量较多的前三条派出所数据 -->
+	 <select id="getGwqy" resultMap="ztypResult">
+	 	SELECT NAME,ORGCODE CJDW_GAJGJGDM,CUNT FROM (SELECT BB.NAME,BB.ORGCODE,SUM(BB.CUNT) CUNT FROM
+        ( SELECT AA.NAME,AA.ORGCODE,AA.CT,SUM(AA.CUN)
+        CUNT FROM ( SELECT
+        TT.NAME,TT.ORGCODE, TT.CT, CASE
+        WHEN TT.JJDW_GAJGJGDM=TT.ORGCODE THEN
+        COUNT(TT.JJDW_GAJGJGDM) ELSE 0 END
+        CUN FROM (
+        SELECT
+        T.ORGCODE,T.NAME,T.CT,J.JQLBDM ,J.JJDW_GAJGJGDM from (SELECT
+        P.ORGCODE,
+        P.NAME,D.CT,D.DM FROM JWZH_PCS P LEFT JOIN (
+        SELECT * FROM JWZH_DICT <where> ZDBH = 'BD_D_JQLBDM' AND  DM LIKE '01%'</where>
+        ) 
+        D ON 1=1
+        ) T LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND
+        TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+        HH:mm:ss')&gt;=#{startTime}  AND
+        TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd
+        HH:mm:ss')&lt;=#{endTime}
+        <if test="fstype!='-1'">
+	 	AND T.DM IN 
+         <foreach item="item" index="index" collection="fstype" open="(" separator="," close=")">  
+             #{item}  
+          </foreach> 
+	 </if>
+        ) TT
+        GROUP BY
+        TT.CT,TT.JJDW_GAJGJGDM,TT.ORGCODE,TT.NAME ORDER BY TT.NAME) AA
+        GROUP BY
+        AA.NAME,AA.ORGCODE,AA.CT ORDER BY AA.NAME
+        ) BB GROUP BY BB.NAME,BB.ORGCODE order by CUNT DESC ) WHERE rownum &lt;=3 
+	 </select>
+	 
+	  <!-- 高危区域列表 -->
+	 <select id="getGwqyTjt" resultMap="ztypResult">
+		
+	SELECT BB.NAME,
+	BB.ORGCODE,SUM(BB.CUNT) CUNT FROM ( SELECT AA.NAME,AA.ORGCODE,
+	SUM(AA.CUN) CUNT FROM ( SELECT TT.NAME,TT.ORGCODE,  CASE WHEN 
+	TT.JJDW_GAJGJGDM=TT.ORGCODE THEN COUNT(TT.JJDW_GAJGJGDM) ELSE 0 END CUN 
+	FROM ( SELECT T.ORGCODE,T.NAME,T.CT,J.JQLBDM ,J.JJDW_GAJGJGDM from (
+	SELECT P.ORGCODE, P.NAME,D.CT,D.DM FROM JWZH_PCS P LEFT JOIN ( 
+	SELECT * FROM JWZH_DICT WHERE ZDBH = 'BD_D_JQLBDM' AND DM LIKE '01%' ) D ON 1=1 ) T
+	 LEFT JOIN JWZH_ASJ_JQXX J ON T.DM = J.JQLBDM AND TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime} 
+	 AND TO_CHAR(J.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endTime}  
+	 <if test="fstype!='-1'">
+	 AND T.DM IN
+         <foreach item="item" index="index" collection="fstype" open="(" separator="," close=")">  
+             #{item}  
+           </foreach> 
+	 </if>
+	  
+	 ) TT GROUP BY  TT.JJDW_GAJGJGDM,TT.ORGCODE,
+	 TT.NAME ORDER BY TT.NAME) AA GROUP BY AA.NAME,AA.ORGCODE ORDER BY AA.NAME ) BB 
+	 GROUP BY BB.NAME,BB.ORGCODE order by CUNT DESC 
+       
+	 </select>
+	 
+	 <!-- 高危区域列表 -->
+	 <select id="getGwqyList" resultMap="ztypResult">
+	   SELECT NAME, CT,SFDZ_DZMC,JYAQ FROM  ( SELECT  ROWNUM RN ,T.* FROM (
+	 	SELECT  A3.NAME,A2.CT,A1.SFDZ_DZMC,A1.JYAQ FROM  JWZH_ASJ_JQXX A1,JWZH_DICT A2,JWZH_PCS  A3 
+	 	<where> A1.JJDW_GAJGJGDM = A3.ORGCODE AND A2.DM=A1.JQLBDM
+        AND A2.ZDBH = 'BD_D_JQLBDM' AND  A2.DM LIKE '01%' AND
+         TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime ,jdbcType=VARCHAR}
+ AND TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endTime ,jdbcType=VARCHAR}
+        <if test="jgmc!=''">
+        AND A3.NAME=#{jgmc ,jdbcType=VARCHAR}
+         <if test="fstype!='-1'">
+	 AND A2.DM IN 
+         <foreach item="item" index="index" collection="fstype" open="(" separator="," close=")">  
+             #{item}  
+           </foreach> 
+	 </if>
+        </if>
+        </where>
+        ) T
+        <if test="search !='' and search != null">
+			<where>	 T.NAME like concat(concat('%',#{search}),'%')
+					or T.CT like concat(concat('%',#{search}),'%')
+					or T.SFDZ_DZMC like concat(concat('%',#{search}),'%')
+					or T.JYAQ like concat(concat('%',#{search}),'%')
+			</where>
+		</if>
+        ) <where> RN&gt;#{offset} AND RN&lt;#{limit} </where>
+	 </select>
+	 
+	 <select id="getGwqyListCunt" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+	  SELECT COUNT(*) CUNT FROM (
+	 	SELECT  A3.NAME,A2.CT,A1.SFDZ_DZMC,A1.JYAQ FROM  JWZH_ASJ_JQXX A1,JWZH_DICT A2,JWZH_PCS  A3 
+	 	<where> A1.JJDW_GAJGJGDM = A3.ORGCODE AND A2.DM=A1.JQLBDM
+        AND A2.ZDBH = 'BD_D_JQLBDM' AND  A2.DM LIKE '01%' AND
+         TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime ,jdbcType=VARCHAR}
+ AND TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endTime ,jdbcType=VARCHAR}
+        <if test="jgmc!=''">
+        AND A3.NAME=#{jgmc ,jdbcType=VARCHAR}
+        </if>
+         <if test="fstype!='-1'">
+	 AND A2.DM IN 
+         <foreach item="item" index="index" collection="fstype" open="(" separator="," close=")">  
+             #{item}  
+           </foreach> 
+           </if>
+        </where>
+        ) T <if test="search !='' and search != null">
+			<where>	 T.NAME like concat(concat('%',#{search}),'%')
+					or T.CT like concat(concat('%',#{search}),'%')
+					or T.SFDZ_DZMC like concat(concat('%',#{search}),'%')
+					or T.JYAQ like concat(concat('%',#{search}),'%')
+			</where>
+		</if>
+	 </select>
+	 <!-- 查询高危时段的数据 -->
+	 <select id="getGwsd" resultMap="ztypResult">
+	 
+	 	select to_char(A1.bjsj_rqsj,'hh24')||':00:00' as DATES,count(*) CUNT from jwzh_asj_jqxx A1 ,
+		( SELECT * FROM JWZH_DICT WHERE ZDBH = 'BD_D_JQLBDM' AND DM LIKE '01%' ) A2
+		<where>  TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime ,jdbcType=VARCHAR}
+ 		AND TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endTime ,jdbcType=VARCHAR}
+		AND A1.JQLBDM=A2.DM		
+			 
+		</where>
+		group by to_char(A1.bjsj_rqsj,'hh24')||':00:00'
+		order by CUNT
+	 </select>
+	 
+	  <!-- 查询高危时段统计图 -->
+	 <select id="getGwsdTjt" resultMap="ztypResult">
+	 
+	 	select to_char(A1.bjsj_rqsj,'hh24')||':00:00' as DATES,count(*) CUNT from jwzh_asj_jqxx A1 ,
+		( SELECT * FROM JWZH_DICT WHERE ZDBH = 'BD_D_JQLBDM' AND DM LIKE '01%' ) A2
+		<where>  TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime ,jdbcType=VARCHAR}
+ 		AND TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endTime ,jdbcType=VARCHAR}
+		AND A1.JQLBDM=A2.DM		
+			
+		</where>
+		group by to_char(A1.bjsj_rqsj,'hh24')||':00:00'
+		order by  to_char(A1.bjsj_rqsj,'hh24')||':00:00'
+	 </select>
+	
+		 <!-- 高危区域列表 -->
+	 <select id="getGwsdList" resultMap="ztypResult">
+	 SELECT DATES,CT,SFDZ_DZMC,JYAQ FROM (
+	 SELECT ROWNUM RN ,T.DATES,T.CT,T.SFDZ_DZMC,T.JYAQ FROM (
+	 select to_char(A1.bjsj_rqsj,'hh24')||':00:00' as DATES,A2.CT,A1.SFDZ_DZMC,A1.JYAQ from jwzh_asj_jqxx A1 ,
+	( SELECT * FROM JWZH_DICT WHERE ZDBH = 'BD_D_JQLBDM' AND DM LIKE '01%' ) A2
+	<where> TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime ,jdbcType=VARCHAR}
+	 AND TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endTime ,jdbcType=VARCHAR} 
+	AND A1.JQLBDM=A2.DM  
+		 <if test="search !='' and search != null">
+			 and ( A2.CT like concat(concat('%',#{search}),'%')
+					or A1.SFDZ_DZMC like concat(concat('%',#{search}),'%')
+					or A1.JYAQ like concat(concat('%',#{search}),'%'))
+			
+		</if>
+	</where>)T
+	<where>
+	  <if test="times!=''">
+	AND  T.DATES = #{times,jdbcType=VARCHAR}
+	</if>
+	 </where>)<where> RN&gt;#{offset} AND RN&lt;#{limit} </where>
+
+	 </select>
+	 
+	 <select id="getGwsdListCunt" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+	  	 SELECT COUNT(*) CUNT FROM (
+	 select to_char(A1.bjsj_rqsj,'hh24')||':00:00' as DATES,A2.CT,A1.SFDZ_DZMC,A1.JYAQ from jwzh_asj_jqxx A1 ,
+	( SELECT * FROM JWZH_DICT WHERE ZDBH = 'BD_D_JQLBDM' AND DM LIKE '01%' ) A2
+	<where> TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&gt;=#{startTime ,jdbcType=VARCHAR}
+	 AND TO_CHAR(A1.BJSJ_RQSJ,'yyyy-MM-dd HH:mm:ss')&lt;=#{endTime ,jdbcType=VARCHAR} 
+	AND A1.JQLBDM=A2.DM  
+		 <if test="search !='' and search != null">
+			 and ( A2.CT like concat(concat('%',#{search}),'%')
+					or A1.SFDZ_DZMC like concat(concat('%',#{search}),'%')
+					or A1.JYAQ like concat(concat('%',#{search}),'%'))
+			
+		</if>
+	</where>)T
+	<where>
+	  <if test="times!=''">
+	AND  T.DATES = #{times,jdbcType=VARCHAR}
+	</if>
+	 </where>
+	 </select>
+	 
+	 <select id="getFzType" resultMap="ztypResult">
+	 	select DM JQLBDM from JWZH_DICT_VW 
+	 	<where>
+	 	dm like '01%' 
+	 	<if test="type == 1">
+	 		and dm like '010402%' 
+	 	</if>
+	 	<if test="type == 2">
+	 		and ct='抢劫'
+	 	</if>
+	 	<if test="type == 3">
+	 		and ct='诈骗'
+	 	</if>
+	 	<if test="type == 4">
+	 		and ct='盗窃摩托车'
+	 	</if>
+	 	<if test="type == 5">
+	 		and ct='入室盗窃'
+	 	</if>
+	 	<if test="type == 6">
+	 		and  (ct='盗窃汽车' or ct='盗窃车内财物')
+	 	</if>
+	 	<if test="type == 7">
+	 		and (ct='抢劫' or ct='抢夺')
+	 	</if>
+	 	<if test="type == 8">
+	 		and ct='侵财'
+	 	</if>
+	 	</where> 
+	 </select>
+</mapper>

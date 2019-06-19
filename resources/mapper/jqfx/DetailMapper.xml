@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mtlckj.base.jqfx.mapper.DetailMapper">
+
+	<resultMap type="com.mtlckj.base.jqfx.domain.Details"
+		id="detailResult">
+		<result property="id" column="XXZJBH" />
+		<result property="jqbh" column="JQBH" />
+		<result property="jjdbh" column="JJDBH" />
+		<result property="jqlydm" column="JQLYDM" />
+		<result property="bjfsdm" column="BJFSDM" />
+		<result property="rqsj" column="BJSJ_RQSJ" />
+		<result property="dzmc" column="SFDZ_DZMC" />
+		<result property="bzdz" column="SFBZDZ_DZMC" />
+		<result property="jyaq" column="JYAQ" />
+		<result property="sfzh" column="CLJQR_JMSFHM" />
+		<result property="xm" column="JJR_XM" />
+		<result property="gajgmc" column="JJDW_GAJGMC" />
+		<result property="gajgdm" column="JJDW_GAJGJGDM" />
+		<result property="bxm" column="BAR_XM" />
+		<result property="bsfzh" column="BAR_CYZJ_ZJHM" />
+		<result property="lxdh" column="BAR_LXDH" />
+
+	</resultMap>
+	<select id="showDetil" resultMap="detailResult">
+	
+		select * from
+		(
+		    select table1.*,rownum rn from
+		    <if test="search != null and search != ''">
+		    	(
+		    		select tab1.* from (
+		    			select t.XXZJBH,t.jqbh,t.jjdbh,t.jqlydm,t.BJFSDM,t.BJSJ_RQSJ,t.SFDZ_DZMC,t.SFBZDZ_DZMC,t.JYAQ,t.CLJQR_JMSFHM,t.JJR_XM,t.JJDW_GAJGMC,t.JJDW_GAJGJGDM,
+		        
+		        t.CJR_JMSFHM,t.BAR_XM,t.BAR_CYZJ_ZJHM,t.BAR_LXDH from JWZH_ASJ_JQXX t,
+		        
+		            (select distinct jd.ct,JAJ.JQLBDM jq from JWZH_DICT jd,JWZH_ASJ_JQXX jaj where jd.zdbh='BD_D_JQLBDM' and JAJ.JQLBDM=dm and jd.ct=#{type}) temp
+				
+		           
+		           where  temp.jq=T.JQLBDM and T.JJDW_GAJGJGDM=(select JP.ORGCODE from JWZH_PCS jp where jp.name=#{name})
+		            
+		            and T.bjsj_rqsj &gt; =to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and bjsj_rqsj &lt;=to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+		            
+		             order by t.bjsj_rqsj
+		    		) tab1 where tab1.XXZJBH LIKE #{search} OR tab1.BJFSDM LIKE #{search} OR tab1.jqlydm LIKE #{search}
+		            	OR tab1.BJSJ_RQSJ LIKE #{search} OR tab1.JJR_XM LIKE #{search} OR tab1.BAR_XM LIKE #{search}
+		    	)teble1
+		    </if>
+		    <if test="search == null or search == ''">
+		    	(
+		        select t.XXZJBH,t.jqbh,t.jjdbh,t.jqlydm,t.BJFSDM,t.BJSJ_RQSJ,t.SFDZ_DZMC,t.SFBZDZ_DZMC,t.JYAQ,t.CLJQR_JMSFHM,t.JJR_XM,t.JJDW_GAJGMC,t.JJDW_GAJGJGDM,
+		        
+		        t.CJR_JMSFHM,t.BAR_XM,t.BAR_CYZJ_ZJHM,t.BAR_LXDH from JWZH_ASJ_JQXX t,
+		        
+		            (select distinct jd.ct,JAJ.JQLBDM jq from JWZH_DICT jd,JWZH_ASJ_JQXX jaj where jd.zdbh='BD_D_JQLBDM' and JAJ.JQLBDM=dm and jd.ct=#{type}) temp
+				
+		           
+		           where  temp.jq=T.JQLBDM and T.JJDW_GAJGJGDM=(select JP.ORGCODE from JWZH_PCS jp where jp.name=#{name})
+		            
+		            and T.bjsj_rqsj &gt; =to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and bjsj_rqsj &lt;=to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') and 1=1
+		            
+		             order by t.bjsj_rqsj
+		        
+		    ) table1
+		    </if >
+		    
+		     where rownum &lt;#{limit}
+		)
+		where rn &gt;#{offset}
+	</select>
+	<select id="getTotal" resultType="int">
+		select count(*) from
+
+        	(select t.XXZJBH,t.jqbh,t.jjdbh,t.jqlydm,t.BJFSDM,t.BJSJ_RQSJ,t.SFDZ_DZMC,t.SFBZDZ_DZMC,t.JYAQ,t.CLJQR_JMSFHM,t.JJR_XM,t.JJDW_GAJGMC,t.JJDW_GAJGJGDM,
+        
+        	t.CJR_JMSFHM,t.BAR_XM,t.BAR_CYZJ_ZJHM,t.BAR_LXDH from JWZH_ASJ_JQXX t,
+        
+            (select distinct jd.ct,JAJ.JQLBDM jq from JWZH_DICT jd,JWZH_ASJ_JQXX jaj where jd.zdbh='BD_D_JQLBDM' and JAJ.JQLBDM=dm and jd.ct=#{type}) temp
+
+            where temp.jq=T.JQLBDM and T.JJDW_GAJGJGDM=(select JP.ORGCODE from JWZH_PCS jp where jp.name=#{name})
+            
+            and T.bjsj_rqsj&gt;=to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and bjsj_rqsj&lt;=to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') order by t.bjsj_rqsj)
+	</select>
+	
+	<select id="getTotalNoType" resultType="int">
+		select count(*) from JWZH_ASJ_JQXX j where J.BJSJ_RQSJ &gt;=to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+		and J.BJSJ_RQSJ &lt;=to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+		and j.JJDW_GAJGJGDM=(select JP.ORGCODE from JWZH_PCS jp where jp.name=#{name})
+		and J.JQLBDM in (select JD.DM from JWZH_DICT jd where JD.ZDBH='BD_D_JQLBDM' and jd.ct in ('抢劫','抢夺','盗窃机动车','入室盗窃','盗窃车内财物','诈骗'))
+	</select>
+	<select id="showDetilNoType" resultMap="detailResult">
+		select * from
+        (
+            select table1.*,rownum rn from
+            
+            <if test="search != null and search != ''">
+            	(
+            		select tab1.* from
+            		(
+            			select t.XXZJBH,t.JQBH,t.JJDBH,t.JQLYDM,t.BJFSDM,t.BJSJ_RQSJ,t.SFDZ_DZMC,t.SFBZDZ_DZMC,t.JYAQ,t.CLJQR_JMSFHM,t.JJR_XM,t.JJDW_GAJGMC,t.JJDW_GAJGJGDM,
+                
+                t.CJR_JMSFHM,t.BAR_XM,t.BAR_CYZJ_ZJHM,t.BAR_LXDH from JWZH_ASJ_JQXX t,
+                
+                    (select dm from JWZH_DICT where zdbh='BD_D_JQLBDM' and ct in ('抢劫','抢夺','盗窃机动车','入室盗窃','盗窃车内财物','诈骗')) temp
+        
+                    where temp.dm=T.JQLBDM and T.JJDW_GAJGJGDM=(select JP.ORGCODE from JWZH_PCS jp where jp.name=#{name})
+                    
+                    and T.bjsj_rqsj &gt;=to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and bjsj_rqsj &lt;=to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') order by t.bjsj_rqsj
+                
+            		)tab1 where tab1.XXZJBH LIKE #{search} OR tab1.BJFSDM LIKE #{search} OR tab1.jqlydm LIKE #{search}
+		            	OR tab1.BJSJ_RQSJ LIKE #{search} OR tab1.JJR_XM LIKE #{search} OR tab1.BAR_XM LIKE #{search}
+            	)table1
+            </if>
+            
+            <if test="search == null or search == ''">
+            	(
+                select t.XXZJBH,t.JQBH,t.JJDBH,t.JQLYDM,t.BJFSDM,t.BJSJ_RQSJ,t.SFDZ_DZMC,t.SFBZDZ_DZMC,t.JYAQ,t.CLJQR_JMSFHM,t.JJR_XM,t.JJDW_GAJGMC,t.JJDW_GAJGJGDM,
+                
+                t.CJR_JMSFHM,t.BAR_XM,t.BAR_CYZJ_ZJHM,t.BAR_LXDH from JWZH_ASJ_JQXX t,
+                
+                    (select dm from JWZH_DICT where zdbh='BD_D_JQLBDM' and ct in ('抢劫','抢夺','盗窃机动车','入室盗窃','盗窃车内财物','诈骗')) temp
+        
+                    where temp.dm=T.JQLBDM and T.JJDW_GAJGJGDM=(select JP.ORGCODE from JWZH_PCS jp where jp.name=#{name})
+                    
+                    and T.bjsj_rqsj &gt;=to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and bjsj_rqsj &lt;=to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss') order by t.bjsj_rqsj
+                
+            	) table1
+            </if>
+             where rownum &lt; #{limit}
+        )
+        where rn &gt; #{offset}
+	</select>
+	<select id="getOne" resultMap="detailResult">
+		select * from JWZH_ASJ_JQXX j  
+		<where>
+			<if test="id !=null and id != ''">
+				and J.XXZJBH=#{id}
+			</if>
+		</where>
+	</select>
+</mapper>

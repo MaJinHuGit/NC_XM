@@ -1,0 +1,105 @@
+
+<html>
+
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>首页</title>
+<link rel="stylesheet" href="css/layui.css">
+<link rel="stylesheet" href="css/admin.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/addStyle.css">
+<link rel="stylesheet" href="font-size/iconfont.css">
+<!-- <link rel="stylesheet" href="css/bootstrap-theme.min.css"> -->
+<!-- <link rel="stylesheet" href="css/modules/layer/default/layer.css"> -->
+<style>
+
+.innerTitleCon ul {
+	width: 100%;
+	overflow: auto;
+	overflow-y: hidden;
+}
+
+.innerTitleCon ul li {
+	float: left;
+	color: white;
+	width: auto !important;
+	text-align: center;
+	cursor: pointer;
+	margin-right: 5px;
+}
+
+.innerTitleCon {
+	background: #24242c;
+	height: auto;
+	line-height: 40px;
+	width: 100%;
+	margin-top: 10px;
+}
+</style>
+</head>
+<body class="bgBackColor">
+	<div class="scroll-1">
+		<div class="layui-row">
+			<div class="layui-col-md12 rightConSpace">
+				<div class="titleRightCon">
+					<span class="leftTextWhite">应用概况</span> <span
+						class="rightTextGreen"><a href="demoManagerIndex.html"><i
+							class="icon iconfont icon-guanli"></i>&nbsp;模块管理</a></span>
+				</div>
+				<!------------------------------------------------------------------------------------------------>
+				<div class="RightConFirst">
+					<!-- 右侧内容导航栏 start -->
+
+					<div class="layui-row">
+						<div class="layui-col-md11">
+							<div class="innerTitleCon">
+								<ul class="nav nav-pills" id="tab">
+									<li><a onClick="changeTab('bzjq.html');" data-toggle="pill">本周警情</a></li>
+									<li class="active"><a onClick="changeTab('wffzjq.html');" data-toggle="pill">违法犯罪警情</a></li>
+									<li><a onClick="changeTab('hddjq.html');" data-toggle="pill">黄、赌、毒警情</a></li>
+									<li><a onClick="changeTab('xfjjy.html');" data-toggle="pill">消防及救助</a></li>
+									<li><a onClick="changeTab('zdjcxhz.html');" data-toggle="pill">周打击成效汇总</a></li>
+<!-- 									<li class="active"><a href="#right1" onclick="loadBzjq()" data-toggle="pill">本周警情</a></li> -->
+<!-- 									<li><a href="#right2" onclick="loadWffz()" data-toggle="pill">违法犯罪警情</a></li> -->
+<!-- 									<li><a href="#right3" onclick="loadHddjq()" data-toggle="pill">黄、赌、毒警情</a></li> -->
+<!-- 									<li><a href="#right4" onclick="loadXf()" data-toggle="pill">消防及救助</a></li> -->
+<!-- 									<li><a href="#right5" onclick="loadZdj()" data-toggle="pill">周打击成效汇总</a></li> -->
+								</ul>
+							</div>
+						</div>
+						<div class="layui-col-md1" align="right">
+							<button class="layui-btn layui-btn-normal"
+								style="margin-top: 10px;">添加项</button>
+						</div>
+					</div>
+
+			        <div style="">
+						<!-- 嵌入各类警情页面 -->
+						<!--中间主体-->
+			            <iframe id="mainContentFrame" name="mainContentFrame" frameborder="0" src="wffzjq.html" scrolling="auto" width="100%" height="100%"></iframe>
+			        </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../style/static/js/jquery.min.js?v=2.1.4"></script>
+	<script src="layui.js"></script>
+	<script src="../style/js/sys.js"></script>
+
+	<script type="text/javascript">
+
+		$("#tab li").click(function(){
+			$(this).siblings('li').removeClass('active');
+			$(this).addClass('active');
+		});
+		function changeTab(str){
+			document.getElementById('mainContentFrame').src = str;
+		}
+	
+	</script>
+</body>
+</html>

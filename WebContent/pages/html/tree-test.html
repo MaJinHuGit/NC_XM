@@ -1,0 +1,112 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!--设置视口的宽度(值为设备的理想宽度)，页面初始缩放值<理想宽度/可见宽度>-->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/layui.css">
+     
+		<title></title>
+		
+		<style>
+		ul li a{color:black;}
+		</style>
+		
+	</head>
+
+	<body class="whiteBack">
+		
+        <div class="layui-row">
+	
+            <div class="layui-col-md12" style="padding:20px;">
+                        
+               <ul id="demo" class="textBlack"></ul>
+			   
+			</div>
+			
+        </div>
+
+	<script src="layui.js"></script>
+	<script>
+	  layui.use(['element', 'tree', 'layer', 'form', 'upload'], function () {
+        var $ = layui.jquery, tree = layui.tree;
+        tree({
+			elem: '#demo', //指定元素，生成的树放到哪个元素上
+			check: 'checkbox', //勾选风格
+			skin: 'as', //设定皮肤
+			drag: true,//点击每一项时是否生成提示信息
+			checkboxName: 'aa[]',//复选框的name属性值
+			checkboxStyle: "",//设置复选框的样式，必须为字符串，css样式怎么写就怎么写
+			click: function(item) { //点击节点回调
+				console.log("item")
+			},
+			onchange: function (){//当当前input发生变化后所执行的回调
+				console.log(this);
+			},
+			nodes: [ //节点
+				 {
+					name: '管辖派出所',
+					checked: true,
+					spread: true,
+					data: {
+						nodeName: "管辖派出所",
+						alias: "email"
+					},
+					children: [{
+						name: '龙泉驿',
+						checked: true,
+						checkboxValue: 1,
+						spread: true,
+						children: [{
+							name: '龙泉所',
+							checked: false,
+							checkboxValue: 2
+						}, {
+							name: '十陵所',
+							checked: false,
+							checkboxValue: 3
+						}, {
+							name: '北干道',
+							checked: false,
+							checkboxValue: 4
+						}, {
+							name: '同安所',
+							checked: false,
+							checkboxValue: 5
+						}, {
+							name: '大面所',
+							checked: false,
+							checkboxValue: 6
+						}]
+					}, {
+						name: '郫县',
+						checked: true,
+						checkboxValue: 7,
+						children: [{
+							name: '郫县1',
+							checked: true,
+							checkboxValue: 8
+						}, {
+							name: '郫县2',
+							checked: true,
+							checkboxValue: 9
+						}, {
+							name: '郫县3',
+							checked: true,
+							checkboxValue: 10
+						}]
+					}]
+				}
+			]
+		});
+
+	});
+	</script>
+
+	</body>
+
+</html>
